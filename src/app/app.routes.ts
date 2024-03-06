@@ -6,6 +6,7 @@ import {EventsComponent} from "./events/events.component";
 import {ContactsComponent} from "./contacts/contacts.component";
 
 export const routes: Routes = [
+  { path: "", component: EventsComponent },
   { path: "courses", component: CoursesComponent },
   { path: "contacts", component: ContactsComponent },
   { path: "groups", component: GroupsComponent },
