@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {GolfCourse} from "../model/course-model";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {CourseSummary} from "../model/courseSummary";
 
 @Injectable(
   {
@@ -14,8 +14,8 @@ export class CoursesService {
   constructor(private http: HttpClient) { }
 
   // Method to retrieve the list of golf courses
-  getGolfCourses(): Observable<GolfCourse[]> {
-    return this.http.get<GolfCourse[]>(this.apiUrl);
+  getGolfCourses(): Observable<CourseSummary[]> {
+    return this.http.get<CourseSummary[]>(this.apiUrl);
   }
 
 }

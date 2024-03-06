@@ -1,0 +1,11 @@
+export * from './contacts.service';
+import { ContactsService } from './contacts.service';
+export * from './courses.service';
+import { CoursesService } from './courses.service';
+export * from './events.service';
+import { EventsService } from './events.service';
+export * from './groups.service';
+import { GroupsService } from './groups.service';
+export * from './profile.service';
+import { ProfileService } from './profile.service';
+export const APIS = [ContactsService, CoursesService, EventsService, GroupsService, ProfileService];

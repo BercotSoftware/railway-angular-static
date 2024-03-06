@@ -24,7 +24,7 @@
       "dom"
     ],
     "paths": {
-      "@golf-api": [ "src/app/api/index.ts" ]
+      "@golf-api": [ "src/play-golf-api/index.ts" ]
     }
   },
   "angularCompilerOptions": {

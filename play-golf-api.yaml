@@ -1,0 +1,1604 @@
+openapi: "3.0.3"
+info:
+  title: "play-golf"
+  description: "play golf API"
+  version: 1.0.1
+
+servers:
+  - url: http://{host}
+    variables:
+      host:
+        description: 'Host name of the resource server'
+        default: 'localhost:4000'
+
+tags:
+  - name: contacts
+    description: Operations on user contacts
+  - name: courses
+    description: Operations on golf courses
+  - name: profiles
+    description: Operations on User profiles
+  - name: groups
+    description: Operations on groups
+  - name: events
+    description: Operations on events
+
+##-------------------------------------------------------------------------------
+##  paths
+##-------------------------------------------------------------------------------
+paths:
+
+  ##-------------------------------------------------------------------------------
+  ##  paths/contacts
+  ##-------------------------------------------------------------------------------
+  /contacts:
+    get:
+      summary: "GET contacts"
+      tags:
+        - contacts
+      parameters:
+        - $ref: '#/components/parameters/pageable'
+        - $ref: '#/components/parameters/searchExpression'
+      operationId: "findAllContacts"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                title: contactsResponse
+                allOf:
+                  - $ref: "#/components/schemas/PagedResult"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ContactSummary"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    post:
+      summary: "Create a new contact"
+      tags:
+        - contacts
+      operationId: "createContact"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactDetails"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /contacts/accept/{id}:
+    post:
+      summary: "POST contacts/accept/{id}"
+      tags:
+        - contacts
+      operationId: "acceptContactInvitation"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /contacts/decline/{id}:
+    post:
+      summary: "POST contacts/decline/{id}"
+      tags:
+        - contacts
+      operationId: "declineContactInvitation"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /contacts/invite:
+    put:
+      summary: "PUT contacts/invite"
+      tags:
+        - contacts
+      operationId: "sendContactInvitation"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /contacts/profile/{profileId}:
+    get:
+      summary: "GET contacts/profile/{id}"
+      tags:
+        - contacts
+      operationId: "findContactByProfileId"
+      parameters:
+        - name: "profileId"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /contacts/{id}:
+    get:
+      description: Get a contact by its entity ID
+      summary: "GET contacts/{id}"
+      tags:
+        - contacts
+      operationId: "findContactById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    put:
+      description: Save changes to a contact
+      summary: "Save contact"
+      tags:
+        - contacts
+      operationId: "saveContact"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactDetails"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    delete:
+      description: Delete a contact using its entity ID
+      summary: "DELETE contacts/{id}"
+      tags:
+        - contacts
+      operationId: "deleteContact"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  ##-------------------------------------------------------------------------------
+  ##  paths/groups
+  ##-------------------------------------------------------------------------------
+  /groups:
+    get:
+      description: Get a list of groups with search and paging options
+      summary: "GET groups"
+      tags:
+        - groups
+      operationId: "findAllPaged"
+      parameters:
+        - $ref: '#/components/parameters/pageable'
+        - $ref: '#/components/parameters/searchExpression'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                title: getGroupsResponse
+                allOf:
+                  - $ref: "#/components/schemas/PagedResult"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/GolfGroupSummary"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    post:
+      description: Create a new group
+      summary: "Create a group"
+      tags:
+        - groups
+      operationId: "createGroup"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GolfGroupDetails"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GolfGroupDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /groups/{id}:
+    get:
+      description: Get a group by ID
+      summary: "GET group"
+      tags:
+        - groups
+      operationId: "findGroup"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GolfGroupDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    put:
+      summary: "Update a group"
+      tags:
+        - groups
+      operationId: "saveGroup"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GolfGroupDetails"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GolfGroupDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    delete:
+      summary: "Delete a group"
+      tags:
+        - groups
+      operationId: "deleteGroup"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          $ref: '#/components/responses/OkResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /groups/{id}/addContact:
+    post:
+      summary: "POST groups/{groupId}/addContact"
+      tags:
+        - groups
+      operationId: "createContactFromParticipant"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GolfParticipant"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  #  TODO Replace with search on events?
+  /groups/{id}/events:
+    get:
+      summary: "GET events"
+      tags:
+        - groups
+        - events
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/startDate'
+        - $ref: '#/components/parameters/endDate'
+        - $ref: '#/components/parameters/pageable'
+      operationId: "findGroupEvents"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                title: groupEventsResponse
+                allOf:
+                  - $ref: "#/components/schemas/PagedResult"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/EventSummary"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /groups/{id}/participants:
+    put:
+      summary: "PUT groups/{groupId}/participants"
+      tags:
+        - groups
+      operationId: "updateParticipants"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GolfParticipant"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GolfParticipant"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    post:
+      summary: "POST groups/{id}/participants"
+      tags:
+        - groups
+      operationId: "createParticipant"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GolfParticipant"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GolfParticipant"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+
+  ##-------------------------------------------------------------------------------
+  ##  paths/events
+  ##-------------------------------------------------------------------------------
+  /events:
+    get:
+      summary: "GET events"
+      tags:
+        - events
+      parameters:
+        - $ref: '#/components/parameters/pageable'
+        - $ref: '#/components/parameters/searchExpression'
+      operationId: "findAllEvents"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                title: getEventsResponse
+                allOf:
+                  - $ref: "#/components/schemas/PagedResult"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/EventSummary"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    post:
+      summary: "POST events/create"
+      tags:
+        - events
+      operationId: "createEvent"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventDetails'
+      responses:
+        "200":
+          description: Resource successfully created
+          content:
+            application/json:
+              schema:
+                title: createEventResponse
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/EntityId'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    put:
+      summary: "Save an event given all details"
+      tags:
+        - events
+      operationId: "saveEvent"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventDetails'
+      responses:
+        "200":
+          description: Resource successfully saved
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /events/{eventId}:
+    get:
+      summary: "GET events/{eventId}"
+      tags:
+        - events
+      operationId: "findEventById"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    delete:
+      summary: "DELETE events/{eventId}"
+      tags:
+        - events
+      operationId: "deleteEvent"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /events/edit/{eventId}:
+    get:
+      summary: "GET events/edit/{eventId}"
+      tags:
+        - events
+      operationId: "editEvent"
+      parameters:
+        - name: "eventId"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /events/byDate:
+    get:
+      summary: "GET events/byDate"
+      tags:
+        - events
+      operationId: "findByDate"
+      parameters:
+        - $ref: '#/components/parameters/startDate'
+        - $ref: '#/components/parameters/endDate'
+        - $ref: '#/components/parameters/pageable'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                title: eventsByDateResponse
+                allOf:
+                  - $ref: "#/components/schemas/PagedResult"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/EventSummary"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  ##-------------------------------------------------------------------------------
+  ##  /courses
+  ##-------------------------------------------------------------------------------
+  /courses:
+    get:
+      summary: "GET courses"
+      tags:
+        - courses
+      operationId: "findAllCourses"
+      parameters:
+        - $ref: '#/components/parameters/pageable'
+        - $ref: '#/components/parameters/searchExpression'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                title: getCoursesResponse
+                allOf:
+                  - $ref: "#/components/schemas/PagedResult"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/CourseSummary"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    put:
+      summary: "PUT courses"
+      tags:
+        - courses
+      operationId: "saveGolfCourse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourseDetails"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    post:
+      summary: "POST courses"
+      tags:
+        - courses
+      operationId: "createGolfCourse"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourseDetails"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /courses/favorites:
+    get:
+      summary: "GET courses/favorites"
+      tags:
+        - courses
+      operationId: "findFavoriteCourses"
+      parameters:
+        - $ref: '#/components/parameters/pageable'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                title: findFavoriteCoursesResponse
+                allOf:
+                  - $ref: "#/components/schemas/PagedResult"
+                  - type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/FavoriteCourse"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /courses/{id}:
+    get:
+      summary: "GET courses/{id}"
+      tags:
+        - courses
+      operationId: "findCourseById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourseDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    delete:
+      summary: "DELETE courses/{id}"
+      tags:
+        - courses
+      operationId: "deleteCourse"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /courses/{id}/tees:
+    get:
+      summary: "GET Tee Stations for a given course"
+      tags:
+        - courses
+      operationId: "findCourseTeesById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeeStations"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+  /courses/{id}/scrorecard:
+    get:
+      summary: "GET scorecard for a given course"
+      tags:
+        - courses
+      operationId: "getScorecardForCourse"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            $ref: '#/components/schemas/EntityId'
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scorecard"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+
+  ##-------------------------------------------------------------------------------
+  ##  paths/profile
+  ##-------------------------------------------------------------------------------
+  /profile:
+    get:
+      summary: "GET profile"
+      tags:
+        - profile
+      operationId: "getProfile"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+    put:
+      summary: "PUT profile"
+      tags:
+        - profile
+      operationId: "updateProfile"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileDetails"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileDetails"
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "401":
+          $ref: '#/components/responses/UnauthorizedRequest'
+
+##-------------------------------------------------------------------------------
+##  components/parameters
+##-------------------------------------------------------------------------------
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: Item id
+      schema:
+        $ref: '#/components/schemas/EntityId'
+
+    limit:
+      name: limit
+      in: query
+      description: sizes the number of returned items
+      required: false
+      schema:
+        type: integer
+        #        format: int32
+        default: 10
+        minimum: 1
+    #        maximum: 1000
+    #        multipleOf: 10
+
+    startDate:
+      name: startDate
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+
+    endDate:
+      name: endDate
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+
+    pageable:
+      name: page
+      in: query
+      schema:
+        $ref: '#/components/schemas/PageAndSortRequest'
+
+    searchExpression:
+      name: pattern
+      in: query
+      schema:
+        type: string
+
+  ##-------------------------------------------------------------------------------
+  ##  components/responses
+  ##-------------------------------------------------------------------------------
+  responses:
+    OkResponse:
+      description: "OK"
+    BadRequest:
+      description: Bad request
+    UnauthorizedRequest:
+      description: Access token is missing or invalid
+
+  ##-------------------------------------------------------------------------------
+  ##  components/securitySchemes
+  ##-------------------------------------------------------------------------------
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  ##-------------------------------------------------------------------------------
+  ##  components/headers
+  ##-------------------------------------------------------------------------------
+  #  headers:
+  #    Pagination-Count:
+  #      description: Total number of items
+  #      schema:
+  #        type: integer
+  #    Pagination-Page:
+  #      description: Current page number
+  #      schema:
+  #        type: integer
+  #    Pagination-size:
+  #      description: Number of returned items
+  #      schema:
+  #        type: integer
+
+  ##-------------------------------------------------------------------------------
+  ##  components/schemas
+  ##-------------------------------------------------------------------------------
+  schemas:
+    EntityId:
+      type: string
+      maxLength: 24
+
+    DateTime:
+      type: string
+      format: local
+
+    LocalDate:
+      type: string
+      format: local-date
+
+    LocalTime:
+      type: string
+      format: "HH:mm:ss"
+      description: Time of day
+
+    SocialMediaHandle:
+      description: A valid social media handle.
+      type: string
+      pattern: '^[a-zA-Z0-9_.-]+$'
+      minLength: 3
+      maxLength: 30
+
+    Email:
+      description: A valid email address.
+      type: string
+      format: email
+
+    PhoneNumber:
+      description: A valid phone number.
+      type: string
+    #      pattern: '^\+?[1-9]\d{1,14}$'
+
+    ZipCode:
+      description: A valid ZIP code (U.S. format).
+      type: string
+      pattern: '^[0-9]{5}(?:-[0-9]{4})?$'
+
+    StateProvince:
+      description: State or province code.
+      type: string
+      pattern: '^[A-Za-z]{2,}$'
+
+    Country:
+      type: string
+      pattern: '^[A-Za-z]{2}$'
+      description: Two-letter country code.
+
+    URL:
+      description: A valid Universal Resource Locator.
+      type: string
+      format: uri
+
+    PageAndSortRequest:
+      description: Paging and sorting options used in queries
+      type: object
+      properties:
+        page:
+          description: Page offset starting at 0
+          type: integer
+          #          format: int32
+          default: 0
+          minimum: 0
+        size:
+          description: How many items to return in the result (items per page)
+          type: integer
+          #          format: int32
+          default: 100
+          minimum: 1
+          maximum: 1000
+        sort:
+          description: Sorting options, prefix the option with a minus sign '-' to reverse sort
+          type: array
+          items:
+            type: string
+          minItems: 0
+
+    PagedResult:
+      description: Items returned as a result of a paged request
+      type: object
+      properties:
+        totalItems:
+          description: The total number of items that match the query (not the result set)
+          type: integer
+        page:
+          description: The page offset requested
+          type: integer
+        size:
+          description: The number of items returned
+          type: integer
+
+    ColorString:
+      description: Color definition as per HTML
+      type: string
+
+    SocialLinks:
+      description: Social media links
+      type: object
+      properties:
+        facebookHandle:
+          #          description: 'Facebook handle for this location'
+          $ref: "#/components/schemas/SocialMediaHandle"
+        instagramHandle:
+          #          description: Instagram handle for this location
+          $ref: "#/components/schemas/SocialMediaHandle"
+        twitterHandle:
+          #          description: Twitter/X handle for this location
+          $ref: "#/components/schemas/SocialMediaHandle"
+        website:
+          #          description: Website representing this location
+          type: string
+
+    Gender:
+      type: string
+      enum:
+        - Unspecified
+        - Male
+        - Female
+
+    FiveStarRating:
+      description: Rating value on a scale of 0 to 5.
+      type: integer
+      minimum: 0
+      maximum: 5
+
+    RoleType:
+      type: string
+      enum:
+        - "Player"
+        - "Facilitator"
+        - "Delegate"
+        - "Administrator"
+        - "Creator"
+
+    RoleSet:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/RoleType'
+
+    Participant:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
+            profileId:
+              $ref: '#/components/schemas/EntityId'
+            status:
+              $ref: '#/components/schemas/InvitationStatus'
+            roles:
+              $ref: '#/components/schemas/RoleSet'
+            contactId:
+              $ref: '#/components/schemas/EntityId'
+
+    Facilitator:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
+            profileId:
+              $ref: '#/components/schemas/EntityId'
+            status:
+              $ref: '#/components/schemas/InvitationStatus'
+            roles:
+              $ref: '#/components/schemas/RoleSet'
+            contactId:
+              $ref: '#/components/schemas/EntityId'
+            title:
+              type: string
+
+    InvitationStatus:
+      type: string
+      enum:
+        - "New"
+        - "Pending"
+        - "Accepted"
+        - "Declined"
+        - "Expired"
+
+    EventStatus:
+      type: string
+      enum:
+        - "Preparation"
+        - "OpenForRegistration"
+        - "Pending"
+        - "Completed"
+        - "Canceled"
+
+    Person:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        nickname:
+          type: string
+        email:
+          $ref: '#/components/schemas/Email'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+
+    GeoLocation:
+      description: Geolocation points, stored as longitude, latitude
+      type: array
+      minItems: 2
+      maxItems: 2
+      items:
+        type: number
+        format: double
+      example: [34.052235, -118.243683]  # Example geolocation coordinates
+
+    NamedEntity:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+
+    VerificationToken:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        issueDate:
+          $ref: '#/components/schemas/DateTime'
+        expiryDate:
+          $ref: '#/components/schemas/DateTime'
+
+    Address:
+      type: object
+      properties:
+        address:
+          description: Primary address (street)
+          type: string
+        address2:
+          description: Secondary address (unit, etc)
+          type: string
+        city:
+          description: City name
+          type: string
+        state:
+          $ref: '#/components/schemas/StateProvince'
+        country:
+          $ref: '#/components/schemas/Country'
+        postalCode:
+          $ref: '#/components/schemas/ZipCode'
+
+    ContactSummary:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
+            status:
+              $ref: '#/components/schemas/InvitationStatus'
+            since:
+              $ref: '#/components/schemas/LocalDate'
+            profileId:
+              $ref: '#/components/schemas/EntityId'
+
+    ContactDetails:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
+            ownerId:
+              $ref: '#/components/schemas/EntityId'
+            profileId:
+              $ref: '#/components/schemas/EntityId'
+            address:
+              $ref: "#/components/schemas/Address"
+            status:
+              $ref: '#/components/schemas/InvitationStatus'
+            since:
+              $ref: '#/components/schemas/DateTime'
+            token:
+              $ref: "#/components/schemas/VerificationToken"
+
+    ContactRequest:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        replyUrl:
+          type: string
+        message:
+          type: string
+
+    GolfParticipant:
+      allOf:
+        - $ref: '#/components/schemas/Participant'
+        - type: object
+          properties:
+            handicap:
+              type: number
+              format: double
+            ghin:
+              type: string
+
+    GolfGroupSummary:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        location:
+          $ref: "#/components/schemas/Location"
+        numParticipants:
+          type: integer
+
+    GolfGroupDetails:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        description:
+          type: string
+        invitation:
+          type: string
+        rules:
+          type: string
+        location:
+          $ref: "#/components/schemas/Location"
+        participants:
+          type: array
+          items:
+            $ref: "#/components/schemas/GolfParticipant"
+        roles:
+          $ref: '#/components/schemas/RoleSet'
+
+    EventSummary:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        event:
+          $ref: '#/components/schemas/NamedEntity'
+        location:
+          $ref: "#/components/schemas/Location"
+        numParticipants:
+          type: integer
+        startDate:
+          $ref: '#/components/schemas/DateTime'
+        endDate:
+          $ref: '#/components/schemas/DateTime'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+
+    EventDetails:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        event:
+          $ref: '#/components/schemas/NamedEntity'
+        location:
+          $ref: '#/components/schemas/Location'
+        startDate:
+          $ref: '#/components/schemas/DateTime'
+        endDate:
+          $ref: '#/components/schemas/DateTime'
+        status:
+          $ref: '#/components/schemas/EventStatus'
+        participants:
+          type: array
+          items:
+            $ref: "#/components/schemas/GolfParticipant"
+        rules:
+          type: string
+        description:
+          type: string
+        invitation:
+          type: string
+
+    CourseSummary:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        managed:
+          description: 'Set to true for publicly visible courses'
+          type: boolean
+        address:
+          $ref: "#/components/schemas/Address"
+        facebookHandle:
+          $ref: '#/components/schemas/SocialMediaHandle'
+        instagramHandle:
+          $ref: '#/components/schemas/SocialMediaHandle'
+        twitterHandle:
+          $ref: '#/components/schemas/SocialMediaHandle'
+        website:
+          $ref: '#/components/schemas/URL'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          $ref: '#/components/schemas/Email'
+
+    CourseDetails:
+      description: 'A Location that is a golf course'
+      allOf:
+        - $ref: '#/components/schemas/Location'
+      type: object
+      properties:
+        tees:
+          #          description: Tee stations
+          $ref: "#/components/schemas/TeeStations"
+        scorecard:
+          #          description: Scorecard
+          $ref: "#/components/schemas/Scorecard"
+
+    Location:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        _class:
+          type: string
+        name:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+        phone:
+          #          description: Phone number for this location
+          $ref: "#/components/schemas/PhoneNumber"
+        email:
+          #          description: E-mail address for this location
+          $ref: "#/components/schemas/Email"
+        facebookHandle:
+          #          description: Facebook handle for this location
+          $ref: "#/components/schemas/SocialMediaHandle"
+        instagramHandle:
+          #          description: Instagram handle for this location
+          $ref: "#/components/schemas/SocialMediaHandle"
+        twitterHandle:
+          #          description: Twitter/X handle for this location
+          $ref: "#/components/schemas/SocialMediaHandle"
+        website:
+          #          description: Website representing this location
+          type: string
+        staff:
+          #          description: Contacts for this location
+          type: array
+          items:
+            $ref: '#/components/schemas/Facilitator'
+        managed:
+          #          description: Set to true for publicly visible locations
+          type: boolean
+        location:
+          $ref: "#/components/schemas/GeoLocation"
+
+    CourseSide:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        par:
+          type: integer
+        courseRating:
+          type: number
+          format: double
+        slopeRating:
+          type: integer
+
+    TeeStations:
+      description: Information describing tee stations for a given course
+      type: array
+      items:
+        $ref: "#/components/schemas/TeeStation"
+
+    TeeStation:
+      description: Supports storing the ratings per tee station as per the USGA Course Ratings site
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        color:
+          $ref: '#/components/schemas/ColorString'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        numberOfHoles:
+          description: Number of holes, typically 9 or 18 but there may be some oddballs
+          type: integer
+        par:
+          description: Par for the number of holes on the course (typically 71 or 72)
+          type: integer
+        yardage:
+          description: Total yardage for all holes on this tee
+          type: integer
+        courseRating:
+          description: See the USGA web site
+          type: number
+          format: double
+        bogeyRating:
+          description: See the USGA web site
+          type: number
+          format: double
+        slopeRating:
+          description: See the USGA web site
+          type: integer
+
+    Scorecard:
+      description: The information needed to display or print a scorecard
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          yardage:
+            type: integer
+          par:
+            type: integer
+          handicap:
+            type: integer
+
+    Review:
+      type: object
+      properties:
+        review:
+          type: string
+        publiclyVisible:
+          type: boolean
+        rating:
+          $ref: '#/components/schemas/FiveStarRating'
+
+    FavoriteCourse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/EntityId'
+        locationId:
+          $ref: '#/components/schemas/EntityId'
+        name:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+        review:
+          $ref: "#/components/schemas/Review"
+
+    ProfileDetails:
+      allOf:
+        - $ref: '#/components/schemas/Person'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
+            emailVerified:
+              type: boolean
+            phoneVerified:
+              type: boolean
+            address:
+              $ref: "#/components/schemas/Address"
+            birthDate:
+              $ref: '#/components/schemas/LocalDate'
+            handicap:
+              type: number
+              format: double
+            ghin:
+              type: string
+
+security:
+  - bearerAuth: []

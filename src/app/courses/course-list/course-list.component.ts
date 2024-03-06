@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CoursesService, GolfCourse} from '@golf-api'
+import {CoursesService, CourseSummary} from '@golf-api'
 
 @Component({
   selector: 'app-course-list',
@@ -11,10 +11,9 @@ import {CoursesService, GolfCourse} from '@golf-api'
 })
 export class CourseListComponent implements OnInit {
 
-  golfCourses: GolfCourse[] = []
+  golfCourses: CourseSummary[] = []
 
   constructor(private golfCourseService: CoursesService) {
-
   }
 
   ngOnInit(): void {
@@ -22,10 +21,18 @@ export class CourseListComponent implements OnInit {
   }
 
   loadGolfCourses(): void {
-    this.golfCourseService.getGolfCourses()
-      .subscribe(courses => {
-        console.log('Received courses:', JSON.stringify(courses))
-        this.golfCourses = courses;
+    this.golfCourseService.findAllCourses()
+      .subscribe( {
+        next : (result) => {
+          // console.log('Received courses:', JSON.stringify(courses))
+          this.golfCourses = result.items || [];
+        },
+        error: (err) => {
+          console.log('Error loading courses')
+        },
+        complete: () => {
+        }
       });
   }
+
 }
