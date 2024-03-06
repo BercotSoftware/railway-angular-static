@@ -19,7 +19,4 @@ export class AppComponent {
 
   }
 
-  showCourses() {
-    this.router.navigate(["courses"], { relativeTo: this.route })
-  }
 }
