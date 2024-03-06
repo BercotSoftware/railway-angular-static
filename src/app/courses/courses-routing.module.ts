@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {CoursesListComponent} from "./courses-list/courses-list.component";
-import {CoursesCreateComponent} from "./courses-create/courses-create.component";
-import {CoursesEditComponent} from "./courses-edit/courses-edit.component";
-import {CoursesViewComponent} from "./courses-view/courses-view.component";
+import {CourseListComponent} from "./course-list/course-list.component";
+import {CourseCreateComponent} from "./course-create/course-create.component";
+import {CourseEditComponent} from "./course-edit/course-edit.component";
+import {CourseViewComponent} from "./course-view/course-view.component";
 import {RouterModule, Routes} from "@angular/router";
 
 const routes: Routes = [
   // { path: '', redirectTo: 'list', pathMatch: 'full' },
-  { path: '', component: CoursesListComponent },
-  { path: 'create', component: CoursesCreateComponent },
-  { path: ':id/edit', component: CoursesEditComponent },
-  { path: ':id', component: CoursesViewComponent }
+  { path: '', component: CourseListComponent },
+  { path: 'create', component: CourseCreateComponent },
+  { path: ':id/edit', component: CourseEditComponent },
+  { path: ':id', component: CourseViewComponent }
 ]
 
 @NgModule({
   declarations: [],
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes)
+  ],
 })
 export class CoursesRoutingModule { }
