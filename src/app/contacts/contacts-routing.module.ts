@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ContactListComponent} from "./contact-list/contact-list.component";
 import {ContactCreateComponent} from "./contact-create/contact-create.component";
 import {ContactEditComponent} from "./contact-edit/contact-edit.component";

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupCreateComponent } from './group-create.component';
+import {GroupCreateComponent} from './group-create.component';
 
 describe('GroupCreateComponent', () => {
   let component: GroupCreateComponent;
@@ -11,7 +11,7 @@ describe('GroupCreateComponent', () => {
       imports: [GroupCreateComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(GroupCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
