@@ -1,16 +1,28 @@
-<h1>Play Golf</h1>
+<div class="toolbar">
+  <span>Play Golf</span>
+</div>
 
+<div class="sidebar">
 <li>
   <a routerLink="/">Home</a>
 </li>
 <li>
-<a routerLink="courses">Courses</a>
+  <a routerLink="courses">Courses</a>
 </li>
 <li>
-<a routerLink="contacts">Contacts</a>
+  <a routerLink="contacts">Contacts</a>
 </li>
-<li><a routerLink="events">Events</a></li>
-<li><a routerLink="groups">Groups</a></li>
-<li><a routerLink="calendar">Calendar</a></li>
+<li>
+  <a routerLink="events">Events</a>
+</li>
+<li>
+  <a routerLink="groups">Groups</a>
+</li>
+<li>
+  <a routerLink="calendar">Calendar</a>
+</li>
+</div>
 
-<router-outlet></router-outlet>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
