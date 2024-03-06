@@ -3,7 +3,10 @@ import {GolfCourse} from "../model/course-model";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
-@Injectable()
+@Injectable(
+  {
+    providedIn: 'root'
+  })
 export class CoursesService {
 
   private apiUrl = 'http://localhost:4000/courses'; // Replace this with your actual API endpoint
