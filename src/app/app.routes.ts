@@ -8,12 +8,13 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 
 const coursesModule = () => import('./courses/courses-routing.module').then(x => x.CoursesRoutingModule)
+const contactsModule = () => import('./contacts/contactsrouting.module').then(x => x.ContactsRoutingModule)
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: "dashboard", component: DashboardComponent },
-  { path: "courses", loadChildren:coursesModule },
-  { path: "contacts", component: ContactsComponent },
+  { path: "courses", loadChildren: coursesModule },
+  { path: "contacts", loadChildren: contactsModule },
   { path: "groups", component: GroupsComponent },
   { path: "calendar", component: CalendarComponent },
   { path: "events", component: EventsComponent },
