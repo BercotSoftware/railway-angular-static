@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4000'
+  playGolfApiUrl: 'http://google.com'
+  // playGolfApiUrl: 'http://localhost:4000'
 };
