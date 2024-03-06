@@ -9,7 +9,7 @@ const eventsRouting = () => import('./events/events-routing').then(x => x.EVENTS
 const groupsRouting = () => import('./groups/groups-routing').then(x => x.GROUPS_ROUTES)
 
 
-export const routes: Routes = [
+export const APP_ROUTES: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: "dashboard", component: DashboardComponent },
   { path: "calendar", component: CalendarComponent },
