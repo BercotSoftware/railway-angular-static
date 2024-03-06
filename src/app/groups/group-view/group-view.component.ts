@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-groups',
+  selector: 'app-group-view',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './groups.component.html',
-  styleUrl: './groups.component.css'
+  templateUrl: './group-view.component.html',
+  styleUrl: './group-view.component.css'
 })
-export class GroupsComponent {
+export class GroupViewComponent {
 
 }

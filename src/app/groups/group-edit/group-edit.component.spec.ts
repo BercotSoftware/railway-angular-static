@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EventsComponent } from './events.component';
+import { GroupEditComponent } from './group-edit.component';
 
-describe('EventsComponent', () => {
-  let component: EventsComponent;
-  let fixture: ComponentFixture<EventsComponent>;
+describe('GroupEditComponent', () => {
+  let component: GroupEditComponent;
+  let fixture: ComponentFixture<GroupEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EventsComponent]
+      imports: [GroupEditComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(EventsComponent);
+    fixture = TestBed.createComponent(GroupEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

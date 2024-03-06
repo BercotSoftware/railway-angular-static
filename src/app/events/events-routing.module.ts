@@ -14,7 +14,6 @@ const routes: Routes = [
   { path: ':id', component: EventViewComponent }
 ]
 
-
 @NgModule({
   declarations: [],
   imports: [
