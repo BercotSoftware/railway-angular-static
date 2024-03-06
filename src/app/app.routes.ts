@@ -3,10 +3,10 @@ import {CalendarComponent} from "./calendar/calendar.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 
-const coursesRouting = () => import('./courses/courses-routing.module').then(x => x.CoursesRoutingModule)
-const contactsRouting = () => import('./contacts/contacts-routing.module').then(x => x.ContactsRoutingModule)
-const eventsRouting = () => import('./events/events-routing.module').then(x => x.EventsRoutingModule)
-const groupsRouting = () => import('./groups/groups-routing.module').then(x => x.GroupsRoutingModule)
+const coursesRouting = () => import('./courses/courses-routing').then(x => x.COURSES_ROUTES)
+const contactsRouting = () => import('./contacts/contacts-routing').then(x => x.CONTACTS_ROUTES)
+const eventsRouting = () => import('./events/events-routing').then(x => x.EVENTS_ROUTES)
+const groupsRouting = () => import('./groups/groups-routing').then(x => x.GROUPS_ROUTES)
 
 
 export const routes: Routes = [
