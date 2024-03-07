@@ -5,11 +5,13 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "railway-build": "npm run railway-config && ng build --configuration=railway",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "download-spec": "curl -o play-golf-api.yaml http://localhost:4000/api-docs.yaml",
     "compile-spec": "rimraf src/play-golf-api && npx openapi-generator-cli generate -i play-golf-api.yaml -g typescript-angular -o src/play-golf-api",
-    "update-spec": "npm run download-spec && npm run compile-spec"
+    "update-spec": "npm run download-spec && npm run compile-spec",
+    "railway-config": "npx envsub scripts/environment.railway.ts.template src/environments/environment.railway.ts"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +33,7 @@
     "@angular/compiler-cli": "^17.0.0",
     "@openapitools/openapi-generator-cli": "^2.11.0",
     "@types/jasmine": "~5.1.0",
+    "envsub": "^4.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

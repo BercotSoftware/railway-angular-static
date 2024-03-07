@@ -56,6 +56,17 @@
                 }
               ]
             },
+            "railway": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.railway.ts"
+                }
+              ]
+            },
             "railway-development": {
               "optimization": false,
               "extractLicenses": false,
