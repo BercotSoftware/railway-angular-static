@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {environment} from "../environments/environment";
 
 
 @Component({
@@ -12,6 +13,9 @@ import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router'
 })
 export class AppComponent {
   title = 'my-app';
+  apiUrl = environment.apiUrl
+  authUrl = environment.authUrl
+
 
   constructor(
     private router: Router,
