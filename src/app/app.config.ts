@@ -3,10 +3,24 @@ import {provideRouter} from '@angular/router';
 
 import {APP_ROUTES} from './app.routes';
 import {HttpClientModule} from "@angular/common/http";
+import {ApiModule, BASE_PATH, Configuration, ConfigurationParameters} from "@golf-api";
+import {environment} from "../environments/environment";
+
+/**
+ * Establish the base URL for API calls to the resource server
+ */
+function playGolfApiConfig() : Configuration {
+  const params: ConfigurationParameters = {
+    basePath: environment.apiUrl
+  };
+  return new Configuration(params);
+}
+
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(APP_ROUTES),
-    importProvidersFrom(HttpClientModule),
+    providers: [
+      provideRouter(APP_ROUTES),
+      importProvidersFrom(HttpClientModule),
+      importProvidersFrom(ApiModule.forRoot(playGolfApiConfig))
   ]
 };
