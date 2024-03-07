@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CoursesService, CourseSummary} from '@golf-api'
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-course-list',
@@ -11,7 +12,7 @@ import {CoursesService, CourseSummary} from '@golf-api'
 })
 export class CourseListComponent implements OnInit {
 
-  golfCourses: CourseSummary[] = []
+  $golfCourses = new BehaviorSubject<CourseSummary[]>([])
 
   constructor(private golfCourseService: CoursesService) {
   }
@@ -25,7 +26,7 @@ export class CourseListComponent implements OnInit {
       .subscribe( {
         next : (result) => {
           // console.log('Received courses:', JSON.stringify(courses))
-          this.golfCourses = result.items || [];
+          this.$golfCourses.next(result.items || []);
         },
         error: (err) => {
           console.log('Error loading courses')

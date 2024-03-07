@@ -5,9 +5,10 @@ import {ContactViewComponent} from "./contact-view/contact-view.component";
 import {Routes} from "@angular/router";
 
 export const CONTACTS_ROUTES: Routes = [
-  { path: '', component: ContactListComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'list' },
+  { path: 'list', component: ContactListComponent },
   { path: 'create', component: ContactCreateComponent },
-  { path: ':id/edit', component: ContactEditComponent },
+  { path: 'edit/:id', component: ContactEditComponent },
   { path: ':id', component: ContactViewComponent }
 ]
 

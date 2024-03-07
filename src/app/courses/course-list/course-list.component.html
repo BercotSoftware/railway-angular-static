@@ -1,7 +1,7 @@
 <div class="container">
   <h1>List of Golf Courses</h1>
   <ul class="list-group">
-    <li class="list-group-item" *ngFor="let course of golfCourses">
+    <li class="list-group-item" *ngFor="let course of $golfCourses | async">
       <h3>{{ course.name }}</h3>
 <!--      <p>{{ course.address?.city }}</p>-->
 <!--      <p>{{ course.address?.state }}</p>-->

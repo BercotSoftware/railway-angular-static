@@ -6,9 +6,10 @@ import {GroupViewComponent} from "./group-view/group-view.component";
 
 
 export const GROUPS_ROUTES: Routes = [
-  { path: '', component: GroupListComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'list' },
+  { path: 'list', component: GroupListComponent },
   { path: 'create', component: GroupCreateComponent },
-  { path: ':id/edit', component: GroupEditComponent },
+  { path: 'edit/:id', component: GroupEditComponent },
   { path: ':id', component: GroupViewComponent }
 ]
 
