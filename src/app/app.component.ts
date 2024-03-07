@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
 import {environment} from "../environments/environment";
-import {HeaderComponent} from "./header/header.component";
-import {FooterComponent} from "./footer/footer.component";
+import {HeaderComponent} from "./layout/header/header.component";
+import {FooterComponent} from "./layout/footer/footer.component";
 
 
 @Component({
