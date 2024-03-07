@@ -1,0 +1,28 @@
+/* styles.css or your component-specific styles */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  margin-left: 10px;
+  padding-top: 60px;
+}
+
+/* Style your header and footer */
+app-header,
+app-footer {
+  position: fixed;
+  width: 100%;
+  z-index: 1000; /* Ensure header and footer appear above other content */
+}
+
+app-header {
+  top: 0;
+}
+
+app-footer {
+  bottom: 0;
+}

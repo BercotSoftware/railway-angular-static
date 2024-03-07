@@ -16,7 +16,6 @@ import {RouterLink} from "@angular/router";
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-
           <li class="nav-item">
             <a class="nav-link" routerLink="/home">Home</a>
           </li>
@@ -35,6 +34,7 @@ import {RouterLink} from "@angular/router";
           <li class="nav-item">
             <a class="nav-link" routerLink="/calendar">Calendar</a>
           </li>
+
 
         </ul>
       </div>
