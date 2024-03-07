@@ -55,7 +55,30 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "railway-development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.railway-development.ts"
+                }
+              ]
+            },
+            "railway-production": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.railway-production.ts"
+                }
+              ]
             }
+
           },
           "defaultConfiguration": "production"
         },
