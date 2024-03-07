@@ -3,7 +3,7 @@ import {provideRouter} from '@angular/router';
 
 import {APP_ROUTES} from './app.routes';
 import {HttpClientModule} from "@angular/common/http";
-import {ApiModule, BASE_PATH, Configuration, ConfigurationParameters} from "@golf-api";
+import {ApiModule, Configuration, ConfigurationParameters} from "@golf-api";
 import {environment} from "../environments/environment";
 
 /**
