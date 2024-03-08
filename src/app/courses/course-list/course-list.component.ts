@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CoursesService, CourseSummary, Pageable} from '@golf-api'
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-course-list',
