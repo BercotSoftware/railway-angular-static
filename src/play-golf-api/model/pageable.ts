@@ -11,12 +11,9 @@
  */
 
 
-export interface Review { 
-    review?: string;
-    publiclyVisible?: boolean;
-    /**
-     * Rating value on a scale of 0 to 5.
-     */
-    rating?: number;
+export interface Pageable { 
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
 }
 

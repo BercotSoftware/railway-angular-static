@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CoursesService, CourseSummary, PageAndSortRequest} from '@golf-api'
+import {CoursesService, CourseSummary, Pageable} from '@golf-api'
 import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
@@ -13,7 +13,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 export class CourseListComponent implements OnInit {
 
   $golfCourses = new BehaviorSubject<CourseSummary[]>([])
-  paging : PageAndSortRequest = { page: 0, size: 20, sort: ["name"] }
+  paging : Pageable = { page: 0, size: 20, sort: ["name"] }
 
   constructor(private golfCourseService: CoursesService) {
   }
