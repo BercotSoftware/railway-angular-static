@@ -7,7 +7,7 @@ import {RouterLink} from "@angular/router";
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-md bg-primary navbar-dark fixed-top">
       <a class="navbar-brand" href="#">Play Golf!</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
               aria-controls="navbarCollapse"

@@ -6,8 +6,10 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <footer>
-      <p  class="text-xs-center">© Copyright 2024. All rights reserved.</p>
+    <footer class="footer">
+      <div class="container">
+        <p  class="text-xs-center">© Copyright 2024. All rights reserved.</p>
+      </div>
     </footer>
   `,
   styles: `
