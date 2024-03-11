@@ -4,6 +4,7 @@ import {HomeComponent} from "./home/home.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {inject} from "@angular/core";
 import {AuthGuard} from "./auth/authGuard";
+import {LoginSuccessComponent} from "./login-success/login-success.component";
 
 const coursesRouting = () => import('./courses/courses-routing').then(x => x.COURSES_ROUTES)
 const contactsRouting = () => import('./contacts/contacts-routing').then(x => x.CONTACTS_ROUTES)
@@ -19,5 +20,6 @@ export const APP_ROUTES: Routes = [
   { path: "contacts", loadChildren: contactsRouting, canActivate: [AuthGuard], },
   { path: "groups", loadChildren: groupsRouting, canActivate: [AuthGuard], },
   { path: "events", loadChildren: eventsRouting, canActivate: [AuthGuard], },
+  { path: "loginSuccess", component: LoginSuccessComponent },
   { path: '**', component: PageNotFoundComponent }
 ];

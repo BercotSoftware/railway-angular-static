@@ -15,12 +15,12 @@ import {
   HttpRequest,
   HttpResponse
 } from "@angular/common/http";
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Router} from "@angular/router";
 
 const authorizerConfig: ConfigType = {
   authorizerURL: 'https://authorizer-production-8226.up.railway.app',
-  redirectURL: window.location.origin,
+  redirectURL: `${window.location.origin}/loginSuccess`,
   clientID: '69ab67f4-6498-40f6-90b2-d08cc02d00dc',
   extraHeaders: undefined
 }
@@ -36,9 +36,8 @@ const authorizerInput: AuthorizeInput = {
 })
 export class AuthenticationService implements HttpInterceptor {
 
-
   private authRef = new Authorizer(authorizerConfig);
-  private _isAuthorized: boolean = false;
+  public $isAuthorized = new BehaviorSubject<boolean>(false);
   private authToken?: GetTokenResponse | AuthorizeResponse;
 
   constructor(private router: Router) {
@@ -46,20 +45,27 @@ export class AuthenticationService implements HttpInterceptor {
 
 
   get isAuthorized(): boolean {
-    return this._isAuthorized
+    return this.$isAuthorized.value
+  }
+
+  setToken(token?: any) {
+    if (token) {
+      console.log('Got token', token)
+      this.$isAuthorized.next(true)
+    }
   }
 
   authorize(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
         await this.authRef.authorize(authorizerInput).then((response) => {
           console.log('AuthService success', response)
-            this._isAuthorized = true
+          this.$isAuthorized.next(true)
 
             resolve(true)
           })
           .catch ((error) => {
             console.log('AuthService failure', error)
-            this._isAuthorized = false
+            this.$isAuthorized.next(false)
             reject(error)
           })
     })
@@ -69,10 +75,10 @@ export class AuthenticationService implements HttpInterceptor {
     return new Promise( async () => {
       try {
         const response = await this.authRef.logout().then((result) => {
-          this._isAuthorized = false
+          this.$isAuthorized.next(false)
         })
       } catch (error) {
-        this._isAuthorized = false
+        this.$isAuthorized.next(false)
       }
     })
   }
