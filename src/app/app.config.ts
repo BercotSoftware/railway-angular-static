@@ -2,9 +2,10 @@ import {ApplicationConfig, importProvidersFrom} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {APP_ROUTES} from './app.routes';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiModule, Configuration, ConfigurationParameters} from "@golf-api";
 import {environment} from "../environments/environment";
+import {AuthenticationService} from "./auth/authentication.service";
 
 /**
  * Establish the base URL for API calls to the resource server
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
       provideRouter(APP_ROUTES),
       importProvidersFrom(HttpClientModule),
-      importProvidersFrom(ApiModule.forRoot(playGolfApiConfig))
+      importProvidersFrom(ApiModule.forRoot(playGolfApiConfig)),
+      { provide: HTTP_INTERCEPTORS, useClass: AuthenticationService, multi: true }
   ]
 };
