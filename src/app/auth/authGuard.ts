@@ -18,5 +18,5 @@ export const AuthGuard: CanActivateFn = (route, state) => {
   // )
 
   console.log('Auth guard passed')
-  return authService.isLoggedIn;
+  return authService.isAuthorized;
 };

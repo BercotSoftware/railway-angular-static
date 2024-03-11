@@ -7,15 +7,25 @@ import {
   ConfigType, GetTokenResponse,
   ResponseTypes
 } from "@authorizerdev/authorizer-js";
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
+} from "@angular/common/http";
+import {Observable} from 'rxjs';
+import {Router} from "@angular/router";
 
-const authorizerConfig : ConfigType = {
+const authorizerConfig: ConfigType = {
   authorizerURL: 'https://authorizer-production-8226.up.railway.app',
   redirectURL: window.location.origin,
   clientID: '69ab67f4-6498-40f6-90b2-d08cc02d00dc',
   extraHeaders: undefined
 }
 
-const authorizerInput : AuthorizeInput = {
+const authorizerInput: AuthorizeInput = {
   response_type: ResponseTypes.Token,
   response_mode: 'query',
   use_refresh_token: true
@@ -24,50 +34,53 @@ const authorizerInput : AuthorizeInput = {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationService implements HttpInterceptor {
 
 
   private authRef = new Authorizer(authorizerConfig);
-  private _isLoggedIn: boolean = false;
+  private _isAuthorized: boolean = false;
   private authToken?: GetTokenResponse | AuthorizeResponse;
 
-  constructor() {
-
+  constructor(private router: Router) {
   }
 
-  get isLoggedIn() : boolean {
-    return this._isLoggedIn
+
+  get isAuthorized(): boolean {
+    return this._isAuthorized
   }
 
-  login() : Promise<boolean> {
+  authorize(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
+        await this.authRef.authorize(authorizerInput).then((response) => {
+          console.log('AuthService success', response)
+            this._isAuthorized = true
+
+            resolve(true)
+          })
+          .catch ((error) => {
+            console.log('AuthService failure', error)
+            this._isAuthorized = false
+            reject(error)
+          })
+    })
+  }
+
+  logout() : Promise<void> {
+    return new Promise( async () => {
       try {
-        const response = await this.authRef.authorize(authorizerInput);
-        if (response.data) {
-          console.log('Received Auth token', JSON.stringify(response.data));
-          this._isLoggedIn = true;
-          this.authToken = response.data;
-          resolve(true);
-        } else {
-          console.log('Authentication failed (no data)');
-          this._isLoggedIn = false;
-          this.authToken = undefined;
-          reject('Authentication failed (no data)');
-        }
+        const response = await this.authRef.logout().then((result) => {
+          this._isAuthorized = false
+        })
       } catch (error) {
-        console.log('Authentication failed with error', error);
-        this._isLoggedIn = false;
-        this.authToken = undefined;
-        reject(error);
+        this._isAuthorized = false
       }
     })
   }
 
-  logout() {
-  }
+  // see https://www.kevinschuchard.com/blog/2019-05-08-http-interceptor
 
-  authorize() {
-    return this.authRef.authorize(authorizerInput)
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('Intercepted', request)
+    return next.handle(request)
   }
-
 }

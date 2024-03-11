@@ -20,32 +20,32 @@ import {resolve} from "@angular/compiler-cli";
         <ul class="navbar-nav mr-auto">
           <ng-container *ngIf="isAuthenticated; then authenticated else unauthenticated"></ng-container>
           <ng-template #authenticated>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/contacts">Contacts</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/courses">Courses</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/groups">Groups</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/events">Events</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/calendar">Calendar</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/contacts">Contacts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/courses">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/groups">Groups</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/events">Events</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/calendar">Calendar</a>
+            </li>
 
             <li class="nav-item">
-            <a class="nav-link" (click)="logOut()">Log Out</a>
+              <a class="nav-link" (click)="logOut()">Log Out</a>
             </li>
           </ng-template>
           <ng-template #unauthenticated>
             <li class="nav-item">
-            <a class="nav-link" (click)="logIn()">Log In</a>
+              <a class="nav-link" (click)="logIn()">Log In</a>
             </li>
           </ng-template>
 
@@ -63,28 +63,30 @@ import {resolve} from "@angular/compiler-cli";
 })
 export class HeaderComponent implements OnInit {
 
+  isAuthenticated = false
+
   constructor(private authService: AuthenticationService) {
 
   }
 
-  get isAuthenticated() : boolean {
-    return this.authService?.isLoggedIn || false
+    ngOnInit(): void {
   }
 
-  ngOnInit(): void {
-    }
-
   logOut() {
-
+    this.authService.logout().then(() => {
+      console.log('Logged out')
+      this.isAuthenticated = false
+    })
   }
 
   logIn() {
-    this.authService.login().then(() => {
+    this.authService.authorize().then((result) => {
+      this.isAuthenticated = result
       console.log('Logged in!')
     })
-      .catch((error) => {
-        console.log('Login error', error)
-      })
+    .catch((error) => {
+      console.log('Login error', error)
+    })
   }
 
 }
