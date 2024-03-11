@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from "@angular/router";
 
@@ -16,6 +16,8 @@ import {RouterLink} from "@angular/router";
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
+          <ng-container *ngIf="isAuthenticated; then authenticated else unauthenticated"></ng-container>
+          <ng-template #authenticated>
           <li class="nav-item">
             <a class="nav-link" routerLink="/home">Home</a>
           </li>
@@ -35,6 +37,16 @@ import {RouterLink} from "@angular/router";
             <a class="nav-link" routerLink="/calendar">Calendar</a>
           </li>
 
+            <li class="nav-item">
+            <a class="nav-link" (click)="logOut()">Log Out</a>
+            </li>
+          </ng-template>
+          <ng-template #unauthenticated>
+            <li class="nav-item">
+            <a class="nav-link" (click)="logIn()">Log In</a>
+            </li>
+          </ng-template>
+
 
         </ul>
       </div>
@@ -47,6 +59,23 @@ import {RouterLink} from "@angular/router";
     }
   `
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  isAuthenticated: boolean = false;
 
+  constructor() {
+
+  }
+
+  ngOnInit(): void {
+    }
+
+  logOut() {
+    console.log("Log out here")
+    this.isAuthenticated = false
+  }
+
+  logIn() {
+    console.log("Log in here")
+    this.isAuthenticated = true
+  }
 }
