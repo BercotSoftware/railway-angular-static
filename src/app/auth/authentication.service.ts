@@ -2,45 +2,41 @@ import {Injectable} from '@angular/core';
 import {
   ApiResponse,
   AuthorizeInput,
-  Authorizer, AuthorizeResponse,
-  AuthToken,
-  ConfigType, GetTokenResponse,
+  Authorizer,
+  AuthorizeResponse,
+  ConfigType,
+  GetTokenResponse,
   ResponseTypes
 } from "@authorizerdev/authorizer-js";
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse
-} from "@angular/common/http";
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Router} from "@angular/router";
 
-const authorizerConfig: ConfigType = {
+const AUTHORIZER_CONFIG: ConfigType = {
   authorizerURL: 'https://authorizer-production-8226.up.railway.app',
   redirectURL: `${window.location.origin}/loginSuccess`,
   clientID: '69ab67f4-6498-40f6-90b2-d08cc02d00dc',
   extraHeaders: undefined
 }
 
-const authorizerInput: AuthorizeInput = {
+const AUTHORIZER_INPUT: AuthorizeInput = {
   response_type: ResponseTypes.Token,
   response_mode: 'query',
   use_refresh_token: true
 }
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService implements HttpInterceptor {
 
-  private authRef = new Authorizer(authorizerConfig);
+  private authRef = new Authorizer(AUTHORIZER_CONFIG);
   public $isAuthorized = new BehaviorSubject<boolean>(false);
   private authToken?: GetTokenResponse | AuthorizeResponse;
 
   constructor(private router: Router) {
+    // this.authorize().then((result) => this.$isAuthorized.next(result))
   }
 
 
@@ -48,19 +44,14 @@ export class AuthenticationService implements HttpInterceptor {
     return this.$isAuthorized.value
   }
 
-  setToken(token?: any) {
-    if (token) {
-      console.log('Got token', token)
-      this.$isAuthorized.next(true)
-    }
-  }
-
   authorize(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-        await this.authRef.authorize(authorizerInput).then((response) => {
+        await this.authRef.authorize(AUTHORIZER_INPUT).then((response) => {
           console.log('AuthService success', response)
-          this.$isAuthorized.next(true)
+          // const accessToken = response?.data?.access_token
+          // const idToken = response?.data?["id_token"]
 
+          this.$isAuthorized.next(true)
             resolve(true)
           })
           .catch ((error) => {

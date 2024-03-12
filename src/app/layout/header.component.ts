@@ -46,6 +46,9 @@ import {AuthenticationService} from "../auth/authentication.service";
             <li class="nav-item">
               <a class="nav-link" (click)="logIn()">Log In</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="logOut()">Log Out</a>
+            </li>
           </ng-template>
 
 

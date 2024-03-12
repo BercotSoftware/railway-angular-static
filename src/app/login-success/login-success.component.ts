@@ -15,11 +15,11 @@ export class LoginSuccessComponent {
   constructor(private activeRoute: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) {
     this.activeRoute.queryParamMap.subscribe({next: (params) => {
         console.log(`Login success: ${JSON.stringify(params)}`)
-        authenticationService.setToken({
-          refresh_token: params.get('refresh_token'),
-          state: params.get('state'),
-          nonce: params.get('nonce')
-        })
+        // authenticationService.setToken({
+        //   refresh_token: params.get('refresh_token'),
+        //   state: params.get('state'),
+        //   nonce: params.get('nonce')
+        // })
         router.navigate(['/home'])
     }}
     )
