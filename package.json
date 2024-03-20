@@ -11,7 +11,7 @@
     "download-spec": "curl -o play-golf-api.yaml http://localhost:4000/api-docs.yaml",
     "compile-spec": "rimraf src/generated && npx openapi-generator-cli generate -i play-golf-api.yaml -g typescript-angular -o src/generated/play-golf-api",
     "update-spec": "npm run download-spec && npm run compile-spec",
-    "config:railway": "npx envsub scripts/environment.railway.ts.template src/environments/environment.railway.ts"
+    "config:railway": "npx envsub src/environments/environment.template.ts src/environments/environment.railway.ts"
   },
   "private": true,
   "dependencies": {
