@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4000',
-  authUrl: 'http://localhost:8100/auth/realms/play_golf'
+  PLAY_GOLF_API_URL: 'http://localhost:4000',
+  JWT_ISSUER_URL: 'http://localhost:8100/auth/realms/play_golf',
+  JWT_ISSUER_CLIENT_ID: "play-golf",
 };

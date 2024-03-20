@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://deleteme:4000',
-  authUrl: 'http://deleteme:8100'
+  PLAY_GOLF_API_URL: 'http://deleteme:4000',
+  JWT_ISSUER_URL: 'http://deleteme:8100'
 };

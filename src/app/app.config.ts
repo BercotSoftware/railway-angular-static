@@ -9,9 +9,9 @@ import {environment} from "../environments/environment";
 /**
  * Establish the base URL for API calls to the resource server
  */
-function playGolfApiConfig() : Configuration {
+export function playGolfApiConfig() : Configuration {
   const params: ConfigurationParameters = {
-    basePath: environment.apiUrl
+    basePath: environment.PLAY_GOLF_API_URL
   };
   return new Configuration(params);
 }

@@ -13,8 +13,8 @@ import {environment} from "../environments/environment";
 })
 export class AppComponent {
   title = 'my-app';
-  apiUrl = environment.apiUrl
-  authUrl = environment.authUrl
+  playgolfapiurl = environment.PLAY_GOLF_API_URL
+  jwtIssuerUrl = environment.JWT_ISSUER_URL
 
 
   constructor(

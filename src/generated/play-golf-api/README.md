@@ -103,7 +103,7 @@ import { ApiModule, Configuration } from '';
         provide: Configuration,
         useFactory: (authService: AuthService) => new Configuration(
           {
-            basePath: environment.apiUrl,
+            basePath: environment.PLAY_GOLF_API_URL,
             accessToken: authService.getAccessToken.bind(authService)
           }
         ),

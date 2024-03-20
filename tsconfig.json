@@ -19,12 +19,13 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "strictPropertyInitialization": false,  // DEB
     "lib": [
       "ES2022",
       "dom"
     ],
     "paths": {
-      "@golf-api": [ "src/play-golf-api/index.ts" ]
+      "@golf-api": [ "src/generated/play-golf-api/index.ts" ]
     }
   },
   "angularCompilerOptions": {
