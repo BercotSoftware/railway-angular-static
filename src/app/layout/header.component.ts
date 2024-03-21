@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from "@angular/router";
-import {AuthenticationService} from "../auth/authentication.service";
 
 @Component({
   selector: 'app-header',
@@ -67,30 +66,18 @@ export class HeaderComponent implements OnInit {
 
   isAuthenticated = false
 
-  constructor(private authService: AuthenticationService) {
-    this.authService.$isAuthorized.subscribe({
-      next: (value) => {
-        this.isAuthenticated = value
-      }
-    })
+  constructor() {
   }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
   }
 
   logOut() {
-    this.authService.logout().then(() => {
-      console.log('Logged out')
-    })
+    this.isAuthenticated = false
   }
 
   logIn() {
-    this.authService.authorize().then((result) => {
-      console.log('Logged in!')
-    })
-    .catch((error) => {
-      console.log('Login error', error)
-    })
+    this.isAuthenticated = true
   }
 
 }

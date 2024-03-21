@@ -3,7 +3,7 @@ import {CalendarComponent} from "./calendar/calendar.component";
 import {HomeComponent} from "./home/home.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {inject} from "@angular/core";
-import {AuthGuard} from "./auth/authGuard";
+import {AuthGuard} from "./auth/auth-guard";
 import {LoginSuccessComponent} from "./login-success/login-success.component";
 
 const coursesRouting = () => import('./courses/courses-routing').then(x => x.COURSES_ROUTES)
