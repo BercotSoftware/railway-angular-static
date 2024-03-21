@@ -5,7 +5,7 @@ export const openIdConfiguration: OpenIdConfiguration = {
   configId: 'keycloak',
   authority: environment.JWT_ISSUER_URL,
   redirectUrl: `${window.location.origin}/home`,
-  postLogoutRedirectUri: `${window.location.origin}/intro`,
+  postLogoutRedirectUri: `${window.location.origin}/home`,
   clientId: environment.JWT_ISSUER_CLIENT_ID,
   scope: 'openid profile roles phone',
   responseType: 'code',

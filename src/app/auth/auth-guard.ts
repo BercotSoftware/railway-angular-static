@@ -13,10 +13,12 @@ export const AuthGuard: CanActivateFn = (route, state) => {
     map((isAuthenticated) => {
       // allow navigation if authenticated
       if (isAuthenticated) {
+        console.log('Auth guard passed')
         return true;
       }
 
       // redirect if not authenticated
+      console.log('Auth guard failed')
       return router.parseUrl('/unauthorized');
     })
   )

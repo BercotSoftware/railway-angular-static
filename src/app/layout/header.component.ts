@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from "@angular/router";
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 @Component({
   selector: 'app-header',
@@ -66,18 +67,26 @@ export class HeaderComponent implements OnInit {
 
   isAuthenticated = false
 
-  constructor() {
+  constructor(private authService: OidcSecurityService) {
+    authService.isAuthenticated$.subscribe((result) => {
+      console.log(`isAuthenticated -> ${result.isAuthenticated}`)
+      this.isAuthenticated = result.isAuthenticated
+    })
   }
 
   ngOnInit(): void {
   }
 
   logOut() {
-    this.isAuthenticated = false
+    this.authService.logoff().subscribe({
+      next : (result) =>{},
+      error : (err) => {},
+      complete: () => {}
+    })
   }
 
   logIn() {
-    this.isAuthenticated = true
+    this.authService.authorize()
   }
 
 }

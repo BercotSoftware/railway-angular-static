@@ -2,7 +2,6 @@ import {Routes} from '@angular/router';
 import {CalendarComponent} from "./calendar/calendar.component";
 import {HomeComponent} from "./home/home.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
-import {inject} from "@angular/core";
 import {AuthGuard} from "./auth/auth-guard";
 import {LoginSuccessComponent} from "./login-success/login-success.component";
 
@@ -19,7 +18,7 @@ export const APP_ROUTES: Routes = [
   { path: "courses", loadChildren: coursesRouting },
   { path: "contacts", loadChildren: contactsRouting }, // , canActivate: [AuthGuard], },
   { path: "groups", loadChildren: groupsRouting }, // , canActivate: [AuthGuard], },
-  { path: "events", loadChildren: eventsRouting }, // , canActivate: [AuthGuard], },
+  { path: "events", loadChildren: eventsRouting, canActivate: [AuthGuard], },
   { path: "loginSuccess", component: LoginSuccessComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
