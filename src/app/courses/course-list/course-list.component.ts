@@ -30,7 +30,7 @@ export class CourseListComponent implements OnInit {
           this.$golfCourses.next(result.items || []);
         },
         error: (err) => {
-          console.log('Error loading courses')
+          console.log('Error loading courses', err)
         },
         complete: () => {
         }

@@ -15,11 +15,11 @@ const groupsRouting = () => import('./groups/groups-routing').then(x => x.GROUPS
 export const APP_ROUTES: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: "home", component: HomeComponent },
-  { path: "calendar", component: CalendarComponent, canActivate: [AuthGuard],  },
+  { path: "calendar", component: CalendarComponent }, // , canActivate: [AuthGuard],  },
   { path: "courses", loadChildren: coursesRouting },
-  { path: "contacts", loadChildren: contactsRouting, canActivate: [AuthGuard], },
-  { path: "groups", loadChildren: groupsRouting, canActivate: [AuthGuard], },
-  { path: "events", loadChildren: eventsRouting, canActivate: [AuthGuard], },
+  { path: "contacts", loadChildren: contactsRouting }, // , canActivate: [AuthGuard], },
+  { path: "groups", loadChildren: groupsRouting }, // , canActivate: [AuthGuard], },
+  { path: "events", loadChildren: eventsRouting }, // , canActivate: [AuthGuard], },
   { path: "loginSuccess", component: LoginSuccessComponent },
   { path: '**', component: PageNotFoundComponent }
 ];

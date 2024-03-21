@@ -1,7 +1,30 @@
-<div class="wrapper">
-  <app-header></app-header>
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
-  <app-footer></app-footer>
+<div class="toolbar">
+  <span>Play Golf</span>
+  <span>API url ={{ playGolfApiUrl }}</span><br>
+  <span>Auth url ={{ jwtIssuerUrl }}</span>
+</div>
+
+<div class="sidebar">
+<li>
+  <a routerLink="/">Home</a>
+</li>
+<li>
+  <a routerLink="courses">Courses</a>
+</li>
+<li>
+  <a routerLink="contacts">Contacts</a>
+</li>
+<li>
+  <a routerLink="events">Events</a>
+</li>
+<li>
+  <a routerLink="groups">Groups</a>
+</li>
+<li>
+  <a routerLink="calendar">Calendar</a>
+</li>
+</div>
+
+<div class="content">
+  <router-outlet></router-outlet>
 </div>

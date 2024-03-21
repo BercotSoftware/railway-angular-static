@@ -15,8 +15,8 @@ import {FooterComponent} from "./layout/footer.component";
 })
 export class AppComponent {
   title = 'my-app';
-  apiUrl = environment.apiUrl
-  authUrl = environment.authUrl
+  playGolfApiUrl = environment.PLAY_GOLF_API_URL
+  jwtIssuerUrl = environment.JWT_ISSUER_URL
 
 
   constructor(

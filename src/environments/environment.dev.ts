@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
-  PLAY_GOLF_API_URL: 'http://localhost:4000',                      // The resource server
-  JWT_ISSUER_URL: 'http://localhost:8100/realms/play-golf',    // The authentication server
+  production: false,
+  PLAY_GOLF_API_URL: 'http://localhost:4000',
+  JWT_ISSUER_URL: 'http://localhost:8100/auth/realms/play_golf',
   JWT_ISSUER_CLIENT_ID: "play-golf",
 };
 
