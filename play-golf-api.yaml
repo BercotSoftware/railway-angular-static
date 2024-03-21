@@ -1,1216 +1,1162 @@
-openapi: "3.0.3"
+openapi: 3.0.1
 info:
-  title: "play-golf"
-  description: "play golf API"
-  version: 1.0.1
-
+  title: OpenAPI definition
+  version: v0
 servers:
-  - url: http://{host}
-    variables:
-      host:
-        description: 'Host name of the resource server'
-        default: 'localhost:4000'
-
+- url: http://localhost:4000
+  description: Generated server url
 tags:
-  - name: contacts
-    description: Operations on user contacts
-  - name: courses
-    description: Operations on golf courses
-  - name: profiles
-    description: Operations on User profiles
-  - name: groups
-    description: Operations on groups
-  - name: events
-    description: Operations on events
-
-##-------------------------------------------------------------------------------
-##  paths
-##-------------------------------------------------------------------------------
+- name: profile
+  description: the profile API
+- name: courses
+  description: Operations on golf courses
+- name: groups
+  description: Operations on groups
+- name: contacts
+  description: Operations on user contacts
+- name: events
+  description: Operations on events
 paths:
-
-  ##-------------------------------------------------------------------------------
-  ##  paths/contacts
-  ##-------------------------------------------------------------------------------
-  /contacts:
+  /profile:
     get:
-      summary: "GET contacts"
       tags:
-        - contacts
-      parameters:
-        - $ref: '#/components/parameters/pageable'
-        - $ref: '#/components/parameters/searchExpression'
-      operationId: "findAllContacts"
+      - profile
+      summary: GET profile
+      operationId: getProfile
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                title: contactsResponse
-                allOf:
-                  - $ref: "#/components/schemas/PagedResult"
-                  - type: object
-                    properties:
-                      items:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/ContactSummary"
+                $ref: '#/components/schemas/ProfileDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    post:
-      summary: "Create a new contact"
-      tags:
-        - contacts
-      operationId: "createContact"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ContactDetails"
-        required: true
-      responses:
-        "200":
-          description: "OK"
+          description: Bad request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ContactDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
+                $ref: '#/components/schemas/ProfileDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /contacts/accept/{id}:
-    post:
-      summary: "POST contacts/accept/{id}"
-      tags:
-        - contacts
-      operationId: "acceptContactInvitation"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
+          description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ContactDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /contacts/decline/{id}:
-    post:
-      summary: "POST contacts/decline/{id}"
-      tags:
-        - contacts
-      operationId: "declineContactInvitation"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /contacts/invite:
+                $ref: '#/components/schemas/ProfileDetails'
+      security:
+      - bearerAuth: []
     put:
-      summary: "PUT contacts/invite"
       tags:
-        - contacts
-      operationId: "sendContactInvitation"
+      - profile
+      summary: PUT profile
+      operationId: updateProfile
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ContactRequest"
+              $ref: '#/components/schemas/ProfileDetails'
         required: true
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ContactDetails"
+                $ref: '#/components/schemas/ProfileDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /contacts/profile/{profileId}:
-    get:
-      summary: "GET contacts/profile/{id}"
-      tags:
-        - contacts
-      operationId: "findContactByProfileId"
-      parameters:
-        - name: "profileId"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
+          description: Bad request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ContactDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
+                $ref: '#/components/schemas/ProfileDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /contacts/{id}:
-    get:
-      description: Get a contact by its entity ID
-      summary: "GET contacts/{id}"
-      tags:
-        - contacts
-      operationId: "findContactById"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
+          description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ContactDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    put:
-      description: Save changes to a contact
-      summary: "Save contact"
-      tags:
-        - contacts
-      operationId: "saveContact"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ContactDetails"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    delete:
-      description: Delete a contact using its entity ID
-      summary: "DELETE contacts/{id}"
-      tags:
-        - contacts
-      operationId: "deleteContact"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  ##-------------------------------------------------------------------------------
-  ##  paths/groups
-  ##-------------------------------------------------------------------------------
-  /groups:
-    get:
-      description: Get a list of groups with search and paging options
-      summary: "GET groups"
-      tags:
-        - groups
-      operationId: "findAllPaged"
-      parameters:
-        - $ref: '#/components/parameters/pageable'
-        - $ref: '#/components/parameters/searchExpression'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                title: getGroupsResponse
-                allOf:
-                  - $ref: "#/components/schemas/PagedResult"
-                  - type: object
-                    properties:
-                      items:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/GolfGroupSummary"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    post:
-      description: Create a new group
-      summary: "Create a group"
-      tags:
-        - groups
-      operationId: "createGroup"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GolfGroupDetails"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GolfGroupDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+                $ref: '#/components/schemas/ProfileDetails'
+      security:
+      - bearerAuth: []
   /groups/{id}:
     get:
-      description: Get a group by ID
-      summary: "GET group"
       tags:
-        - groups
-      operationId: "findGroup"
+      - groups
+      summary: GET group
+      operationId: findGroup
       parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GolfGroupDetails"
+                $ref: '#/components/schemas/GolfGroupDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfGroupDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfGroupDetails'
+      security:
+      - bearerAuth: []
     put:
-      summary: "Update a group"
       tags:
-        - groups
-      operationId: "saveGroup"
+      - groups
+      summary: Update a group
+      operationId: saveGroup
       parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GolfGroupDetails"
+              $ref: '#/components/schemas/GolfGroupDetails'
         required: true
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GolfGroupDetails"
+                $ref: '#/components/schemas/GolfGroupDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfGroupDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfGroupDetails'
+      security:
+      - bearerAuth: []
     delete:
-      summary: "Delete a group"
       tags:
-        - groups
-      operationId: "deleteGroup"
+      - groups
+      summary: Delete a group
+      operationId: deleteGroup
       parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          $ref: '#/components/responses/OkResponse'
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /groups/{id}/addContact:
-    post:
-      summary: "POST groups/{groupId}/addContact"
-      tags:
-        - groups
-      operationId: "createContactFromParticipant"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GolfParticipant"
+      - name: id
+        in: path
+        description: Item id
         required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
       responses:
         "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ContactDetails"
+          description: OK
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  #  TODO Replace with search on events?
-  /groups/{id}/events:
-    get:
-      summary: "GET events"
-      tags:
-        - groups
-        - events
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            type: string
-        - $ref: '#/components/parameters/startDate'
-        - $ref: '#/components/parameters/endDate'
-        - $ref: '#/components/parameters/pageable'
-      operationId: "findGroupEvents"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                title: groupEventsResponse
-                allOf:
-                  - $ref: "#/components/schemas/PagedResult"
-                  - type: object
-                    properties:
-                      items:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/EventSummary"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
   /groups/{id}/participants:
-    put:
-      summary: "PUT groups/{groupId}/participants"
+    get:
       tags:
-        - groups
-      operationId: "updateParticipants"
+      - groups
+      summary: Get group participants
+      operationId: getGroupParticipants
       parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGroupParticipantsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - groups
+      summary: "PUT groups/{groupId}/participants"
+      operationId: updateParticipants
+      parameters:
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GolfParticipant"
+              $ref: '#/components/schemas/GolfParticipant'
         required: true
       responses:
         "200":
-          description: "OK"
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfParticipant'
+        "400":
+          description: Bad request
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GolfParticipant"
-        "400":
-          $ref: '#/components/responses/BadRequest'
+                  $ref: '#/components/schemas/GolfParticipant'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GolfParticipant'
+      security:
+      - bearerAuth: []
     post:
-      summary: "POST groups/{id}/participants"
       tags:
-        - groups
-      operationId: "createParticipant"
+      - groups
+      summary: "POST groups/{id}/participants"
+      operationId: createParticipant
       parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GolfParticipant"
+              $ref: '#/components/schemas/GolfParticipant'
         required: true
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GolfParticipant"
+                $ref: '#/components/schemas/GolfParticipant'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfParticipant'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-
-  ##-------------------------------------------------------------------------------
-  ##  paths/events
-  ##-------------------------------------------------------------------------------
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfParticipant'
+      security:
+      - bearerAuth: []
   /events:
     get:
-      summary: "GET events"
       tags:
-        - events
+      - events
+      summary: GET events
+      operationId: findAllEvents
       parameters:
-        - $ref: '#/components/parameters/pageable'
-        - $ref: '#/components/parameters/searchExpression'
-      operationId: "findAllEvents"
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: pattern
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                title: getEventsResponse
-                allOf:
-                  - $ref: "#/components/schemas/PagedResult"
-                  - type: object
-                    properties:
-                      items:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/EventSummary"
+                $ref: '#/components/schemas/GetEventsResponse'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    post:
-      summary: "POST events/create"
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
+    put:
       tags:
-        - events
-      operationId: "createEvent"
+      - events
+      summary: Save an event given all details
+      operationId: saveEvent
       requestBody:
-        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/EventDetails'
+        required: true
+      responses:
+        "200":
+          description: Resource successfully saved
+        "400":
+          description: Bad request
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - events
+      summary: POST events/create
+      operationId: createEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventDetails'
+        required: true
       responses:
         "200":
           description: Resource successfully created
           content:
             application/json:
               schema:
-                title: createEventResponse
-                type: object
-                properties:
-                  id:
-                    $ref: '#/components/schemas/EntityId'
+                $ref: '#/components/schemas/EventDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    put:
-      summary: "Save an event given all details"
-      tags:
-        - events
-      operationId: "saveEvent"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EventDetails'
-      responses:
-        "200":
-          description: Resource successfully saved
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /events/{eventId}:
-    get:
-      summary: "GET events/{eventId}"
-      tags:
-        - events
-      operationId: "findEventById"
-      parameters:
-        - name: "eventId"
-          in: "path"
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: "OK"
+          description: Bad request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EventDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
+                $ref: '#/components/schemas/EventDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    delete:
-      summary: "DELETE events/{eventId}"
-      tags:
-        - events
-      operationId: "deleteEvent"
-      parameters:
-        - name: "eventId"
-          in: "path"
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /events/edit/{eventId}:
-    get:
-      summary: "GET events/edit/{eventId}"
-      tags:
-        - events
-      operationId: "editEvent"
-      parameters:
-        - name: "eventId"
-          in: "path"
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: "OK"
+          description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EventDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /events/byDate:
-    get:
-      summary: "GET events/byDate"
-      tags:
-        - events
-      operationId: "findByDate"
-      parameters:
-        - $ref: '#/components/parameters/startDate'
-        - $ref: '#/components/parameters/endDate'
-        - $ref: '#/components/parameters/pageable'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                title: eventsByDateResponse
-                allOf:
-                  - $ref: "#/components/schemas/PagedResult"
-                  - type: object
-                    properties:
-                      items:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/EventSummary"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  ##-------------------------------------------------------------------------------
-  ##  /courses
-  ##-------------------------------------------------------------------------------
+                $ref: '#/components/schemas/EventDetails'
+      security:
+      - bearerAuth: []
   /courses:
     get:
-      summary: "GET courses"
       tags:
-        - courses
-      operationId: "findAllCourses"
+      - courses
+      summary: GET courses
+      operationId: findAllCourses
       parameters:
-        - $ref: '#/components/parameters/pageable'
-        - $ref: '#/components/parameters/searchExpression'
+      - name: page
+        in: query
+        description: Paging parameters
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: pattern
+        in: query
+        description: Search pattern
+        required: false
+        schema:
+          type: string
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                title: getCoursesResponse
-                allOf:
-                  - $ref: "#/components/schemas/PagedResult"
-                  - type: object
-                    properties:
-                      items:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/CourseSummary"
+                $ref: '#/components/schemas/GetCoursesResponse'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
     put:
-      summary: "PUT courses"
       tags:
-        - courses
-      operationId: "saveGolfCourse"
+      - courses
+      summary: PUT courses
+      operationId: saveGolfCourse
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CourseDetails"
+              $ref: '#/components/schemas/CourseDetails'
         required: true
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CourseDetails"
+                $ref: '#/components/schemas/CourseDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetails'
+      security:
+      - bearerAuth: []
     post:
-      summary: "POST courses"
       tags:
-        - courses
-      operationId: "createGolfCourse"
+      - courses
+      summary: POST courses
+      operationId: createGolfCourse
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CourseDetails"
+              $ref: '#/components/schemas/CourseDetails'
         required: true
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CourseDetails"
+                $ref: '#/components/schemas/CourseDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /courses/favorites:
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetails'
+      security:
+      - bearerAuth: []
+  /contacts/{id}:
     get:
-      summary: "GET courses/favorites"
       tags:
-        - courses
-      operationId: "findFavoriteCourses"
+      - contacts
+      summary: "GET contacts/{id}"
+      operationId: findContactById
       parameters:
-        - $ref: '#/components/parameters/pageable'
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                title: findFavoriteCoursesResponse
-                allOf:
-                  - $ref: "#/components/schemas/PagedResult"
-                  - type: object
-                    properties:
-                      items:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/FavoriteCourse"
+                $ref: '#/components/schemas/ContactDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - contacts
+      summary: Save contact
+      operationId: saveContact
+      parameters:
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactDetails'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - contacts
+      summary: "DELETE contacts/{id}"
+      operationId: deleteContact
+      parameters:
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+  /contacts/invite:
+    put:
+      tags:
+      - contacts
+      summary: PUT contacts/invite
+      operationId: sendContactInvitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+      security:
+      - bearerAuth: []
+  /groups:
+    get:
+      tags:
+      - groups
+      summary: GET groups
+      operationId: findAllPaged
+      parameters:
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: pattern
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGroupsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - groups
+      summary: Create a group
+      operationId: createGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GolfGroupDetails'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfGroupDetails'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfGroupDetails'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GolfGroupDetails'
+      security:
+      - bearerAuth: []
+  /contacts:
+    get:
+      tags:
+      - contacts
+      summary: Get contacts for the currently logged-in user
+      operationId: getContacts
+      parameters:
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: pattern
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - contacts
+      summary: Create a new contact
+      operationId: createContact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactDetails'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+      security:
+      - bearerAuth: []
+  /contacts/decline/{id}:
+    post:
+      tags:
+      - contacts
+      summary: "POST contacts/decline/{id}"
+      operationId: declineContactInvitation
+      parameters:
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+  /contacts/accept/{id}:
+    post:
+      tags:
+      - contacts
+      summary: "POST contacts/accept/{id}"
+      operationId: acceptContactInvitation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+      security:
+      - bearerAuth: []
+  /groups/{id}/events:
+    get:
+      tags:
+      - groups
+      - events
+      summary: GET events
+      operationId: findGroupEvents
+      parameters:
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
+      - name: startDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupEventsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
+  /events/{eventId}:
+    get:
+      tags:
+      - events
+      summary: "GET events/{eventId}"
+      operationId: findEventById
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - events
+      summary: "DELETE events/{eventId}"
+      operationId: deleteEvent
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+  /events/edit/{eventId}:
+    get:
+      tags:
+      - events
+      summary: "GET events/edit/{eventId}"
+      operationId: editEvent
+      parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+      security:
+      - bearerAuth: []
+  /events/byDate:
+    get:
+      tags:
+      - events
+      summary: GET events/byDate
+      operationId: findByDate
+      parameters:
+      - name: startDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
   /courses/{id}:
     get:
+      tags:
+      - courses
       summary: "GET courses/{id}"
-      tags:
-        - courses
-      operationId: "findCourseById"
+      operationId: findCourseById
       parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CourseDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    delete:
-      summary: "DELETE courses/{id}"
-      tags:
-        - courses
-      operationId: "deleteCourse"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /courses/{id}/tees:
-    get:
-      summary: "GET Tee Stations for a given course"
-      tags:
-        - courses
-      operationId: "findCourseTeesById"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TeeStations"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-  /courses/{id}/scrorecard:
-    get:
-      summary: "GET scorecard for a given course"
-      tags:
-        - courses
-      operationId: "getScorecardForCourse"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            $ref: '#/components/schemas/EntityId'
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Scorecard"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-
-  ##-------------------------------------------------------------------------------
-  ##  paths/profile
-  ##-------------------------------------------------------------------------------
-  /profile:
-    get:
-      summary: "GET profile"
-      tags:
-        - profile
-      operationId: "getProfile"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProfileDetails"
-        "400":
-          $ref: '#/components/responses/BadRequest'
-        "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-    put:
-      summary: "PUT profile"
-      tags:
-        - profile
-      operationId: "updateProfile"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ProfileDetails"
+      - name: id
+        in: path
+        description: Item id
         required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
       responses:
         "200":
-          description: "OK"
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProfileDetails"
+                $ref: '#/components/schemas/CourseDetails'
         "400":
-          $ref: '#/components/responses/BadRequest'
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetails'
         "401":
-          $ref: '#/components/responses/UnauthorizedRequest'
-
-##-------------------------------------------------------------------------------
-##  components/parameters
-##-------------------------------------------------------------------------------
-components:
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      description: Item id
-      schema:
-        $ref: '#/components/schemas/EntityId'
-
-    limit:
-      name: limit
-      in: query
-      description: sizes the number of returned items
-      required: false
-      schema:
-        type: integer
-        #        format: int32
-        default: 10
-        minimum: 1
-    #        maximum: 1000
-    #        multipleOf: 10
-
-    startDate:
-      name: startDate
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date-time
-
-    endDate:
-      name: endDate
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date-time
-
-    pageable:
-      name: page
-      in: query
-      schema:
-        $ref: '#/components/schemas/PageAndSortRequest'
-
-    searchExpression:
-      name: pattern
-      in: query
-      schema:
-        type: string
-
-  ##-------------------------------------------------------------------------------
-  ##  components/responses
-  ##-------------------------------------------------------------------------------
-  responses:
-    OkResponse:
-      description: "OK"
-    BadRequest:
-      description: Bad request
-    UnauthorizedRequest:
-      description: Access token is missing or invalid
-
-  ##-------------------------------------------------------------------------------
-  ##  components/securitySchemes
-  ##-------------------------------------------------------------------------------
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
-  ##-------------------------------------------------------------------------------
-  ##  components/headers
-  ##-------------------------------------------------------------------------------
-  #  headers:
-  #    Pagination-Count:
-  #      description: Total number of items
-  #      schema:
-  #        type: integer
-  #    Pagination-Page:
-  #      description: Current page number
-  #      schema:
-  #        type: integer
-  #    Pagination-size:
-  #      description: Number of returned items
-  #      schema:
-  #        type: integer
-
-  ##-------------------------------------------------------------------------------
-  ##  components/schemas
-  ##-------------------------------------------------------------------------------
-  schemas:
-    EntityId:
-      type: string
-      maxLength: 24
-
-    DateTime:
-      type: string
-      format: local
-
-    LocalDate:
-      type: string
-      format: local-date
-
-    LocalTime:
-      type: string
-      format: "HH:mm:ss"
-      description: Time of day
-
-    SocialMediaHandle:
-      description: A valid social media handle.
-      type: string
-      pattern: '^[a-zA-Z0-9_.-]+$'
-      minLength: 3
-      maxLength: 30
-
-    Email:
-      description: A valid email address.
-      type: string
-      format: email
-
-    PhoneNumber:
-      description: A valid phone number.
-      type: string
-    #      pattern: '^\+?[1-9]\d{1,14}$'
-
-    ZipCode:
-      description: A valid ZIP code (U.S. format).
-      type: string
-      pattern: '^[0-9]{5}(?:-[0-9]{4})?$'
-
-    StateProvince:
-      description: State or province code.
-      type: string
-      pattern: '^[A-Za-z]{2,}$'
-
-    Country:
-      type: string
-      pattern: '^[A-Za-z]{2}$'
-      description: Two-letter country code.
-
-    URL:
-      description: A valid Universal Resource Locator.
-      type: string
-      format: uri
-
-    PageAndSortRequest:
-      description: Paging and sorting options used in queries
-      type: object
-      properties:
-        page:
-          description: Page offset starting at 0
-          type: integer
-          #          format: int32
-          default: 0
-          minimum: 0
-        size:
-          description: How many items to return in the result (items per page)
-          type: integer
-          #          format: int32
-          default: 100
-          minimum: 1
-          maximum: 1000
-        sort:
-          description: Sorting options, prefix the option with a minus sign '-' to reverse sort
-          type: array
-          items:
-            type: string
-          minItems: 0
-
-    PagedResult:
-      description: Items returned as a result of a paged request
-      type: object
-      properties:
-        totalItems:
-          description: The total number of items that match the query (not the result set)
-          type: integer
-        page:
-          description: The page offset requested
-          type: integer
-        size:
-          description: The number of items returned
-          type: integer
-
-    ColorString:
-      description: Color definition as per HTML
-      type: string
-
-    SocialLinks:
-      description: Social media links
-      type: object
-      properties:
-        facebookHandle:
-          #          description: 'Facebook handle for this location'
-          $ref: "#/components/schemas/SocialMediaHandle"
-        instagramHandle:
-          #          description: Instagram handle for this location
-          $ref: "#/components/schemas/SocialMediaHandle"
-        twitterHandle:
-          #          description: Twitter/X handle for this location
-          $ref: "#/components/schemas/SocialMediaHandle"
-        website:
-          #          description: Website representing this location
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetails'
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - courses
+      summary: "DELETE courses/{id}"
+      operationId: deleteCourse
+      parameters:
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
           type: string
-
-    Gender:
-      type: string
-      enum:
-        - Unspecified
-        - Male
-        - Female
-
-    FiveStarRating:
-      description: Rating value on a scale of 0 to 5.
-      type: integer
-      minimum: 0
-      maximum: 5
-
-    RoleType:
-      type: string
-      enum:
-        - "Player"
-        - "Facilitator"
-        - "Delegate"
-        - "Administrator"
-        - "Creator"
-
-    RoleSet:
-      type: array
-      uniqueItems: true
-      items:
-        $ref: '#/components/schemas/RoleType'
-
-    Participant:
-      allOf:
-        - $ref: '#/components/schemas/Person'
-        - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/EntityId'
-            profileId:
-              $ref: '#/components/schemas/EntityId'
-            status:
-              $ref: '#/components/schemas/InvitationStatus'
-            roles:
-              $ref: '#/components/schemas/RoleSet'
-            contactId:
-              $ref: '#/components/schemas/EntityId'
-
-    Facilitator:
-      allOf:
-        - $ref: '#/components/schemas/Person'
-        - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/EntityId'
-            profileId:
-              $ref: '#/components/schemas/EntityId'
-            status:
-              $ref: '#/components/schemas/InvitationStatus'
-            roles:
-              $ref: '#/components/schemas/RoleSet'
-            contactId:
-              $ref: '#/components/schemas/EntityId'
-            title:
-              type: string
-
-    InvitationStatus:
-      type: string
-      enum:
-        - "New"
-        - "Pending"
-        - "Accepted"
-        - "Declined"
-        - "Expired"
-
-    EventStatus:
-      type: string
-      enum:
-        - "Preparation"
-        - "OpenForRegistration"
-        - "Pending"
-        - "Completed"
-        - "Canceled"
-
-    Person:
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+        "401":
+          description: Access token is missing or invalid
+      security:
+      - bearerAuth: []
+  /courses/favorites:
+    get:
+      tags:
+      - courses
+      summary: GET courses/favorites
+      operationId: findFavoriteCourses
+      parameters:
+      - name: page
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
+      security:
+      - bearerAuth: []
+  /contacts/profile/{id}:
+    get:
+      tags:
+      - contacts
+      summary: "GET contacts/profile/{id}"
+      operationId: findContactByProfileId
+      parameters:
+      - name: id
+        in: path
+        description: Item id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 0
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDetails'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Primary address (street)
+        address2:
+          type: string
+          description: "Secondary address (unit, etc)"
+        city:
+          type: string
+          description: City name
+        state:
+          pattern: "^[A-Za-z]{2,}$"
+          type: string
+          description: State or province code.
+        country:
+          pattern: "^[A-Za-z]{2}$"
+          type: string
+          description: Two-letter country code.
+        postalCode:
+          pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
+          type: string
+          description: A valid ZIP code (U.S. format).
+    ProfileDetails:
       type: object
       properties:
         firstName:
@@ -1220,129 +1166,84 @@ components:
         nickname:
           type: string
         email:
-          $ref: '#/components/schemas/Email'
+          type: string
+          description: A valid email address.
         phone:
-          $ref: '#/components/schemas/PhoneNumber'
-
-    GeoLocation:
-      description: Geolocation points, stored as longitude, latitude
-      type: array
-      minItems: 2
-      maxItems: 2
-      items:
-        type: number
-        format: double
-      example: [34.052235, -118.243683]  # Example geolocation coordinates
-
-    NamedEntity:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/EntityId'
-        name:
           type: string
-
-    VerificationToken:
-      type: object
-      properties:
+          description: A valid phone number.
         id:
-          $ref: '#/components/schemas/EntityId'
-        issueDate:
-          $ref: '#/components/schemas/DateTime'
-        expiryDate:
-          $ref: '#/components/schemas/DateTime'
-
-    Address:
-      type: object
-      properties:
+          maxLength: 24
+          minLength: 0
+          type: string
+        emailVerified:
+          type: boolean
+        phoneVerified:
+          type: boolean
         address:
-          description: Primary address (street)
+          $ref: '#/components/schemas/Address'
+        birthDate:
           type: string
-        address2:
-          description: Secondary address (unit, etc)
+          format: date
+        handicap:
+          type: number
+          format: double
+        ghin:
           type: string
-        city:
-          description: City name
-          type: string
-        state:
-          $ref: '#/components/schemas/StateProvince'
-        country:
-          $ref: '#/components/schemas/Country'
-        postalCode:
-          $ref: '#/components/schemas/ZipCode'
-
-    ContactSummary:
-      allOf:
-        - $ref: '#/components/schemas/Person'
-        - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/EntityId'
-            status:
-              $ref: '#/components/schemas/InvitationStatus'
-            since:
-              $ref: '#/components/schemas/LocalDate'
-            profileId:
-              $ref: '#/components/schemas/EntityId'
-
-    ContactDetails:
-      allOf:
-        - $ref: '#/components/schemas/Person'
-        - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/EntityId'
-            ownerId:
-              $ref: '#/components/schemas/EntityId'
-            profileId:
-              $ref: '#/components/schemas/EntityId'
-            address:
-              $ref: "#/components/schemas/Address"
-            status:
-              $ref: '#/components/schemas/InvitationStatus'
-            since:
-              $ref: '#/components/schemas/DateTime'
-            token:
-              $ref: "#/components/schemas/VerificationToken"
-
-    ContactRequest:
+    Facilitator:
       type: object
       properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        nickname:
+          type: string
+        email:
+          type: string
+          description: A valid email address.
+        phone:
+          type: string
+          description: A valid phone number.
         id:
-          $ref: '#/components/schemas/EntityId'
-        replyUrl:
+          maxLength: 24
+          minLength: 0
           type: string
-        message:
+        profileId:
+          maxLength: 24
+          minLength: 0
           type: string
-
-    GolfParticipant:
-      allOf:
-        - $ref: '#/components/schemas/Participant'
-        - type: object
-          properties:
-            handicap:
-              type: number
-              format: double
-            ghin:
-              type: string
-
-    GolfGroupSummary:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/EntityId'
-        name:
+        status:
           type: string
-        location:
-          $ref: "#/components/schemas/Location"
-        numParticipants:
-          type: integer
-
+          enum:
+          - New
+          - Pending
+          - Accepted
+          - Declined
+          - Expired
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - Player
+            - Facilitator
+            - Delegate
+            - Administrator
+            - Creator
+        contactId:
+          maxLength: 24
+          minLength: 0
+          type: string
+        title:
+          type: string
     GolfGroupDetails:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EntityId'
+          maxLength: 24
+          minLength: 0
+          type: string
         name:
           type: string
         description:
@@ -1352,39 +1253,139 @@ components:
         rules:
           type: string
         location:
-          $ref: "#/components/schemas/Location"
+          $ref: '#/components/schemas/Location'
         participants:
           type: array
           items:
-            $ref: "#/components/schemas/GolfParticipant"
+            $ref: '#/components/schemas/GolfParticipant'
         roles:
-          $ref: '#/components/schemas/RoleSet'
-
-    EventSummary:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - Player
+            - Facilitator
+            - Delegate
+            - Administrator
+            - Creator
+    GolfParticipant:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        nickname:
+          type: string
+        email:
+          type: string
+          description: A valid email address.
+        phone:
+          type: string
+          description: A valid phone number.
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        profileId:
+          maxLength: 24
+          minLength: 0
+          type: string
+        status:
+          type: string
+          enum:
+          - New
+          - Pending
+          - Accepted
+          - Declined
+          - Expired
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - Player
+            - Facilitator
+            - Delegate
+            - Administrator
+            - Creator
+        contactId:
+          maxLength: 24
+          minLength: 0
+          type: string
+        handicap:
+          type: number
+          format: double
+        ghin:
+          type: string
+    Location:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EntityId'
+          maxLength: 24
+          minLength: 0
+          type: string
+        _class:
+          type: string
         name:
           type: string
-        event:
-          $ref: '#/components/schemas/NamedEntity'
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+          description: A valid phone number.
+        email:
+          type: string
+          description: A valid email address.
+        facebookHandle:
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
+        instagramHandle:
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
+        twitterHandle:
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
+        website:
+          type: string
+        staff:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facilitator'
+        managed:
+          type: boolean
         location:
-          $ref: "#/components/schemas/Location"
-        numParticipants:
-          type: integer
-        startDate:
-          $ref: '#/components/schemas/DateTime'
-        endDate:
-          $ref: '#/components/schemas/DateTime'
-        status:
-          $ref: '#/components/schemas/EventStatus'
-
+          maxItems: 2
+          minItems: 2
+          type: array
+          description: "Geolocation points, stored as longitude, latitude"
+          example:
+          - 34.052235
+          - -118.243683
+          items:
+            maximum: 2
+            minimum: 2
+            type: number
+            description: "Geolocation points, stored as longitude, latitude"
+            format: double
     EventDetails:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EntityId'
+          maxLength: 24
+          minLength: 0
+          type: string
         name:
           type: string
         event:
@@ -1392,169 +1393,493 @@ components:
         location:
           $ref: '#/components/schemas/Location'
         startDate:
-          $ref: '#/components/schemas/DateTime'
+          type: string
+          format: date-time
         endDate:
-          $ref: '#/components/schemas/DateTime'
+          type: string
+          format: date-time
         status:
-          $ref: '#/components/schemas/EventStatus'
+          type: string
+          enum:
+          - Preparation
+          - OpenForRegistration
+          - Pending
+          - Completed
+          - Canceled
         participants:
           type: array
           items:
-            $ref: "#/components/schemas/GolfParticipant"
+            $ref: '#/components/schemas/GolfParticipant'
         rules:
           type: string
         description:
           type: string
         invitation:
           type: string
-
-    CourseSummary:
+    NamedEntity:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EntityId'
+          maxLength: 24
+          minLength: 0
+          type: string
         name:
           type: string
-        managed:
-          description: 'Set to true for publicly visible courses'
-          type: boolean
-        address:
-          $ref: "#/components/schemas/Address"
-        facebookHandle:
-          $ref: '#/components/schemas/SocialMediaHandle'
-        instagramHandle:
-          $ref: '#/components/schemas/SocialMediaHandle'
-        twitterHandle:
-          $ref: '#/components/schemas/SocialMediaHandle'
-        website:
-          $ref: '#/components/schemas/URL'
-        phone:
-          $ref: '#/components/schemas/PhoneNumber'
-        email:
-          $ref: '#/components/schemas/Email'
-
     CourseDetails:
-      description: 'A Location that is a golf course'
-      allOf:
-        - $ref: '#/components/schemas/Location'
       type: object
       properties:
         tees:
-          #          description: Tee stations
-          $ref: "#/components/schemas/TeeStations"
+          type: array
+          description: Information describing tee stations for a given course
+          items:
+            $ref: '#/components/schemas/TeeStation'
         scorecard:
-          #          description: Scorecard
-          $ref: "#/components/schemas/Scorecard"
-
-    Location:
-      type: object
-      properties:
+          type: array
+          description: The information needed to display or print a scorecard
+          items:
+            $ref: '#/components/schemas/ScorecardInner'
         id:
-          $ref: '#/components/schemas/EntityId'
+          maxLength: 24
+          minLength: 0
+          type: string
         _class:
           type: string
         name:
           type: string
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
         phone:
-          #          description: Phone number for this location
-          $ref: "#/components/schemas/PhoneNumber"
+          type: string
+          description: A valid phone number.
         email:
-          #          description: E-mail address for this location
-          $ref: "#/components/schemas/Email"
+          type: string
+          description: A valid email address.
         facebookHandle:
-          #          description: Facebook handle for this location
-          $ref: "#/components/schemas/SocialMediaHandle"
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
         instagramHandle:
-          #          description: Instagram handle for this location
-          $ref: "#/components/schemas/SocialMediaHandle"
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
         twitterHandle:
-          #          description: Twitter/X handle for this location
-          $ref: "#/components/schemas/SocialMediaHandle"
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
         website:
-          #          description: Website representing this location
           type: string
         staff:
-          #          description: Contacts for this location
           type: array
           items:
             $ref: '#/components/schemas/Facilitator'
         managed:
-          #          description: Set to true for publicly visible locations
           type: boolean
         location:
-          $ref: "#/components/schemas/GeoLocation"
-
-    CourseSide:
+          maxItems: 2
+          minItems: 2
+          type: array
+          description: "Geolocation points, stored as longitude, latitude"
+          example:
+          - 34.052235
+          - -118.243683
+          items:
+            maximum: 2
+            minimum: 2
+            type: number
+            description: "Geolocation points, stored as longitude, latitude"
+            format: double
+      description: A Location that is a golf course
+    ScorecardInner:
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/EntityId'
         name:
           type: string
+        yardage:
+          type: integer
+          format: int32
         par:
           type: integer
-        courseRating:
-          type: number
-          format: double
-        slopeRating:
+          format: int32
+        handicap:
           type: integer
-
-    TeeStations:
-      description: Information describing tee stations for a given course
-      type: array
-      items:
-        $ref: "#/components/schemas/TeeStation"
-
+          format: int32
+      description: The information needed to display or print a scorecard
     TeeStation:
-      description: Supports storing the ratings per tee station as per the USGA Course Ratings site
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/EntityId'
+          maxLength: 24
+          minLength: 0
+          type: string
         name:
           type: string
         color:
-          $ref: '#/components/schemas/ColorString'
+          type: string
+          description: Color definition as per HTML
         gender:
-          $ref: '#/components/schemas/Gender'
+          type: string
+          enum:
+          - Unspecified
+          - Male
+          - Female
         numberOfHoles:
-          description: Number of holes, typically 9 or 18 but there may be some oddballs
           type: integer
+          description: "Number of holes, typically 9 or 18 but there may be some oddballs"
+          format: int32
         par:
-          description: Par for the number of holes on the course (typically 71 or 72)
           type: integer
+          description: Par for the number of holes on the course (typically 71 or
+            72)
+          format: int32
         yardage:
-          description: Total yardage for all holes on this tee
           type: integer
+          description: Total yardage for all holes on this tee
+          format: int32
         courseRating:
-          description: See the USGA web site
           type: number
+          description: See the USGA web site
           format: double
         bogeyRating:
-          description: See the USGA web site
           type: number
+          description: See the USGA web site
           format: double
         slopeRating:
-          description: See the USGA web site
           type: integer
-
-    Scorecard:
-      description: The information needed to display or print a scorecard
-      type: array
-      items:
-        type: object
-        properties:
-          name:
+          description: See the USGA web site
+          format: int32
+      description: Supports storing the ratings per tee station as per the USGA Course
+        Ratings site
+    ContactDetails:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        nickname:
+          type: string
+        email:
+          type: string
+          description: A valid email address.
+        phone:
+          type: string
+          description: A valid phone number.
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        ownerId:
+          maxLength: 24
+          minLength: 0
+          type: string
+        profileId:
+          maxLength: 24
+          minLength: 0
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        status:
+          type: string
+          enum:
+          - New
+          - Pending
+          - Accepted
+          - Declined
+          - Expired
+        since:
+          type: string
+          format: date-time
+        token:
+          $ref: '#/components/schemas/VerificationToken'
+    VerificationToken:
+      type: object
+      properties:
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        issueDate:
+          type: string
+          format: date-time
+        expiryDate:
+          type: string
+          format: date-time
+    ContactRequest:
+      type: object
+      properties:
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        replyUrl:
+          type: string
+        message:
+          type: string
+    GetGroupsResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GolfGroupSummary'
+    GolfGroupSummary:
+      type: object
+      properties:
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        name:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        numParticipants:
+          type: integer
+          format: int32
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
             type: string
-          yardage:
-            type: integer
-          par:
-            type: integer
-          handicap:
-            type: integer
-
+    PagedResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GolfGroupSummary'
+      description: Items returned as a result of a paged request
+    GetGroupParticipantsResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GolfParticipant'
+    EventSummary:
+      type: object
+      properties:
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        name:
+          type: string
+        event:
+          $ref: '#/components/schemas/NamedEntity'
+        location:
+          $ref: '#/components/schemas/Location'
+        numParticipants:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+          - Preparation
+          - OpenForRegistration
+          - Pending
+          - Completed
+          - Canceled
+    GroupEventsResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventSummary'
+    GetEventsResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventSummary'
+    CourseSummary:
+      type: object
+      properties:
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        name:
+          type: string
+        managed:
+          type: boolean
+          description: Set to true for publicly visible courses
+        address:
+          $ref: '#/components/schemas/Address'
+        facebookHandle:
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
+        instagramHandle:
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
+        twitterHandle:
+          maxLength: 30
+          minLength: 3
+          pattern: "^[a-zA-Z0-9_.-]+$"
+          type: string
+          description: A valid social media handle.
+        website:
+          type: string
+          description: A valid Universal Resource Locator.
+          format: uri
+        phone:
+          type: string
+          description: A valid phone number.
+        email:
+          type: string
+          description: A valid email address.
+    GetCoursesResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseSummary'
+    FavoriteCourse:
+      type: object
+      properties:
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        locationId:
+          maxLength: 24
+          minLength: 0
+          type: string
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        review:
+          $ref: '#/components/schemas/Review'
+    FindFavoriteCoursesResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FavoriteCourse'
     Review:
       type: object
       properties:
@@ -1563,42 +1888,67 @@ components:
         publiclyVisible:
           type: boolean
         rating:
-          $ref: '#/components/schemas/FiveStarRating'
-
-    FavoriteCourse:
+          maximum: 5
+          minimum: 0
+          type: integer
+          description: Rating value on a scale of 0 to 5.
+          format: int32
+    ContactSummary:
       type: object
       properties:
-        id:
-          $ref: '#/components/schemas/EntityId'
-        locationId:
-          $ref: '#/components/schemas/EntityId'
-        name:
+        firstName:
           type: string
-        address:
-          $ref: "#/components/schemas/Address"
-        review:
-          $ref: "#/components/schemas/Review"
-
-    ProfileDetails:
-      allOf:
-        - $ref: '#/components/schemas/Person'
-        - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/EntityId'
-            emailVerified:
-              type: boolean
-            phoneVerified:
-              type: boolean
-            address:
-              $ref: "#/components/schemas/Address"
-            birthDate:
-              $ref: '#/components/schemas/LocalDate'
-            handicap:
-              type: number
-              format: double
-            ghin:
-              type: string
-
-security:
-  - bearerAuth: []
+        lastName:
+          type: string
+        nickname:
+          type: string
+        email:
+          type: string
+          description: A valid email address.
+        phone:
+          type: string
+          description: A valid phone number.
+        id:
+          maxLength: 24
+          minLength: 0
+          type: string
+        status:
+          type: string
+          enum:
+          - New
+          - Pending
+          - Accepted
+          - Declined
+          - Expired
+        since:
+          type: string
+          format: date
+        profileId:
+          maxLength: 24
+          minLength: 0
+          type: string
+        handicap:
+          type: number
+          format: double
+        ghin:
+          type: string
+    ContactsResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: The total number of items that match the query (not the result
+            set)
+          format: int32
+        page:
+          type: integer
+          description: The page offset requested
+          format: int32
+        size:
+          type: integer
+          description: The number of items returned
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactSummary'

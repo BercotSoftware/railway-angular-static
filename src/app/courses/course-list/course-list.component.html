@@ -1,10 +1,22 @@
-<div class="container">
-  <h1>List of Golf Courses</h1>
-  <ul class="list-group">
-    <li class="list-group-item" *ngFor="let course of $golfCourses | async">
-      <h3>{{ course.name }}</h3>
-<!--      <p>{{ course.address?.city }}</p>-->
-<!--      <p>{{ course.address?.state }}</p>-->
-    </li>
-  </ul>
-</div>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">City</th>
+    <th scope="col">State</th>
+    <th scope="col">Phone</th>
+    <th scope="col">e-mail</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let course of $golfCourses | async">
+    <tr>
+      <td>{{ course.name }}</td>
+      <td>{{ course.address?.city }}</td>
+      <td>{{ course.address?.state }}</td>
+      <td>{{ course.phone }}</td>
+      <td>{{ course.email }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
