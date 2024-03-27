@@ -23,29 +23,33 @@ export class GoogleAuthService {
   }
 
   signIn(): void {
-    this.auth2.signIn().then((user: any) => {
-      this.validateToken(user.getAuthResponse().id_token).subscribe((user: any) => {
+    if (this.auth2) {
+      this.auth2.signIn().then((user: any) => {
+        this.validateToken(user.getAuthResponse().id_token).subscribe((user: any) => {
+            this.zone.run(() => {
+              this.user$.next(user);
+              this.isLoggedIn$.next(true);
+            });
+          },
+          (err: any) => {
+            console.error(err);
+          });
+      });
+    }
+  };
+
+  signOut(): void {
+    if (this.auth2) {
+      this.auth2.signOut().then(() => {
           this.zone.run(() => {
-            this.user$.next(user);
-            this.isLoggedIn$.next(true);
+            this.isLoggedIn$.next(false);
+            this.user$.next({});
           });
         },
         (err: any) => {
           console.error(err);
         });
-    });
-  };
-
-  signOut(): void {
-    this.auth2.signOut().then(() => {
-        this.zone.run(() => {
-          this.isLoggedIn$.next(false);
-          this.user$.next({});
-        });
-      },
-      (err: any) => {
-        console.error(err);
-      });
+    }
   }
 
   loadAuth2(): void {

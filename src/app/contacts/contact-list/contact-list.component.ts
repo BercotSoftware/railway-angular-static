@@ -48,6 +48,9 @@ export class ContactListComponent implements OnInit {
 
   importContacts() {
       console.log('Import contacts here')
-      this.googleAuth.signIn()
+      this.googleApi.gapiLoad()
+        .then((result) => {
+          console.log('GAPI loaded? ', result)
+        })
   }
 }
