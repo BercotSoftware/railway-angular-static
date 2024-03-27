@@ -51,7 +51,7 @@ export class GoogleAuthService {
   loadAuth2(): void {
     gapi.load('auth2', () => {
       gapi.auth2.init({
-        client_id: 'yourClientId',
+        client_id: `${environment.PLAY_GOLF_UI_CLIENT_ID}`,
         fetch_basic_profile: true
       }).then((auth: any) => {
           this.zone.run(() => {

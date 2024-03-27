@@ -21,7 +21,14 @@ export class ContactListComponent implements OnInit {
   constructor(private contactsService: ContactsService,
               private googleApi: GoogleApiService,
               private googleAuth: GoogleAuthService) {
-
+    try{
+      this.googleAuth.loadAuth2()
+    } catch (e) {
+      console.log('Error loading auth2', e)
+    }
+    this.googleAuth.isLoaded$.subscribe((result) => {
+      console.log('Google AUTH2 is loaded?', result)
+    })
   }
 
   ngOnInit(): void {
@@ -41,6 +48,6 @@ export class ContactListComponent implements OnInit {
 
   importContacts() {
       console.log('Import contacts here')
-    this.googleAuth.signIn()
+      this.googleAuth.signIn()
   }
 }
