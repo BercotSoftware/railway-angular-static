@@ -1,8 +1,25 @@
-<div>contact-list works! 1</div>
-<div>contact-list works! 2</div>
-<div>contact-list works! 3</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">First name</th>
+    <th scope="col">Last name</th>
+    <th scope="col">Nickname</th>
+    <th scope="col">Phone</th>
+    <th scope="col">e-mail</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let contact of $contacts | async">
+    <tr>
+      <td>{{ contact.firstName }}</td>
+      <td>{{ contact.lastName }}</td>
+      <td>{{ contact.nickname }}</td>
+      <td>{{ contact.phone }}</td>
+      <td>{{ contact.email }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
+<div>
+  <button (click)="importContacts()">Import Contacts</button>
+</div>
