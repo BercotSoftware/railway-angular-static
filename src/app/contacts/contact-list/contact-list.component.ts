@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {ContactsService, ContactSummary, Pageable} from "@golf-api";
 import {BehaviorSubject} from "rxjs";
 import {GoogleApiService} from "../../_services/google-api.service";
+import {GoogleAuthService} from "../../_services/google-auth.service";
 
 @Component({
   selector: 'app-contact-list',
@@ -18,7 +19,8 @@ export class ContactListComponent implements OnInit {
   totalItems = 0;
 
   constructor(private contactsService: ContactsService,
-              private googleApi: GoogleApiService) {
+              private googleApi: GoogleApiService,
+              private googleAuth: GoogleAuthService) {
 
   }
 
@@ -39,7 +41,6 @@ export class ContactListComponent implements OnInit {
 
   importContacts() {
       console.log('Import contacts here')
-    this.googleApi.signIn()
-      // this.googleApi.fetchmail()
+    this.googleAuth.signIn()
   }
 }
