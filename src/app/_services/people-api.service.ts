@@ -1,6 +1,7 @@
 import {Injectable, NgZone} from "@angular/core";
 import {environment} from "@env";
 import {BehaviorSubject} from "rxjs";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 declare var gapi: any;
 declare var google: any;
@@ -34,20 +35,26 @@ export class PeopleApiService {
       .then((result) => {
           console.log('GAPI loaded')
           return this.initClient()
+        }, error => {
+          console.log('Error initializing API')
+        }
+      )
+      .then((result) => {
+          console.log('GAPI api is ready')
+
+          this.loadGis().then((result) => {
+            console.log("GIS is ready", result)
+          }, error => {
+            console.log("Error loading GIS")
+          })
         },
         error => {
-          console.log('GAPI load failed')
+          console.log('GAPI api init failed')
         }
-      ).then((result) => {
-        console.log('GAPI api is ready')
-        return this.loadGis()
-      },
-      error => {
-        console.log('GAPI api init failed')
-      }
-    ).then((result) => {
-      this.apiReady$.next(true)
-    })
+      )
+      .then((result) => {
+        this.apiReady$.next(true)
+      })
   }
 
 
@@ -82,12 +89,15 @@ export class PeopleApiService {
   private loadGis() : Promise<any> {
     return new Promise((resolve, reject) => {
       this.zone.run(() => {
-        this.tokenClient = google.accounts.oauth2.initTokenClient({
+        this.tokenClient =  google.accounts.oauth2.initTokenClient({
           client_id: CLIENT_ID,
           scope: [CONTACTS_READ_SCOPE],
           callback: resolve,
           onerror: reject,
+          timeout: 1000,
+          ontimeout: reject
         })
+        resolve(this.tokenClient)
       })
     })
   }
