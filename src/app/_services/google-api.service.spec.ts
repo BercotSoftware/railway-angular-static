@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GoogleApiService } from './google-api.service';
+import { PeopleApiService } from './people-api.service';
 
 describe('GoogleApiService', () => {
-  let service: GoogleApiService;
+  let service: PeopleApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GoogleApiService);
+    service = TestBed.inject(PeopleApiService);
   });
 
   it('should be created', () => {

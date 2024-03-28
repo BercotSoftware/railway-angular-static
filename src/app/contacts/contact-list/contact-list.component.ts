@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ContactsService, ContactSummary, Pageable} from "@golf-api";
 import {BehaviorSubject} from "rxjs";
-import {GoogleApiService} from "../../_services/google-api.service";
-import {GoogleAuthService} from "../../_services/google-auth.service";
+import {PeopleApiService} from "../../_services/people-api.service";
 
 @Component({
   selector: 'app-contact-list',
@@ -19,16 +18,7 @@ export class ContactListComponent implements OnInit {
   totalItems = 0;
 
   constructor(private contactsService: ContactsService,
-              private googleApi: GoogleApiService,
-              private googleAuth: GoogleAuthService) {
-    try{
-      this.googleAuth.loadAuth2()
-    } catch (e) {
-      console.log('Error loading auth2', e)
-    }
-    this.googleAuth.isLoaded$.subscribe((result) => {
-      console.log('Google AUTH2 is loaded?', result)
-    })
+              private peopleApiService: PeopleApiService) {
   }
 
   ngOnInit(): void {
@@ -47,10 +37,22 @@ export class ContactListComponent implements OnInit {
   }
 
   importContacts() {
-      console.log('Import contacts here')
-      this.googleApi.gapiLoad()
-        .then((result) => {
-          console.log('GAPI loaded? ', result)
-        })
+    console.log('Import contacts here')
+    this.peopleApiService.loadClient()
+      .then((result) => {
+          console.log('GAPI loaded')
+          return this.peopleApiService.loadClient()
+        },
+        error => {
+          console.log('GAPI load failed')
+        }
+      ).then((result) => {
+        console.log('GAPI api is ready')
+      },
+      error => {
+        console.log('GAPI api init failed')
+      }
+    )
   }
+
 }

@@ -20,13 +20,8 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "strictPropertyInitialization": false,  // DEB
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "gapi",
-      "gapi.auth2"
-    ],
+    "types": [ "gapi", "gapi.auth2" ],
+    "typeRoots": ["./node_modules/@types"],
     "lib": [
       "ES2022",
       "dom"

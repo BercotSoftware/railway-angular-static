@@ -21,11 +21,11 @@ export class AppComponent {
 
 
   constructor(
-    private authService: OidcSecurityService,
+    private oidcSecurityService: OidcSecurityService,
     private router: Router,
-    private route : ActivatedRoute) {
+    private activatedRoute : ActivatedRoute) {
 
-    authService.checkAuth().subscribe({
+    oidcSecurityService.checkAuth().subscribe({
       next: (result) => {
         console.log(`checkAuth result ${JSON.stringify(result)}`)
       },
