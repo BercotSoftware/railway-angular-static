@@ -41,11 +41,9 @@ export class PeopleApiService {
       )
       .then((result) => {
           console.log('GAPI api is ready')
-
-          this.loadGis().then((result) => {
-            console.log("GIS is ready", result)
-          }, error => {
-            console.log("Error loading GIS")
+          this.tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: CLIENT_ID,
+            scope: CONTACTS_READ_SCOPE,
           })
         },
         error => {
@@ -86,39 +84,43 @@ export class PeopleApiService {
     });
   }
 
-  private loadGis() : Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.zone.run(() => {
-        this.tokenClient =  google.accounts.oauth2.initTokenClient({
-          client_id: CLIENT_ID,
-          scope: [CONTACTS_READ_SCOPE],
-          callback: resolve,
-          onerror: reject,
-          timeout: 1000,
-          ontimeout: reject
-        })
-        resolve(this.tokenClient)
-      })
-    })
-  }
-
   loadContacts() : Promise<any> {
     return new Promise((resolve, reject) => {
-      this.zone.run(async () => {
 
-        try {
-          // Fetch first 10 files
-          const result = await gapi.client.people.people.connections.list({
-            'resourceName': 'people/me',
-            'pageSize': 10,
-            'personFields': 'names,emailAddresses',
-          })
-          resolve(result)
+      try {
+        if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          this.tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          this.tokenClient.requestAccessToken({prompt: ''});
         }
-        catch (e) {
-          reject(e)
-        }
-      })
+
+        resolve(true)
+      }
+      catch (e) {
+        reject(e)
+      }
+
+      // this.zone.run(async () => {
+      //
+      //   try {
+      //     this.tokenClient.requestAccessToken({prompt: 'consent'});
+      //     resolve(true)
+      //
+      //     // // Fetch first 10 files
+      //     // const result = await gapi.client.people.people.connections.list({
+      //     //   'resourceName': 'people/me',
+      //     //   'pageSize': 10,
+      //     //   'personFields': 'names,emailAddresses',
+      //     // })
+      //     // resolve(result)
+      //   }
+      //   catch (e) {
+      //     reject(e)
+      //   }
+      // })
     })
   }
 
