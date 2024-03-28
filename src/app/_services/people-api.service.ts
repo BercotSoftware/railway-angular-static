@@ -40,26 +40,46 @@ export class PeopleApiService {
   constructor(private zone: NgZone) {
   }
 
-
   public initializeApi(): Promise<any> {
     return new Promise<void>((resolve, reject) => {
-      gapi.load('client', {
-        onerror: reject,
-        ontimeout: reject,
-        timeout: 1000, // 5 seconds
-        callback: () => {
-          console.log("GAPI load complete")
-          gapi.client.init(this.CLIENT_CONFIG).then(() => {
-            console.log("client init complete")
-            this.tokenClient = google.accounts.oauth2.initTokenClient(this.OAUTH2_CONFIG)
-            console.log("initTokenClient complete", this.tokenClient)
-            this.apiReady$.next(true)
-            resolve()
-          });
-        },
-      })
+      this.gapiInit()
+        .then(() => {
+          this.tokenClient = google.accounts.oauth2.initTokenClient(this.OAUTH2_CONFIG)
+          console.log("initTokenClient complete", this.tokenClient)
+          resolve()
+        })
+        .catch((err) => {
+          console.log('initTokenClient failed')
+          reject(err)
+        })
     })
   }
+
+  private gapiInit() : Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.apiReady$.value) {
+        console.log("GAPI already loaded")
+        resolve()
+      } else {
+        gapi.load('client', {
+          onerror: reject,
+          ontimeout: reject,
+          timeout: 1000, // 5 seconds
+          callback: () => {
+            console.log("GAPI load complete")
+            gapi.client.init(this.CLIENT_CONFIG).then(() => {
+              console.log("client init complete")
+              this.apiReady$.next(true)
+              resolve()
+            });
+          },
+        })
+
+      }
+    })
+  }
+
+
 
   // see: https://stackoverflow.com/questions/38091215/import-gapi-auth2-in-angular-2-typescript
 
