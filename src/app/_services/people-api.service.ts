@@ -97,7 +97,13 @@ export class PeopleApiService {
           this.tokenClient.requestAccessToken({prompt: ''});
         }
 
-        resolve(true)
+        const result = gapi.client.people.people.connections.list({
+              'resourceName': 'people/me',
+              'pageSize': 10,
+              'personFields': 'names,emailAddresses',
+            })
+
+          resolve(result)
       }
       catch (e) {
         reject(e)
