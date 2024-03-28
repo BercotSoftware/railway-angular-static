@@ -38,21 +38,14 @@ export class ContactListComponent implements OnInit {
 
   importContacts() {
     console.log('Import contacts here')
-    this.peopleApiService.loadClient()
+    this.peopleApiService.loadContacts()
       .then((result) => {
-          console.log('GAPI loaded')
-          return this.peopleApiService.loadClient()
-        },
-        error => {
-          console.log('GAPI load failed')
+          console.log('loaded contacts', result)
+        })
+      .catch((error: Error) => {
+          console.log('contact load failed', error)
         }
-      ).then((result) => {
-        console.log('GAPI api is ready')
-      },
-      error => {
-        console.log('GAPI api init failed')
-      }
-    )
+      )
   }
 
 }
