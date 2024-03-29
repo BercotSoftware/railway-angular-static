@@ -33,6 +33,8 @@ export class ContactImportComponent implements OnInit {
     this.peopleApiService.initializeApi().then(() => {
       console.log('People API is ready')
     })
+
+
     // this.peopleApiService.getContactList()
     //   .then((result) => {
     //     console.log('loaded contacts', result)

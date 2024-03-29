@@ -2,9 +2,9 @@ import {Injectable, NgZone} from "@angular/core";
 import {environment} from "@env";
 import {BehaviorSubject} from "rxjs";
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {GoogleAuthService} from "./google-auth.service";
 
 declare var gapi: any;
-declare var google: any;
 
 // See https://developers.google.com/people/quickstart/js
 
@@ -37,16 +37,17 @@ export class PeopleApiService {
     scope: this.CONTACTS_READ_SCOPE,
   }
 
-  constructor(private zone: NgZone) {
+  constructor(private zone: NgZone, private googleAuthService: GoogleAuthService) {
   }
 
   public initializeApi(): Promise<any> {
     return new Promise<void>((resolve, reject) => {
       this.gapiInit()
         .then(() => {
-          this.tokenClient = google.accounts.oauth2.initTokenClient(this.OAUTH2_CONFIG)
-          console.log("initTokenClient complete", this.tokenClient)
-          resolve()
+          this.googleAuthService.getTokenClient(this.OAUTH2_CONFIG)
+            .then(
+              () => { resolve() },
+              (error) => { reject(error)})
         })
         .catch((err) => {
           console.log('initTokenClient failed')
@@ -55,6 +56,10 @@ export class PeopleApiService {
     })
   }
 
+  /**
+   * Perform gapi client initialization for the people API
+   * @private
+   */
   private gapiInit() : Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.apiReady$.value) {
@@ -78,8 +83,6 @@ export class PeopleApiService {
       }
     })
   }
-
-
 
   // see: https://stackoverflow.com/questions/38091215/import-gapi-auth2-in-angular-2-typescript
 
