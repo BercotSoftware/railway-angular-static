@@ -5,7 +5,7 @@ declare var google: any;
 @Injectable({
   providedIn: 'root'
 })
-export class GoogleAuthService {
+export class GoogleOAuth2Service {
 
   constructor(private zone: NgZone) { }
 

@@ -30,23 +30,18 @@ export class ContactImportComponent implements OnInit {
 
   importContacts() {
 
-    this.peopleApiService.initializeApi().then(() => {
-      console.log('People API is ready')
-    })
-
-
-    // this.peopleApiService.getContactList()
-    //   .then((result) => {
-    //     console.log('loaded contacts', result)
-    //     this.nextPageToken = result.nextPageToken
-    //     this.totalPeople = result.totalPeople || 0
-    //     this.totalItems = result.totalItems || 0
-    //     this.$contacts.next(result.connections)
-    //   })
-    //   .catch((error: Error) => {
-    //       console.log('contact load failed', error)
-    //     }
-    //   )
+    this.peopleApiService.getContactList()
+      .then((result) => {
+        console.log('loaded contacts', result)
+        this.nextPageToken = result.nextPageToken
+        this.totalPeople = result.totalPeople || 0
+        this.totalItems = result.totalItems || 0
+        this.$contacts.next(result.connections)
+      })
+      .catch((error: Error) => {
+          console.log('contact load failed', error)
+        }
+      )
 
   }
 
