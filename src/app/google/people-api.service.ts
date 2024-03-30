@@ -94,12 +94,16 @@ export class PeopleApiService {
               scopes.forEach(scope => this.grantedScopes.add(scope))
             }
 
+            console.log('Client token: ', gapi.client.getToken())
+
             if (this.grantedScopes.has(OAUTH2_SCOPES.CONTACTS_READONLY)) {
               console.log('Permission granted')
             }
             resolve(tokenResponse)
 
           }
+
+          // This will fire the event above
           tokenClient.requestAccessToken()
 
           console.log('Client token: ', gapi.client.getToken())
