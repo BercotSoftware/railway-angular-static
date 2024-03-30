@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {BehaviorSubject} from "rxjs";
 import {ContactsService, ContactSummary} from "@golf-api";
-import {PeopleApiService} from "../../_services/people-api.service";
+import {PeopleApiService} from "../../google/people-api.service";
 
 
 @Component({

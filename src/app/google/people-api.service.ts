@@ -4,6 +4,7 @@ import {BehaviorSubject} from "rxjs";
 import {GoogleOAuth2Service} from "./google-oauth2.service";
 
 declare var gapi: any;
+declare var google: any;
 
 // See https://developers.google.com/people/quickstart/js
 
@@ -14,7 +15,6 @@ declare var gapi: any;
 })
 export class PeopleApiService {
   public apiReady$ = new BehaviorSubject<boolean>(false)
-  private tokenClient: any;
 
   readonly GAPI_CLIENT_CONFIG = {
     'apiKey': environment.GOOGLE_API_KEY,
@@ -32,10 +32,11 @@ export class PeopleApiService {
   }
 
   /**
-   * Perform gapi and gapi client initialization for the people API
+   * Perform gapi and gapi client initialization for the people API, it must be called
+   * at some point before making client calls
    * @private
    */
-  private initializeApi() : Promise<void> {
+  public initializeGapiClient() : Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.apiReady$.value) {
         console.log("GAPI already loaded")
@@ -46,21 +47,11 @@ export class PeopleApiService {
           ontimeout: reject,
           timeout: 1000, // 5 seconds
           callback: () => {
-            console.log("GAPI load complete")
+            // console.log("GAPI load complete")
             gapi.client.init(this.GAPI_CLIENT_CONFIG).then(() => {
-              console.log("client init complete")
-
-              this.googleAuthService.getTokenClient(this.GOOGLE_OAUTH2_CONFIG)
-                .then((result) => {
-                  this.tokenClient = result
+              // console.log("client init complete")
                   this.apiReady$.next(true)
-                  console.log("Token client ready")
                   resolve()
-                })
-                .catch((err) => {
-                  console.log("Token client failed")
-                  reject(err)
-                })
             });
           },
         })
@@ -77,21 +68,53 @@ export class PeopleApiService {
     'personFields': 'names,nicknames,emailAddresses,addresses,phoneNumbers',
   }
 
+  private initTokenClient() : Promise<any> {
+    return new Promise((resolve, reject) => {
+      const tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/contacts.readonly',
+        callback: (tokenResponse: any) => {
+          console.log('initTokenClient callback', tokenResponse)
+          if (tokenResponse) {
+            resolve({ client: tokenClient, response: tokenResponse })
+          } else {
+            reject('Error requesting access')
+          }
+        }
+      })
+    })
+  }
+
   getContactList(): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.initializeApi()
+      this.initializeGapiClient()
         .then(() => {
+
+          console.log('APi ready')
+
+          const tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
+            scope: 'https://www.googleapis.com/auth/contacts.readonly',
+            callback: (tokenResponse: any) => {
+              console.log('initTokenClient callback', tokenResponse)
+
+              const result = gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
+              resolve(result)
+
+            }
+          })
+
           if (gapi.client.getToken() === null) {
             // Prompt the user to select a Google Account and ask for consent to share their data
             // when establishing a new session.
-            this.tokenClient.requestAccessToken({prompt: 'consent'})
+            tokenClient.requestAccessToken({prompt: 'consent'})
           } else {
             // Skip display of account chooser and consent dialog for an existing session.
-            this.tokenClient.requestAccessToken({prompt: ''})
+            tokenClient.requestAccessToken({prompt: ''})
           }
 
-          const result = gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
-          resolve(result)
+          // How do I fail??
+
         })
         .catch((err) => {
           console.log('Caught error 2')

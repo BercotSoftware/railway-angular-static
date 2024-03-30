@@ -28,7 +28,8 @@
     ],
     "paths": {
       "@golf-api": [ "src/generated/play-golf-api/index.ts" ],
-      "@env": [ "src/environments/environment.ts" ]
+      "@env": [ "src/environments/environment.ts" ],
+      "@google": [ "src/app/google/index.ts" ]
     }
   },
   "angularCompilerOptions": {
