@@ -2,6 +2,7 @@ import {Injectable, NgZone} from "@angular/core";
 import {environment} from "@env";
 import {BehaviorSubject} from "rxjs";
 import {GoogleOAuth2Service} from "./google-oauth2.service";
+import {OAUTH2_SCOPES, StringAsScopes} from "./scopes";
 
 declare var gapi: any;
 declare var google: any;
@@ -16,6 +17,8 @@ declare var google: any;
 export class PeopleApiService {
   public apiReady$ = new BehaviorSubject<boolean>(false)
 
+  grantedScopes : Set<string> = new Set()
+
   readonly GAPI_CLIENT_CONFIG = {
     'apiKey': environment.GOOGLE_API_KEY,
     'discoveryDocs': ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"],
@@ -25,7 +28,7 @@ export class PeopleApiService {
   // included, separated by spaces.
   readonly GOOGLE_OAUTH2_CONFIG = {
     client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
-    scope: 'https://www.googleapis.com/auth/contacts.readonly',
+    scope: OAUTH2_SCOPES.CONTACTS_READONLY,
   }
 
   constructor(private zone: NgZone, private googleAuthService: GoogleOAuth2Service) {
@@ -68,23 +71,6 @@ export class PeopleApiService {
     'personFields': 'names,nicknames,emailAddresses,addresses,phoneNumbers',
   }
 
-  private initTokenClient() : Promise<any> {
-    return new Promise((resolve, reject) => {
-      const tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
-        scope: 'https://www.googleapis.com/auth/contacts.readonly',
-        callback: (tokenResponse: any) => {
-          console.log('initTokenClient callback', tokenResponse)
-          if (tokenResponse) {
-            resolve({ client: tokenClient, response: tokenResponse })
-          } else {
-            reject('Error requesting access')
-          }
-        }
-      })
-    })
-  }
-
   getContactList(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       this.initializeGapiClient()
@@ -95,23 +81,45 @@ export class PeopleApiService {
           const tokenClient = google.accounts.oauth2.initTokenClient({
             client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
             scope: 'https://www.googleapis.com/auth/contacts.readonly',
-            callback: (tokenResponse: any) => {
-              console.log('initTokenClient callback', tokenResponse)
-
-              const result = gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
-              resolve(result)
-
-            }
+            callback: undefined
           })
 
-          if (gapi.client.getToken() === null) {
-            // Prompt the user to select a Google Account and ask for consent to share their data
-            // when establishing a new session.
-            tokenClient.requestAccessToken({prompt: 'consent'})
-          } else {
-            // Skip display of account chooser and consent dialog for an existing session.
-            tokenClient.requestAccessToken({prompt: ''})
+          console.log('Client token: ', gapi.client.getToken())
+
+          // See if you already have access???
+          tokenClient.callback = (tokenResponse: any) => {
+            console.log('Response: ', tokenResponse)
+            if (tokenResponse.scope) {
+              const scopes = StringAsScopes(tokenResponse.scope)
+              scopes.forEach(scope => this.grantedScopes.add(scope))
+            }
+
+            if (this.grantedScopes.has(OAUTH2_SCOPES.CONTACTS_READONLY)) {
+              console.log('Permission granted')
+            }
+            resolve(tokenResponse)
+
           }
+          tokenClient.requestAccessToken()
+
+          console.log('Client token: ', gapi.client.getToken())
+
+          resolve(undefined)
+
+          // tokenClient.callback = (tokenResponse: any) => {
+          //   console.log('initTokenClient callback', tokenResponse)
+          //   const result = gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
+          //   resolve(result)
+          // }
+          //
+          // if (gapi.client.getToken() === null) {
+          //   // Prompt the user to select a Google Account and ask for consent to share their data
+          //   // when establishing a new session.
+          //   tokenClient.requestAccessToken({prompt: 'consent'})
+          // } else {
+          //   // Skip display of account chooser and consent dialog for an existing session.
+          //   tokenClient.requestAccessToken({prompt: ''})
+          // }
 
           // How do I fail??
 

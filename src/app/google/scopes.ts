@@ -33,5 +33,9 @@ export function ScopesAsString(input: string | string[]): string {
  * @constructor
  */
 export function StringAsScopes(input: string) : string[] {
-  return input.split(' ').filter(substring => substring.trim() !== '');
+  if (input) {
+    return input.split(' ').filter(substring => substring.trim() !== '');
+  } else {
+    return []
+  }
 }
