@@ -146,4 +146,17 @@ export class PeopleApiService {
     })
   }
 
+  revokePermissions() {
+    const token = gapi?.client?.getToken()
+    if (token?.access_token) {
+      this.grantedScopes.clear()
+      google.accounts.oauth2.revoke(token.access_token, (done: any) => {
+        console.log(done);
+        console.log(done.successful);
+        console.log(done.error);
+        console.log(done.error_description);
+      });
+
+    }
+  }
 }

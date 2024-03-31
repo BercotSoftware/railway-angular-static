@@ -30,4 +30,8 @@ export class HomeComponent {
       )
 
   }
+
+  revokePermissions() {
+    this.peopleApiService.revokePermissions()
+  }
 }
