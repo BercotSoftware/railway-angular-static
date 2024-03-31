@@ -71,44 +71,54 @@ export class PeopleApiService {
     'personFields': 'names,nicknames,emailAddresses,addresses,phoneNumbers',
   }
 
+  /**
+   * Retrieve a list of contacts
+   */
   getContactList(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       this.initializeGapiClient()
         .then(() => {
 
-          console.log('APi ready')
-
-          const tokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
-            scope: 'https://www.googleapis.com/auth/contacts.readonly',
-            callback: undefined
-          })
-
-          console.log('Client token: ', gapi.client.getToken())
-
-          // See if you already have access???
-          tokenClient.callback = (tokenResponse: any) => {
-            console.log('Response: ', tokenResponse)
-            if (tokenResponse.scope) {
-              const scopes = StringAsScopes(tokenResponse.scope)
-              scopes.forEach(scope => this.grantedScopes.add(scope))
-            }
-
-            console.log('Client token: ', gapi.client.getToken())
-
-            if (this.grantedScopes.has(OAUTH2_SCOPES.CONTACTS_READONLY)) {
-              console.log('Permission granted')
-            }
-            resolve(tokenResponse)
-
+          // Function to return people
+          const peopleFn = () => {
+            const result = gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
+            resolve(result)
           }
 
-          // This will fire the event above
-          tokenClient.requestAccessToken()
+          /**
+           * If we already have permission, make the call, otherwise go through
+           * the user prompts and call on success
+           */
+          if (this.grantedScopes.has(OAUTH2_SCOPES.CONTACTS_READONLY)) {
+            peopleFn()
+          } else {
+            const tokenClient = google.accounts.oauth2.initTokenClient({
+              client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
+              scope: 'https://www.googleapis.com/auth/contacts.readonly',
+              callback: (tokenResponse: any) => {
+                console.log('Response: ', tokenResponse)
+                if (tokenResponse.scope) {
+                  const scopes = StringAsScopes(tokenResponse.scope)
+                  scopes.forEach(scope => this.grantedScopes.add(scope))
+                }
 
-          console.log('Client token: ', gapi.client.getToken())
+                console.log('Client token: ', gapi.client.getToken())
 
-          resolve(undefined)
+                if (this.grantedScopes.has(OAUTH2_SCOPES.CONTACTS_READONLY)) {
+                  console.log('Permission granted')
+                  peopleFn()
+                } else {
+                  reject('Permission denied')
+                }
+              }
+            })
+
+            // This will fire the event above
+            tokenClient.requestAccessToken({prompt: ''})
+          }
+
+
+          // resolve(undefined)
 
           // tokenClient.callback = (tokenResponse: any) => {
           //   console.log('initTokenClient callback', tokenResponse)
