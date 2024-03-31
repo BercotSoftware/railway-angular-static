@@ -7,8 +7,9 @@ import {OAUTH2_SCOPES, StringAsScopes} from "./scopes";
 declare var gapi: any;
 declare var google: any;
 
-// See https://developers.google.com/people/quickstart/js
-
+// https://developers.google.com/identity/oauth2/web/guides/use-token-model
+// https://developers.google.com/people/quickstart/js
+// https://stackoverflow.com/questions/38091215/import-gapi-auth2-in-angular-2-typescript
 
 
 @Injectable({
@@ -63,8 +64,6 @@ export class PeopleApiService {
   }
 
 
-  // see: https://stackoverflow.com/questions/38091215/import-gapi-auth2-in-angular-2-typescript
-
   static readonly RESOURCE_CONFIG = {
     'resourceName': 'people/me',
     'pageSize': 100,
@@ -80,9 +79,9 @@ export class PeopleApiService {
         .then(() => {
 
           // Function to return people
-          const peopleFn = () => {
-            const result = gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
-            resolve(result)
+          const peopleFn = async () => {
+            const response = await gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
+            resolve(response.result)
           }
 
           /**
@@ -115,28 +114,8 @@ export class PeopleApiService {
 
             // This will fire the event above
             tokenClient.requestAccessToken({prompt: ''})
+            //   tokenClient.requestAccessToken({prompt: 'consent'})
           }
-
-
-          // resolve(undefined)
-
-          // tokenClient.callback = (tokenResponse: any) => {
-          //   console.log('initTokenClient callback', tokenResponse)
-          //   const result = gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
-          //   resolve(result)
-          // }
-          //
-          // if (gapi.client.getToken() === null) {
-          //   // Prompt the user to select a Google Account and ask for consent to share their data
-          //   // when establishing a new session.
-          //   tokenClient.requestAccessToken({prompt: 'consent'})
-          // } else {
-          //   // Skip display of account chooser and consent dialog for an existing session.
-          //   tokenClient.requestAccessToken({prompt: ''})
-          // }
-
-          // How do I fail??
-
         })
         .catch((err) => {
           console.log('Caught error 2')
