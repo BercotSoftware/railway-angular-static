@@ -80,8 +80,8 @@ export class PeopleApiService {
 
           // Function to return people
           const peopleFn = async () => {
-            const response = await gapi.client.people.people.connections.list(PeopleApiService.RESOURCE_CONFIG)
-            resolve(response.result)
+            const contacts = await this.getAllContacts()
+            resolve(contacts)
           }
 
           /**
@@ -124,6 +124,34 @@ export class PeopleApiService {
 
     })
   }
+
+  private async getAllContacts() {
+    let contacts: any[] = []
+    let request = {
+      resourceName: 'people/me',
+      pageSize: 100,
+      personFields: 'names,nicknames,emailAddresses,addresses,phoneNumbers',
+      requestSyncToken: true,
+      syncToken: undefined,
+      pageToken: undefined,
+    }
+
+    let response = await gapi.client.people.people.connections.list(request)
+    contacts = response?.result?.connections || []
+
+    while (response?.result?.nextPageToken) {
+      request.syncToken = response.result.syncToken
+      request.pageToken = response.result.nextPageToken
+
+      response = await gapi.client.people.people.connections.list(request)
+      response?.result?.connections?.forEach((contact: any) => {
+        contacts.push(contact)
+      })
+    }
+
+    return contacts
+  }
+
 
   revokePermissions() {
     const token = gapi?.client?.getToken()

@@ -15,9 +15,7 @@ import {PeopleApiService} from "../../google/people-api.service";
 export class ContactImportComponent implements OnInit {
 
   $contacts = new BehaviorSubject<any[]>([]);
-  private nextPageToken: any;
-  private totalItems: number = 0;
-  private totalPeople: number = 0;
+  contactResult: any
 
 
   constructor(private contactsService: ContactsService,
@@ -27,23 +25,29 @@ export class ContactImportComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  get canLoadMode() : boolean {
+    return !!this.contactResult?.syncToken || !!this.contactResult?.nextPageToken
+  }
+
+  get canRevoke() : boolean {
+    return !!this.contactResult
+  }
 
   importContacts() {
-
     this.peopleApiService.getContactList()
       .then((result) => {
         console.log('loaded contacts', result)
-        this.nextPageToken = result.nextPageToken
-        this.totalPeople = result.totalPeople || 0
-        this.totalItems = result.totalItems || 0
-        this.$contacts.next(result.connections)
+        this.contactResult = result
       })
       .catch((error: Error) => {
           console.log('contact load failed', error)
         }
       )
-
   }
 
+  revokePermissions() {
+    this.contactResult = undefined
+    this.peopleApiService.revokePermissions()
+  }
 
 }
