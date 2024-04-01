@@ -1,15 +1,17 @@
 <table class="table">
   <thead>
   <tr>
-    <th scope="col">First name</th>
-    <th scope="col">Last name</th>
+    <th scope="col">Display name</th>
+    <th scope="col">email</th>
+    <th scope="col">Phone</th>
   </tr>
   </thead>
   <tbody>
   <ng-container *ngFor="let contact of $contacts | async">
     <tr>
-      <td>{{ contact.names[0].givenName }}</td>
-      <td>{{ contact.names[0].familyName }}</td>
+      <td>{{ contact.displayName }}</td>
+      <td>{{ contact.email }}</td>
+      <td>{{ contact.phoneNumber }}</td>
     </tr>
   </ng-container>
   </tbody>

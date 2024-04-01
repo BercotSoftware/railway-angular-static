@@ -73,7 +73,7 @@ export class PeopleApiService {
   /**
    * Retrieve a list of contacts
    */
-  getContactList(): Promise<any> {
+  getContactList(): Promise<any[]> {
     return new Promise(async (resolve, reject) => {
       this.initializeGapiClient()
         .then(() => {

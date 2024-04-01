@@ -1,8 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {BehaviorSubject} from "rxjs";
+import {CommonModule} from '@angular/common';
+import {BehaviorSubject, from, map} from "rxjs";
 import {ContactsService, ContactSummary} from "@golf-api";
 import {PeopleApiService} from "../../google/people-api.service";
+
+/**
+ * Google names actually have multiple names and e-mails
+ */
+interface Connection {
+  displayName?: string,
+  familyName?: string,
+  givenName?: string,
+  nickname?: string,
+  emailType?: string,
+  email?: string,
+  phoneType?: string,
+  phoneNumber?: string,
+}
 
 
 @Component({
@@ -15,7 +29,6 @@ import {PeopleApiService} from "../../google/people-api.service";
 export class ContactImportComponent implements OnInit {
 
   $contacts = new BehaviorSubject<any[]>([]);
-  contactResult: any
 
 
   constructor(private contactsService: ContactsService,
@@ -25,29 +38,39 @@ export class ContactImportComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get canLoadMode() : boolean {
-    return !!this.contactResult?.syncToken || !!this.contactResult?.nextPageToken
-  }
-
-  get canRevoke() : boolean {
-    return !!this.contactResult
-  }
 
   importContacts() {
     this.peopleApiService.getContactList()
       .then((result) => {
-        console.log('loaded contacts', result)
-        this.contactResult = result
+        const contacts = result.map(this.coerceConnection)
+        this.$contacts.next(contacts)
       })
-      .catch((error: Error) => {
-          console.log('contact load failed', error)
-        }
-      )
+
   }
 
   revokePermissions() {
-    this.contactResult = undefined
     this.peopleApiService.revokePermissions()
   }
 
+  private coerceConnection(connection: any) {
+    let result: Connection = {}
+
+    if (Array.isArray(connection['names'])) {
+      const nameObject = connection['names'][0]
+      result.displayName = nameObject['displayName']
+      result.familyName = nameObject['familyName']
+    }
+    if (Array.isArray(connection['emailAddresses'])) {
+      const emailObject = connection['emailAddresses'][0]
+      result.emailType = emailObject['formattedType']
+      result.email = emailObject['value']
+    }
+    if (Array.isArray(connection['phoneNumbers'])) {
+      const phoneObject = connection['phoneNumbers'][0]
+      result.phoneType = phoneObject['formattedType']
+      result.phoneNumber = phoneObject['value']
+    }
+
+    return result
+  }
 }
