@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {BehaviorSubject, from, map} from "rxjs";
-import {ContactDetails, ContactsService, ContactSummary} from "@golf-api";
+import {BehaviorSubject} from "rxjs";
+import {ContactDetails, ContactsService} from "@golf-api";
 import {PeopleApiService} from "../../google/people-api.service";
+import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
 
 @Component({
   selector: 'app-contact-import',
@@ -14,6 +15,7 @@ import {PeopleApiService} from "../../google/people-api.service";
 export class ContactImportComponent {
 
   $contacts = new BehaviorSubject<ContactDetails[]>([]);
+  static phoneNumberUtil = PhoneNumberUtil.getInstance()
 
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
@@ -42,21 +44,37 @@ export class ContactImportComponent {
 
     if (Array.isArray(connection['names'])) {
       const nameObject = connection['names'][0]
-      result.firstName = nameObject['givenName']
-      result.lastName = nameObject['familyName']
-      result.nickname = nameObject['nickname']
+      if (nameObject) {
+        result.firstName = nameObject['givenName']
+        result.lastName = nameObject['familyName']
+        result.nickname = nameObject['nickname']
+      }
     }
     if (Array.isArray(connection['emailAddresses'])) {
       const emailObject = connection['emailAddresses'][0]
-      // result.emailType = emailObject['formattedType']
-      result.email = emailObject['value']
+      if (emailObject) {
+        // result.emailType = emailObject['formattedType']
+        result.email = emailObject['value']
+      }
     }
     if (Array.isArray(connection['phoneNumbers'])) {
       const phoneObject = connection['phoneNumbers'][0]
-      // result.phoneType = phoneObject['formattedType']
-      result.phone = phoneObject['value']
+      if (phoneObject) {
+        // result.phoneType = phoneObject['formattedType']
+        result.phone = ContactImportComponent.coercePhoneNumber(phoneObject['value'])
+      }
     }
 
     return result
+  }
+
+  private static coercePhoneNumber(phoneNumber?: string) {
+    if (phoneNumber) {
+      const phoneNumberUtil = PhoneNumberUtil.getInstance()
+      const phone = phoneNumberUtil.parse(phoneNumber, "US")
+      return (phone) ? phoneNumberUtil.format(phone, PhoneNumberFormat.NATIONAL) : undefined
+    } else {
+      return undefined
+    }
   }
 }
