@@ -1,23 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BehaviorSubject, from, map} from "rxjs";
-import {ContactsService, ContactSummary} from "@golf-api";
+import {ContactDetails, ContactsService, ContactSummary} from "@golf-api";
 import {PeopleApiService} from "../../google/people-api.service";
-
-/**
- * Google names actually have multiple names and e-mails
- */
-interface Connection {
-  displayName?: string,
-  familyName?: string,
-  givenName?: string,
-  nickname?: string,
-  emailType?: string,
-  email?: string,
-  phoneType?: string,
-  phoneNumber?: string,
-}
-
 
 @Component({
   selector: 'app-contact-import',
@@ -26,18 +11,13 @@ interface Connection {
   templateUrl: './contact-import.component.html',
   styleUrl: './contact-import.component.css'
 })
-export class ContactImportComponent implements OnInit {
+export class ContactImportComponent {
 
-  $contacts = new BehaviorSubject<any[]>([]);
-
+  $contacts = new BehaviorSubject<ContactDetails[]>([]);
 
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
   }
-
-  ngOnInit(): void {
-  }
-
 
   importContacts() {
     this.peopleApiService.getContactList()
@@ -52,23 +32,29 @@ export class ContactImportComponent implements OnInit {
     this.peopleApiService.revokePermissions()
   }
 
-  private coerceConnection(connection: any) {
-    let result: Connection = {}
+  /**
+   * Convert the google API results into a simpler object
+   * @param connection
+   * @private
+   */
+  private coerceConnection(connection: any) : ContactDetails {
+    let result: ContactDetails = {}
 
     if (Array.isArray(connection['names'])) {
       const nameObject = connection['names'][0]
-      result.displayName = nameObject['displayName']
-      result.familyName = nameObject['familyName']
+      result.firstName = nameObject['givenName']
+      result.lastName = nameObject['familyName']
+      result.nickname = nameObject['nickname']
     }
     if (Array.isArray(connection['emailAddresses'])) {
       const emailObject = connection['emailAddresses'][0]
-      result.emailType = emailObject['formattedType']
+      // result.emailType = emailObject['formattedType']
       result.email = emailObject['value']
     }
     if (Array.isArray(connection['phoneNumbers'])) {
       const phoneObject = connection['phoneNumbers'][0]
-      result.phoneType = phoneObject['formattedType']
-      result.phoneNumber = phoneObject['value']
+      // result.phoneType = phoneObject['formattedType']
+      result.phone = phoneObject['value']
     }
 
     return result

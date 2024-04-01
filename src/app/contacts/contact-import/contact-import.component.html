@@ -1,7 +1,8 @@
 <table class="table">
   <thead>
   <tr>
-    <th scope="col">Display name</th>
+    <th scope="col">First name</th>
+    <th scope="col">Last name</th>
     <th scope="col">email</th>
     <th scope="col">Phone</th>
   </tr>
@@ -9,9 +10,10 @@
   <tbody>
   <ng-container *ngFor="let contact of $contacts | async">
     <tr>
-      <td>{{ contact.displayName }}</td>
+      <td>{{ contact.firstName }}</td>
+      <td>{{ contact.lastName }}</td>
       <td>{{ contact.email }}</td>
-      <td>{{ contact.phoneNumber }}</td>
+      <td>{{ contact.phone }}</td>
     </tr>
   </ng-container>
   </tbody>
