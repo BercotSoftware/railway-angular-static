@@ -25,9 +25,9 @@ export class ContactImportComponent {
     this.peopleApiService.getContactList()
       .then((result) => {
         const contacts = result.map(this.coerceConnection)
+        console.log(`Imported ${contacts.length} contacts`)
         this.$contacts.next(contacts)
       })
-
   }
 
   revokePermissions() {
