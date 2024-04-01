@@ -80,7 +80,7 @@ export class PeopleApiService {
 
           // Function to return people
           const peopleFn = async () => {
-            const contacts = await this.getAllContacts()
+            const contacts = await this._getAllContacts()
             resolve(contacts)
           }
 
@@ -125,7 +125,13 @@ export class PeopleApiService {
     })
   }
 
-  private async getAllContacts() {
+  /**
+   * After going through all the authentication stuff this is the logic to
+   * retrieve all connections, not sure if it coule be simplified to do
+   * an initial retrieval then next next, etc
+   * @private
+   */
+  private async _getAllContacts() {
     let contacts: any[] = []
     let request = {
       resourceName: 'people/me',
