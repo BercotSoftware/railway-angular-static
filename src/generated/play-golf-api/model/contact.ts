@@ -22,6 +22,7 @@ export interface Contact {
     nickname?: string;
     profileId?: string;
     ownerId?: string;
+    googleContactId?: string;
     phoneNumbers?: Array<PhoneNumberEntry>;
     addresses?: Array<AddressEntry>;
     emailAddresses?: Array<EmailAddressEntry>;
@@ -30,10 +31,10 @@ export interface Contact {
     token?: VerificationToken;
     registered?: boolean;
     primaryEmail?: EmailAddressEntry;
+    primaryAddress?: AddressEntry;
+    primaryPhone?: PhoneNumberEntry;
     primaryEmailAddress?: string;
     primaryPhoneNumber?: string;
-    primaryPhone?: PhoneNumberEntry;
-    primaryAddress?: AddressEntry;
 }
 export namespace Contact {
     export type StatusEnum = 'New' | 'Pending' | 'Accepted' | 'Declined' | 'Expired';

@@ -531,6 +531,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
     put:
@@ -560,6 +566,8 @@ paths:
           description: Bad request
         "401":
           description: Access token is missing or invalid
+        "403":
+          description: Access denied
       security:
       - bearerAuth: []
     delete:
@@ -583,6 +591,8 @@ paths:
           description: Bad request
         "401":
           description: Access token is missing or invalid
+        "403":
+          description: Access denied
       security:
       - bearerAuth: []
   /contacts/invite:
@@ -612,6 +622,12 @@ paths:
                 $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
           content:
             application/json:
               schema:
@@ -690,6 +706,90 @@ paths:
                 $ref: '#/components/schemas/GolfGroupDetails'
       security:
       - bearerAuth: []
+  /contacts:
+    get:
+      tags:
+      - contacts
+      summary: Get contacts for the currently logged-in user
+      operationId: getContacts
+      parameters:
+      - name: page
+        in: query
+        description: Paging and sort options
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: pattern
+        in: query
+        description: Search pattern
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - contacts
+      summary: Create a new contact
+      operationId: createContact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+      security:
+      - bearerAuth: []
   /contacts/decline/{id}:
     post:
       tags:
@@ -712,6 +812,57 @@ paths:
           description: Bad request
         "401":
           description: Access token is missing or invalid
+        "403":
+          description: Access denied
+      security:
+      - bearerAuth: []
+  /contacts/batch:
+    post:
+      tags:
+      - contacts
+      summary: Create multiple new contacts
+      operationId: batchCreateContacts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
   /contacts/accept/{id}:
@@ -747,35 +898,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
-      security:
-      - bearerAuth: []
-  /contacts/:
-    post:
-      tags:
-      - contacts
-      summary: Create a new contact
-      operationId: createContact
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Contact'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contact'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contact'
-        "401":
-          description: Access token is missing or invalid
+        "403":
+          description: Access denied
           content:
             application/json:
               schema:
@@ -1059,46 +1183,6 @@ paths:
                 $ref: '#/components/schemas/FindFavoriteCoursesResponse'
       security:
       - bearerAuth: []
-  /contacts:
-    get:
-      tags:
-      - contacts
-      summary: Get contacts for the currently logged-in user
-      operationId: getContacts
-      parameters:
-      - name: page
-        in: query
-        description: Paging and sort options
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
-      - name: pattern
-        in: query
-        description: Search pattern
-        required: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactsResponse'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResponse'
-        "401":
-          description: Access token is missing or invalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResponse'
-      security:
-      - bearerAuth: []
   /contacts/profile/{id}:
     get:
       tags:
@@ -1129,6 +1213,12 @@ paths:
                 $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
           content:
             application/json:
               schema:
@@ -1552,6 +1642,8 @@ components:
           type: string
         ownerId:
           type: string
+        googleContactId:
+          type: string
         phoneNumbers:
           type: array
           items:
@@ -1581,14 +1673,14 @@ components:
           type: boolean
         primaryEmail:
           $ref: '#/components/schemas/EmailAddressEntry'
+        primaryAddress:
+          $ref: '#/components/schemas/AddressEntry'
+        primaryPhone:
+          $ref: '#/components/schemas/PhoneNumberEntry'
         primaryEmailAddress:
           type: string
         primaryPhoneNumber:
           type: string
-        primaryPhone:
-          $ref: '#/components/schemas/PhoneNumberEntry'
-        primaryAddress:
-          $ref: '#/components/schemas/AddressEntry'
     EmailAddressEntry:
       type: object
       properties:

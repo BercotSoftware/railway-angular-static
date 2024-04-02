@@ -1,22 +1,24 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {BehaviorSubject, from, map, of} from "rxjs";
+import {BehaviorSubject, count, filter, from, map, of, Subject} from "rxjs";
 import {Contact, ContactsService, EmailAddressEntry, PhoneNumberEntry} from "@golf-api";
 import {PeopleApiService} from "@google";
 import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
+
+// see: https://getbootstrap.com/docs/4.0/content/tables/
 
 interface ExtendedContact extends Contact {
   selected?: boolean
 }
 
 const DUMMY_DATA: ExtendedContact[] = [
-  { firstName: 'dummy1', lastName: 'dummy1', nickname: 'dummy1', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  { firstName: 'dummy2', lastName: 'dummy2', nickname: 'dummy2', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  { firstName: 'dummy3', lastName: 'dummy3', nickname: 'dummy3', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  { firstName: 'dummy4', lastName: 'dummy4', nickname: 'dummy4', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  { firstName: 'dummy5', lastName: 'dummy5', nickname: 'dummy5', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  { firstName: 'dummy6', lastName: 'dummy6', nickname: 'dummy6', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  { firstName: 'dummy7', lastName: 'dummy7', nickname: 'dummy7', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  // { firstName: 'dummy1', lastName: 'dummy1', nickname: 'dummy1', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  // { firstName: 'dummy2', lastName: 'dummy2', nickname: 'dummy2', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  // { firstName: 'dummy3', lastName: 'dummy3', nickname: 'dummy3', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  // { firstName: 'dummy4', lastName: 'dummy4', nickname: 'dummy4', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  // { firstName: 'dummy5', lastName: 'dummy5', nickname: 'dummy5', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  // { firstName: 'dummy6', lastName: 'dummy6', nickname: 'dummy6', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  // { firstName: 'dummy7', lastName: 'dummy7', nickname: 'dummy7', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
 ]
 
 @Component({
@@ -28,12 +30,23 @@ const DUMMY_DATA: ExtendedContact[] = [
 })
 export class ContactImportComponent {
 
-  $contacts = new BehaviorSubject<ExtendedContact[]>(DUMMY_DATA);
+  contactsSubject = new BehaviorSubject<ExtendedContact[]>(DUMMY_DATA);
+  contacts$ = this.contactsSubject.asObservable()
+
   static phoneNumberUtil = PhoneNumberUtil.getInstance()
 
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
 
+  }
+
+  /**
+   * Used to allow commit of selected items
+   */
+  noSelectedContacts() {
+    return this.contactsSubject.pipe(
+      map(items => !items.some(item => item.selected))
+    )
   }
 
   importContacts() {
@@ -42,7 +55,7 @@ export class ContactImportComponent {
         console.log('Google contacts', result)
         const contacts = result.map(this.coerceConnection)
         console.log(`Imported ${contacts.length} contacts`)
-        this.$contacts.next(contacts)
+        this.contactsSubject.next(contacts)
       })
       .catch((error) => {
         console.log('Error importing contacts', error)
@@ -80,9 +93,10 @@ export class ContactImportComponent {
     if (Array.isArray(connection['names'])) {
       const nameObject = connection['names'][0]
       if (nameObject) {
-        result.firstName = nameObject['givenName']
-        result.lastName = nameObject['familyName']
-        result.nickname = nameObject['nickname']
+        result.firstName = nameObject.givenName
+        result.lastName = nameObject.familyName
+        result.nickname = nameObject.nickname
+        result.googleContactId = nameObject.metadata?.source?.id
       }
     }
     if (Array.isArray(connection['emailAddresses'])) {
@@ -132,18 +146,46 @@ export class ContactImportComponent {
   }
 
   removeContact(index: number) {
-    this.$contacts.value.splice(index, 1)
+    this.contactsSubject.value.splice(index, 1)
   }
 
   selectContact(i: number) {
-    this.$contacts.value[i].selected = true
+    this.contactsSubject.value[i].selected = true
   }
 
   unselectContact(i: number) {
-    this.$contacts.value[i].selected = false
+    this.contactsSubject.value[i].selected = false
   }
 
   toggleSelected(i: number) {
-    this.$contacts.value[i].selected = !this.$contacts.value[i].selected
+    this.contactsSubject.value[i].selected = !this.contactsSubject.value[i].selected
+  }
+
+  addContacts() {
+    console.log('Adding contacts!!')
+    this.contactsSubject.pipe(
+      map(items => items.filter(item => item.selected))
+    ).subscribe(selectedItems => {
+
+      if (selectedItems.length > 0) {
+
+        this.contactsService.batchCreateContacts(selectedItems)
+          .subscribe({
+            next: (result) => {
+              console.log('Saved contacts!')
+              this.contactsSubject.next(this.contactsSubject.getValue().filter(item => !item.selected));
+            },
+            error: (err) => {
+              console.log('Error adding contacts', err)
+            }
+          })
+
+      }
+
+    })
+
+    // TODO commit to REST controller
+
+
   }
 }
