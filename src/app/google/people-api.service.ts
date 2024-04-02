@@ -1,8 +1,10 @@
+/// <reference types="@maxim_mazurok/gapi.client.people-v1" />
+
 import {Injectable, NgZone} from "@angular/core";
 import {environment} from "@env";
 import {BehaviorSubject} from "rxjs";
 import {GoogleOAuth2Service} from "./google-oauth2.service";
-import {OAUTH2_SCOPES, StringAsScopes} from "./scopes";
+import {OAUTH2_SCOPES, ScopesAsString, StringAsScopes} from "./scopes";
 
 declare var gapi: any;
 declare var google: any;
@@ -24,13 +26,6 @@ export class PeopleApiService {
     'apiKey': environment.GOOGLE_API_KEY,
     'discoveryDocs': ["https://www.googleapis.com/discovery/v1/apis/people/v1/rest"],
   };
-
-  // Authorization scopes required by the API; multiple scopes can be
-  // included, separated by spaces.
-  readonly GOOGLE_OAUTH2_CONFIG = {
-    client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
-    scope: OAUTH2_SCOPES.CONTACTS_READONLY,
-  }
 
   constructor(private zone: NgZone, private googleAuthService: GoogleOAuth2Service) {
   }
@@ -63,13 +58,6 @@ export class PeopleApiService {
     })
   }
 
-
-  static readonly RESOURCE_CONFIG = {
-    'resourceName': 'people/me',
-    'pageSize': 100,
-    'personFields': 'names,nicknames,emailAddresses,addresses,phoneNumbers',
-  }
-
   /**
    * Retrieve a list of contacts
    */
@@ -91,9 +79,16 @@ export class PeopleApiService {
           if (this.grantedScopes.has(OAUTH2_SCOPES.CONTACTS_READONLY)) {
             peopleFn()
           } else {
+
+            // Ask for these scopes
+            const requestedScopes = [
+              OAUTH2_SCOPES.CONTACTS_READONLY,
+              // OAUTH2_SCOPES.CONTACTS_OTHER_READONLY,
+            ]
+
             const tokenClient = google.accounts.oauth2.initTokenClient({
               client_id: environment.PLAY_GOLF_UI_CLIENT_ID,
-              scope: 'https://www.googleapis.com/auth/contacts.readonly',
+              scope: ScopesAsString(requestedScopes),
               callback: (tokenResponse: any) => {
                 console.log('Response: ', tokenResponse)
                 if (tokenResponse.scope) {
@@ -141,6 +136,8 @@ export class PeopleApiService {
       syncToken: undefined,
       pageToken: undefined,
     }
+
+
 
     let response = await gapi.client.people.people.connections.list(request)
     contacts = response?.result?.connections || []

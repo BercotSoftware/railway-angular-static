@@ -21,7 +21,7 @@
     "useDefineForClassFields": false,
     "strictPropertyInitialization": false,  // DEB
     "types": [ "gapi", "gapi.auth2", "gapi.client", "gapi.client.people-v1" ],
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types", "./node_modules/@maxim_mazurok"],
     "lib": [
       "ES2022",
       "dom"
