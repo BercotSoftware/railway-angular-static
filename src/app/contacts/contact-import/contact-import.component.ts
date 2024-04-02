@@ -19,14 +19,19 @@ export class ContactImportComponent {
 
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
+
   }
 
   importContacts() {
     this.peopleApiService.getContactList()
       .then((result) => {
+        console.log('Google contacts', result)
         const contacts = result.map(this.coerceConnection)
         console.log(`Imported ${contacts.length} contacts`)
         this.$contacts.next(contacts)
+      })
+      .catch((error) => {
+        console.log('Error importing contacts', error)
       })
   }
 
@@ -84,21 +89,21 @@ export class ContactImportComponent {
     return result
   }
 
-  private static convertEmail(googleEmail: any) : EmailAddressEntry {
+  private static convertEmail(value: any) : EmailAddressEntry {
     return {
-      primary: true,
-      address: googleEmail.value,
+      primary: value.metadata?.primary || false,
+      address: value.value,
       verified: false,
-      type: 'home'
+      type: value.type || 'home'
     }
   }
 
-  private static convertPhone(googlePhone: any) : PhoneNumberEntry {
+  private static convertPhone(value: any) : PhoneNumberEntry {
     return {
-      primary: true,
-      number: ContactImportComponent.coercePhoneNumber(googlePhone['value']),
+      primary: value.metadata?.primary || false,
+      number: ContactImportComponent.coercePhoneNumber(value.value),
       verified: false,
-      type: "mobile"
+      type: value.type || 'home'
     }
   }
 
