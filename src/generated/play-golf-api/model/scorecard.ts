@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ScorecardEntry } from './scorecardEntry';
 
 
 /**
  * The information needed to display or print a scorecard
  */
-export interface ScorecardInner { 
-    name?: string;
-    yardage?: number;
-    par?: number;
-    handicap?: number;
+export interface Scorecard { 
+    scorecard?: Array<ScorecardEntry>;
 }
 

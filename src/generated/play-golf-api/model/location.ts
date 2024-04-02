@@ -15,35 +15,16 @@ import { Address } from './address';
 
 export interface Location { 
     id?: string;
-    _class?: string;
     name?: string;
-    address?: Address;
-    /**
-     * A valid phone number.
-     */
-    phone?: string;
-    /**
-     * A valid email address.
-     */
-    email?: string;
-    /**
-     * A valid social media handle.
-     */
-    facebookHandle?: string;
-    /**
-     * A valid social media handle.
-     */
-    instagramHandle?: string;
-    /**
-     * A valid social media handle.
-     */
-    twitterHandle?: string;
-    website?: string;
-    staff?: Array<Facilitator>;
     managed?: boolean;
-    /**
-     * Geolocation points, stored as longitude, latitude
-     */
+    address?: Address;
+    twitterHandle?: string;
+    facebookHandle?: string;
+    instagramHandle?: string;
+    website?: string;
+    phone?: string;
+    email?: string;
+    staff?: Array<Facilitator>;
     location?: Array<number>;
 }
 

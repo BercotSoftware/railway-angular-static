@@ -11,33 +11,22 @@
  */
 
 
-/**
- * address
- */
-export interface Address { 
+export interface PhoneNumberEntry { 
     /**
-     * Primary address (street)
+     * Set to true if primary phone number
      */
-    address?: string;
+    primary?: boolean;
     /**
-     * Secondary address (unit, etc)
+     * phone number
      */
-    address2?: string;
+    number?: string;
     /**
-     * City name
+     * Set to true if the phone number has been verified
      */
-    city?: string;
+    verified?: boolean;
     /**
-     * State or province code.
+     * type of phone number (e.g. home, mobile, work)
      */
-    state?: string;
-    /**
-     * Two-letter country code.
-     */
-    country?: string;
-    /**
-     * A valid ZIP code (U.S. format).
-     */
-    postalCode?: string;
+    type?: string;
 }
 

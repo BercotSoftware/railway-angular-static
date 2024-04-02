@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {BehaviorSubject} from "rxjs";
-import {ContactDetails, ContactsService} from "@golf-api";
-import {PeopleApiService} from "../../google/people-api.service";
+import {BehaviorSubject, from, map, of} from "rxjs";
+import {Contact, ContactsService, EmailAddressEntry, PhoneNumberEntry} from "@golf-api";
+import {PeopleApiService} from "@google";
 import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
 
 @Component({
@@ -14,7 +14,7 @@ import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
 })
 export class ContactImportComponent {
 
-  $contacts = new BehaviorSubject<ContactDetails[]>([]);
+  $contacts = new BehaviorSubject<Contact[]>([]);
   static phoneNumberUtil = PhoneNumberUtil.getInstance()
 
   constructor(private contactsService: ContactsService,
@@ -34,13 +34,29 @@ export class ContactImportComponent {
     this.peopleApiService.revokePermissions()
   }
 
+  primaryPhoneNumber(contact: Contact) {
+    if (contact.phoneNumbers) {
+      const phone = contact.phoneNumbers.find(p => p.primary === true)
+      return (phone) ? phone.number : undefined
+    }
+    return undefined
+  }
+
+  primaryEmail(contact: Contact) {
+    if (contact.emailAddresses) {
+      const email = contact.emailAddresses.find(p => p.primary === true)
+      return email ? email.address : undefined
+    }
+    return undefined
+  }
+
   /**
    * Convert the google API results into a simpler object
    * @param connection
    * @private
    */
-  private coerceConnection(connection: any) : ContactDetails {
-    let result: ContactDetails = {}
+  private coerceConnection(connection: any) : Contact {
+    let result: Contact = {}
 
     if (Array.isArray(connection['names'])) {
       const nameObject = connection['names'][0]
@@ -51,21 +67,39 @@ export class ContactImportComponent {
       }
     }
     if (Array.isArray(connection['emailAddresses'])) {
-      const emailObject = connection['emailAddresses'][0]
-      if (emailObject) {
-        // result.emailType = emailObject['formattedType']
-        result.email = emailObject['value']
-      }
+      result.emailAddresses = connection['emailAddresses']
+        .map(ContactImportComponent.convertEmail)
+        .filter(value => value !== undefined)
+    } else {
+      result.emailAddresses = []
     }
     if (Array.isArray(connection['phoneNumbers'])) {
-      const phoneObject = connection['phoneNumbers'][0]
-      if (phoneObject) {
-        // result.phoneType = phoneObject['formattedType']
-        result.phone = ContactImportComponent.coercePhoneNumber(phoneObject['value'])
-      }
+      result.phoneNumbers = connection['phoneNumbers']
+        .map(ContactImportComponent.convertPhone)
+        .filter(value => value !== undefined)
+    } else {
+      result.phoneNumbers = []
     }
 
     return result
+  }
+
+  private static convertEmail(googleEmail: any) : EmailAddressEntry {
+    return {
+      primary: true,
+      address: googleEmail.value,
+      verified: false,
+      type: 'home'
+    }
+  }
+
+  private static convertPhone(googlePhone: any) : PhoneNumberEntry {
+    return {
+      primary: true,
+      number: ContactImportComponent.coercePhoneNumber(googlePhone['value']),
+      verified: false,
+      type: "mobile"
+    }
   }
 
   private static coercePhoneNumber(phoneNumber?: string) {

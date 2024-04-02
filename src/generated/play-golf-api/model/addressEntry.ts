@@ -9,11 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Address } from './address';
 
 
-export interface Review { 
-    review?: string;
-    publiclyVisible?: boolean;
-    rating?: number;
+export interface AddressEntry { 
+    /**
+     * Set to true if primary address
+     */
+    primary?: boolean;
+    address?: Address;
+    /**
+     * type of address (e.g. home, mobile, work)
+     */
+    type?: string;
 }
 

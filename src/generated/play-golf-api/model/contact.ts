@@ -9,31 +9,33 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Address } from './address';
+import { PhoneNumberEntry } from './phoneNumberEntry';
 import { VerificationToken } from './verificationToken';
+import { AddressEntry } from './addressEntry';
+import { EmailAddressEntry } from './emailAddressEntry';
 
 
-export interface ContactDetails { 
+export interface Contact { 
+    id?: string;
     firstName?: string;
     lastName?: string;
     nickname?: string;
-    /**
-     * A valid email address.
-     */
-    email?: string;
-    /**
-     * A valid phone number.
-     */
-    phone?: string;
-    id?: string;
-    ownerId?: string;
     profileId?: string;
-    address?: Address;
-    status?: ContactDetails.StatusEnum;
+    ownerId?: string;
+    phoneNumbers?: Array<PhoneNumberEntry>;
+    addresses?: Array<AddressEntry>;
+    emailAddresses?: Array<EmailAddressEntry>;
+    status?: Contact.StatusEnum;
     since?: string;
     token?: VerificationToken;
+    registered?: boolean;
+    primaryEmail?: EmailAddressEntry;
+    primaryEmailAddress?: string;
+    primaryPhoneNumber?: string;
+    primaryPhone?: PhoneNumberEntry;
+    primaryAddress?: AddressEntry;
 }
-export namespace ContactDetails {
+export namespace Contact {
     export type StatusEnum = 'New' | 'Pending' | 'Accepted' | 'Declined' | 'Expired';
     export const StatusEnum = {
         New: 'New' as StatusEnum,

@@ -12,7 +12,7 @@
 import { Facilitator } from './facilitator';
 import { Address } from './address';
 import { TeeStation } from './teeStation';
-import { ScorecardInner } from './scorecardInner';
+import { Scorecard } from './scorecard';
 
 
 /**
@@ -23,10 +23,7 @@ export interface CourseDetails {
      * Information describing tee stations for a given course
      */
     tees?: Array<TeeStation>;
-    /**
-     * The information needed to display or print a scorecard
-     */
-    scorecard?: Array<ScorecardInner>;
+    scorecard?: Scorecard;
     id?: string;
     _class?: string;
     name?: string;

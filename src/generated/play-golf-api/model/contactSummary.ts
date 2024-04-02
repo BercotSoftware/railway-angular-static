@@ -15,13 +15,7 @@ export interface ContactSummary {
     firstName?: string;
     lastName?: string;
     nickname?: string;
-    /**
-     * A valid email address.
-     */
     email?: string;
-    /**
-     * A valid phone number.
-     */
     phone?: string;
     id?: string;
     status?: ContactSummary.StatusEnum;

@@ -11,33 +11,22 @@
  */
 
 
-/**
- * address
- */
-export interface Address { 
+export interface EmailAddressEntry { 
     /**
-     * Primary address (street)
+     * Set to true if primary e-mail address
+     */
+    primary?: boolean;
+    /**
+     * e-mail address
      */
     address?: string;
     /**
-     * Secondary address (unit, etc)
+     * Set to true if the email address has been verified
      */
-    address2?: string;
+    verified?: boolean;
     /**
-     * City name
+     * type of e-mail address (e.g. home, mobile, work)
      */
-    city?: string;
-    /**
-     * State or province code.
-     */
-    state?: string;
-    /**
-     * Two-letter country code.
-     */
-    country?: string;
-    /**
-     * A valid ZIP code (U.S. format).
-     */
-    postalCode?: string;
+    type?: string;
 }
 

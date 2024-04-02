@@ -19,7 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ContactDetails } from '../model/contactDetails';
+import { Contact } from '../model/contact';
 // @ts-ignore
 import { ContactRequest } from '../model/contactRequest';
 // @ts-ignore
@@ -105,9 +105,9 @@ export class ContactsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public acceptContactInvitation(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContactDetails>;
-    public acceptContactInvitation(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContactDetails>>;
-    public acceptContactInvitation(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContactDetails>>;
+    public acceptContactInvitation(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Contact>;
+    public acceptContactInvitation(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Contact>>;
+    public acceptContactInvitation(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Contact>>;
     public acceptContactInvitation(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling acceptContactInvitation.');
@@ -150,7 +150,7 @@ export class ContactsService {
         }
 
         let localVarPath = `/contacts/accept/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<ContactDetails>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Contact>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -165,16 +165,16 @@ export class ContactsService {
 
     /**
      * Create a new contact
-     * @param contactDetails 
+     * @param contact 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createContact(contactDetails: ContactDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContactDetails>;
-    public createContact(contactDetails: ContactDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContactDetails>>;
-    public createContact(contactDetails: ContactDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContactDetails>>;
-    public createContact(contactDetails: ContactDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (contactDetails === null || contactDetails === undefined) {
-            throw new Error('Required parameter contactDetails was null or undefined when calling createContact.');
+    public createContact(contact: Contact, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Contact>;
+    public createContact(contact: Contact, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Contact>>;
+    public createContact(contact: Contact, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Contact>>;
+    public createContact(contact: Contact, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (contact === null || contact === undefined) {
+            throw new Error('Required parameter contact was null or undefined when calling createContact.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -222,11 +222,11 @@ export class ContactsService {
             }
         }
 
-        let localVarPath = `/contacts`;
-        return this.httpClient.request<ContactDetails>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/contacts/`;
+        return this.httpClient.request<Contact>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: contactDetails,
+                body: contact,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -369,9 +369,9 @@ export class ContactsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findContactById(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContactDetails>;
-    public findContactById(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContactDetails>>;
-    public findContactById(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContactDetails>>;
+    public findContactById(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Contact>;
+    public findContactById(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Contact>>;
+    public findContactById(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Contact>>;
     public findContactById(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling findContactById.');
@@ -414,7 +414,7 @@ export class ContactsService {
         }
 
         let localVarPath = `/contacts/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<ContactDetails>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Contact>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -433,9 +433,9 @@ export class ContactsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findContactByProfileId(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContactDetails>;
-    public findContactByProfileId(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContactDetails>>;
-    public findContactByProfileId(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContactDetails>>;
+    public findContactByProfileId(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Contact>;
+    public findContactByProfileId(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Contact>>;
+    public findContactByProfileId(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Contact>>;
     public findContactByProfileId(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling findContactByProfileId.');
@@ -478,7 +478,7 @@ export class ContactsService {
         }
 
         let localVarPath = `/contacts/profile/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<ContactDetails>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Contact>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -493,8 +493,8 @@ export class ContactsService {
 
     /**
      * Get contacts for the currently logged-in user
-     * @param page 
-     * @param pattern 
+     * @param page Paging and sort options
+     * @param pattern Search pattern
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -570,19 +570,19 @@ export class ContactsService {
     /**
      * Save contact
      * @param id Item id
-     * @param contactDetails 
+     * @param contact 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public saveContact(id: string, contactDetails: ContactDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public saveContact(id: string, contactDetails: ContactDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public saveContact(id: string, contactDetails: ContactDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public saveContact(id: string, contactDetails: ContactDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public saveContact(id: string, contact: Contact, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public saveContact(id: string, contact: Contact, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public saveContact(id: string, contact: Contact, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public saveContact(id: string, contact: Contact, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling saveContact.');
         }
-        if (contactDetails === null || contactDetails === undefined) {
-            throw new Error('Required parameter contactDetails was null or undefined when calling saveContact.');
+        if (contact === null || contact === undefined) {
+            throw new Error('Required parameter contact was null or undefined when calling saveContact.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -633,7 +633,7 @@ export class ContactsService {
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: contactDetails,
+                body: contact,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -650,9 +650,9 @@ export class ContactsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendContactInvitation(contactRequest: ContactRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContactDetails>;
-    public sendContactInvitation(contactRequest: ContactRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContactDetails>>;
-    public sendContactInvitation(contactRequest: ContactRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContactDetails>>;
+    public sendContactInvitation(contactRequest: ContactRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Contact>;
+    public sendContactInvitation(contactRequest: ContactRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Contact>>;
+    public sendContactInvitation(contactRequest: ContactRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Contact>>;
     public sendContactInvitation(contactRequest: ContactRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (contactRequest === null || contactRequest === undefined) {
             throw new Error('Required parameter contactRequest was null or undefined when calling sendContactInvitation.');
@@ -704,7 +704,7 @@ export class ContactsService {
         }
 
         let localVarPath = `/contacts/invite`;
-        return this.httpClient.request<ContactDetails>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Contact>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: contactRequest,

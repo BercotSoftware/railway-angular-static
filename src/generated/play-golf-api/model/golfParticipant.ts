@@ -12,26 +12,27 @@
 
 
 export interface GolfParticipant { 
-    firstName?: string;
-    lastName?: string;
-    nickname?: string;
-    /**
-     * A valid email address.
-     */
-    email?: string;
-    /**
-     * A valid phone number.
-     */
-    phone?: string;
     id?: string;
     profileId?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    nickname?: string;
+    gender?: GolfParticipant.GenderEnum;
     status?: GolfParticipant.StatusEnum;
     roles?: Set<GolfParticipant.RolesEnum>;
-    contactId?: string;
     handicap?: number;
     ghin?: string;
+    name?: string;
 }
 export namespace GolfParticipant {
+    export type GenderEnum = 'Unspecified' | 'Male' | 'Female';
+    export const GenderEnum = {
+        Unspecified: 'Unspecified' as GenderEnum,
+        Male: 'Male' as GenderEnum,
+        Female: 'Female' as GenderEnum
+    };
     export type StatusEnum = 'New' | 'Pending' | 'Accepted' | 'Declined' | 'Expired';
     export const StatusEnum = {
         New: 'New' as StatusEnum,

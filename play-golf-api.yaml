@@ -518,19 +518,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
     put:
@@ -551,7 +551,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContactDetails'
+              $ref: '#/components/schemas/Contact'
         required: true
       responses:
         "200":
@@ -603,19 +603,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
   /groups:
@@ -627,11 +627,13 @@ paths:
       parameters:
       - name: page
         in: query
+        description: Paging and sort options
         required: true
         schema:
           $ref: '#/components/schemas/Pageable'
       - name: pattern
         in: query
+        description: Search pattern
         required: false
         schema:
           type: string
@@ -688,76 +690,6 @@ paths:
                 $ref: '#/components/schemas/GolfGroupDetails'
       security:
       - bearerAuth: []
-  /contacts:
-    get:
-      tags:
-      - contacts
-      summary: Get contacts for the currently logged-in user
-      operationId: getContacts
-      parameters:
-      - name: page
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
-      - name: pattern
-        in: query
-        required: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactsResponse'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResponse'
-        "401":
-          description: Access token is missing or invalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedResponse'
-      security:
-      - bearerAuth: []
-    post:
-      tags:
-      - contacts
-      summary: Create a new contact
-      operationId: createContact
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ContactDetails'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactDetails'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactDetails'
-        "401":
-          description: Access token is missing or invalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactDetails'
-      security:
-      - bearerAuth: []
   /contacts/decline/{id}:
     post:
       tags:
@@ -802,19 +734,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
+      security:
+      - bearerAuth: []
+  /contacts/:
+    post:
+      tags:
+      - contacts
+      summary: Create a new contact
+      operationId: createContact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
   /groups/{id}/events:
@@ -1094,6 +1059,46 @@ paths:
                 $ref: '#/components/schemas/FindFavoriteCoursesResponse'
       security:
       - bearerAuth: []
+  /contacts:
+    get:
+      tags:
+      - contacts
+      summary: Get contacts for the currently logged-in user
+      operationId: getContacts
+      parameters:
+      - name: page
+        in: query
+        description: Paging and sort options
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: pattern
+        in: query
+        description: Search pattern
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactsResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
+      security:
+      - bearerAuth: []
   /contacts/profile/{id}:
     get:
       tags:
@@ -1115,19 +1120,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
 components:
@@ -1156,6 +1161,7 @@ components:
           pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
           type: string
           description: A valid ZIP code (U.S. format).
+      description: address
     ProfileDetails:
       type: object
       properties:
@@ -1272,26 +1278,26 @@ components:
     GolfParticipant:
       type: object
       properties:
+        id:
+          type: string
+        profileId:
+          type: string
         firstName:
           type: string
         lastName:
           type: string
-        nickname:
-          type: string
         email:
           type: string
-          description: A valid email address.
         phone:
           type: string
-          description: A valid phone number.
-        id:
-          maxLength: 24
-          minLength: 0
+        nickname:
           type: string
-        profileId:
-          maxLength: 24
-          minLength: 0
+        gender:
           type: string
+          enum:
+          - Unspecified
+          - Male
+          - Female
         status:
           type: string
           enum:
@@ -1311,73 +1317,44 @@ components:
             - Delegate
             - Administrator
             - Creator
-        contactId:
-          maxLength: 24
-          minLength: 0
-          type: string
         handicap:
           type: number
           format: double
         ghin:
           type: string
+        name:
+          type: string
     Location:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
-          type: string
-        _class:
           type: string
         name:
           type: string
+        managed:
+          type: boolean
         address:
           $ref: '#/components/schemas/Address'
+        twitterHandle:
+          type: string
+        facebookHandle:
+          type: string
+        instagramHandle:
+          type: string
+        website:
+          type: string
         phone:
           type: string
-          description: A valid phone number.
         email:
-          type: string
-          description: A valid email address.
-        facebookHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        instagramHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        twitterHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        website:
           type: string
         staff:
           type: array
           items:
             $ref: '#/components/schemas/Facilitator'
-        managed:
-          type: boolean
         location:
-          maxItems: 2
-          minItems: 2
           type: array
-          description: "Geolocation points, stored as longitude, latitude"
-          example:
-          - 34.052235
-          - -118.243683
           items:
-            maximum: 2
-            minimum: 2
             type: number
-            description: "Geolocation points, stored as longitude, latitude"
             format: double
     EventDetails:
       type: object
@@ -1420,8 +1397,6 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
@@ -1434,10 +1409,7 @@ components:
           items:
             $ref: '#/components/schemas/TeeStation'
         scorecard:
-          type: array
-          description: The information needed to display or print a scorecard
-          items:
-            $ref: '#/components/schemas/ScorecardInner'
+          $ref: '#/components/schemas/Scorecard'
         id:
           maxLength: 24
           minLength: 0
@@ -1495,7 +1467,15 @@ components:
             description: "Geolocation points, stored as longitude, latitude"
             format: double
       description: A Location that is a golf course
-    ScorecardInner:
+    Scorecard:
+      type: object
+      properties:
+        scorecard:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScorecardEntry'
+      description: The information needed to display or print a scorecard
+    ScorecardEntry:
       type: object
       properties:
         name:
@@ -1509,7 +1489,6 @@ components:
         handicap:
           type: integer
           format: int32
-      description: The information needed to display or print a scorecard
     TeeStation:
       type: object
       properties:
@@ -1521,7 +1500,6 @@ components:
           type: string
         color:
           type: string
-          description: Color definition as per HTML
         gender:
           type: string
           enum:
@@ -1530,60 +1508,62 @@ components:
           - Female
         numberOfHoles:
           type: integer
-          description: "Number of holes, typically 9 or 18 but there may be some oddballs"
           format: int32
         par:
           type: integer
-          description: Par for the number of holes on the course (typically 71 or
-            72)
           format: int32
         yardage:
           type: integer
-          description: Total yardage for all holes on this tee
           format: int32
         courseRating:
           type: number
-          description: See the USGA web site
           format: double
         bogeyRating:
           type: number
-          description: See the USGA web site
           format: double
         slopeRating:
           type: integer
-          description: See the USGA web site
           format: int32
       description: Supports storing the ratings per tee station as per the USGA Course
         Ratings site
-    ContactDetails:
+    AddressEntry:
       type: object
       properties:
+        primary:
+          type: boolean
+          description: Set to true if primary address
+        address:
+          $ref: '#/components/schemas/Address'
+        type:
+          type: string
+          description: "type of address (e.g. home, mobile, work)"
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
         firstName:
           type: string
         lastName:
           type: string
         nickname:
           type: string
-        email:
-          type: string
-          description: A valid email address.
-        phone:
-          type: string
-          description: A valid phone number.
-        id:
-          maxLength: 24
-          minLength: 0
+        profileId:
           type: string
         ownerId:
-          maxLength: 24
-          minLength: 0
           type: string
-        profileId:
-          maxLength: 24
-          minLength: 0
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberEntry'
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressEntry'
+        emailAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddressEntry'
         status:
           type: string
           enum:
@@ -1597,6 +1577,48 @@ components:
           format: date-time
         token:
           $ref: '#/components/schemas/VerificationToken'
+        registered:
+          type: boolean
+        primaryEmail:
+          $ref: '#/components/schemas/EmailAddressEntry'
+        primaryEmailAddress:
+          type: string
+        primaryPhoneNumber:
+          type: string
+        primaryPhone:
+          $ref: '#/components/schemas/PhoneNumberEntry'
+        primaryAddress:
+          $ref: '#/components/schemas/AddressEntry'
+    EmailAddressEntry:
+      type: object
+      properties:
+        primary:
+          type: boolean
+          description: Set to true if primary e-mail address
+        address:
+          type: string
+          description: e-mail address
+        verified:
+          type: boolean
+          description: Set to true if the email address has been verified
+        type:
+          type: string
+          description: "type of e-mail address (e.g. home, mobile, work)"
+    PhoneNumberEntry:
+      type: object
+      properties:
+        primary:
+          type: boolean
+          description: Set to true if primary phone number
+        number:
+          type: string
+          description: phone number
+        verified:
+          type: boolean
+          description: Set to true if the phone number has been verified
+        type:
+          type: string
+          description: "type of phone number (e.g. home, mobile, work)"
     VerificationToken:
       type: object
       properties:
@@ -1847,12 +1869,8 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         locationId:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
@@ -1888,10 +1906,7 @@ components:
         publiclyVisible:
           type: boolean
         rating:
-          maximum: 5
-          minimum: 0
           type: integer
-          description: Rating value on a scale of 0 to 5.
           format: int32
     ContactSummary:
       type: object
@@ -1904,13 +1919,9 @@ components:
           type: string
         email:
           type: string
-          description: A valid email address.
         phone:
           type: string
-          description: A valid phone number.
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         status:
           type: string
@@ -1924,8 +1935,6 @@ components:
           type: string
           format: date
         profileId:
-          maxLength: 24
-          minLength: 0
           type: string
         handicap:
           type: number

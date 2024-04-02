@@ -11,9 +11,10 @@
  */
 
 
-export interface Review { 
-    review?: string;
-    publiclyVisible?: boolean;
-    rating?: number;
+export interface ScorecardEntry { 
+    name?: string;
+    yardage?: number;
+    par?: number;
+    handicap?: number;
 }
 
