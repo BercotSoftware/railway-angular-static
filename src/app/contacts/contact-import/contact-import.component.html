@@ -1,21 +1,26 @@
-<table class="table">
+<table class="table table-hover table-sm">
   <thead>
   <tr>
     <th scope="col">First name</th>
     <th scope="col">Last name</th>
     <th scope="col">email</th>
     <th scope="col">Phone</th>
+    <th scope="col">Actions</th>
   </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let contact of $contacts | async">
-    <tr>
+    <tr *ngFor="let contact of $contacts | async; let i = index" [class.table-success]="contact.selected" (click)="toggleSelected(i)">
       <td>{{ contact.firstName }}</td>
       <td>{{ contact.lastName }}</td>
       <td>{{ primaryEmail(contact) }}</td>
       <td>{{ primaryPhoneNumber(contact) }}</td>
+      <td>
+        <div class="icon-container">
+        <i class="fa-solid fa-trash" (click)="removeContact(i)"></i>
+        <i *ngIf="contact.selected" class="fa-solid fa-check" (click)="selectContact(i)"></i>
+        </div>
+      </td>
     </tr>
-  </ng-container>
   </tbody>
 </table>
 <div>

@@ -1,0 +1,11 @@
+/* your-component.component.css */
+.icon-container {
+  display: flex;
+  justify-content: space-between;
+  width: 50px; /* Set the width of the container */
+}
+
+.icon {
+  width: 20px; /* Set the width of each icon */
+}
+

@@ -5,6 +5,20 @@ import {Contact, ContactsService, EmailAddressEntry, PhoneNumberEntry} from "@go
 import {PeopleApiService} from "@google";
 import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
 
+interface ExtendedContact extends Contact {
+  selected?: boolean
+}
+
+const DUMMY_DATA: ExtendedContact[] = [
+  { firstName: 'dummy1', lastName: 'dummy1', nickname: 'dummy1', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  { firstName: 'dummy2', lastName: 'dummy2', nickname: 'dummy2', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  { firstName: 'dummy3', lastName: 'dummy3', nickname: 'dummy3', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  { firstName: 'dummy4', lastName: 'dummy4', nickname: 'dummy4', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  { firstName: 'dummy5', lastName: 'dummy5', nickname: 'dummy5', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  { firstName: 'dummy6', lastName: 'dummy6', nickname: 'dummy6', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+  { firstName: 'dummy7', lastName: 'dummy7', nickname: 'dummy7', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+]
+
 @Component({
   selector: 'app-contact-import',
   standalone: true,
@@ -14,7 +28,7 @@ import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
 })
 export class ContactImportComponent {
 
-  $contacts = new BehaviorSubject<Contact[]>([]);
+  $contacts = new BehaviorSubject<ExtendedContact[]>(DUMMY_DATA);
   static phoneNumberUtil = PhoneNumberUtil.getInstance()
 
   constructor(private contactsService: ContactsService,
@@ -115,5 +129,21 @@ export class ContactImportComponent {
     } else {
       return undefined
     }
+  }
+
+  removeContact(index: number) {
+    this.$contacts.value.splice(index, 1)
+  }
+
+  selectContact(i: number) {
+    this.$contacts.value[i].selected = true
+  }
+
+  unselectContact(i: number) {
+    this.$contacts.value[i].selected = false
+  }
+
+  toggleSelected(i: number) {
+    this.$contacts.value[i].selected = !this.$contacts.value[i].selected
   }
 }
