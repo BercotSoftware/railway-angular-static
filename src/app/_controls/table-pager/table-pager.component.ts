@@ -1,24 +1,25 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-table-pager',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    NgClass
   ],
   template: `
     <div class="table-pager-container">
       <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        <li [ngClass]="hasPrevious ? 'page-item' : 'page-item disabled'">
+          <a class="page-link" tabindex="-1" (click)="selectPreviousPage()">Previous</a>
         </li>
-        <li class="page-item"><a class="page-link" (click)="selectPage(1)">1</a></li>
-        <li *ngIf="pageCount>1" class="page-item"><a class="page-link" (click)="selectPage(2)">2</a></li>
-        <li *ngIf="pageCount>2"class="page-item"><a class="page-link" (click)="selectPage(3)">3</a></li>
+        <li class="page-item"><a class="page-link" (click)="selectPage(pageOffset)">1</a></li>
+        <li *ngIf="pageCount>1" class="page-item"><a class="page-link" (click)="selectPage(pageOffset + 1)">2</a></li>
+        <li *ngIf="pageCount>2"class="page-item"><a class="page-link" (click)="selectPage(pageOffset + 2)">3</a></li>
         <li *ngIf="pageCount>3"class="page-item"><a class="page-link">...</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
+        <li [ngClass]="hasNext ? 'page-item' : 'page-item disabled'">
+          <a class="page-link" (click)="selectNextPage()">Next</a>
         </li>
       </ul>
     </div>
@@ -34,12 +35,37 @@ export class TablePagerComponent {
 
   @Output() onPageSelect = new EventEmitter<number>()
 
+  pageOffset = 1;
+
+  get hasPrevious(): boolean {
+    return this.pageIndex > 0
+  }
+
+  get hasNext(): boolean {
+    return this.pageIndex < this.pageCount
+  }
+
   get pageCount() : number {
     return ((this.length > 0) && (this.pageSize > 0)) ? (this.length / this.pageSize) : 0
   }
 
   selectPage(page: number) {
-    this.onPageSelect.emit(page)
+    // if ((this.pageIndex + page) < (this.pageCount - 1)) {
+    //   this.onPageSelect.emit(page)
+    // }
   }
 
+  selectNextPage() {
+    if (this.pageIndex < (this.pageCount - 1)) {
+      this.pageIndex += 1
+      this.onPageSelect.emit(this.pageIndex)
+    }
+  }
+
+  selectPreviousPage() {
+    if (this.pageIndex > 0) {
+      this.pageIndex -= 1
+      this.onPageSelect.emit(this.pageIndex)
+    }
+  }
 }
