@@ -25,9 +25,7 @@ export class ContactListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource.loadData()
-      // .then((result) => { console.log('loaded data')})
-      // .catch(error => { console.log('Error loading', error)})
+    this.dataSource.loadData() // Prime the pump
   }
 
   importContacts() {
