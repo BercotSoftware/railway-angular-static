@@ -21,5 +21,12 @@
   </tbody>
 </table>
 <div>
+  <app-table-pager
+    [length]="totalItems"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (onPageSelect)="onPageSelect($event)"
+  ></app-table-pager>
   <button (click)="importContacts()">Import Contacts</button>
 </div>
