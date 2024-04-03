@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BehaviorSubject, count, filter, from, map, of, Subject} from "rxjs";
 import {Contact, ContactsService, EmailAddressEntry, Pageable, PhoneNumberEntry} from "@golf-api";
@@ -29,7 +29,7 @@ const DUMMY_DATA: ExtendedContact[] = [
   templateUrl: './contact-import.component.html',
   styleUrl: './contact-import.component.css'
 })
-export class ContactImportComponent {
+export class ContactImportComponent implements OnInit {
 
   contactsSubject = new BehaviorSubject<ExtendedContact[]>(DUMMY_DATA);
   contacts$ = this.contactsSubject.asObservable()
@@ -44,6 +44,9 @@ export class ContactImportComponent {
               private peopleApiService: PeopleApiService) {
 
   }
+
+  ngOnInit(): void {
+    }
 
   /**
    * Used to allow commit of selected items

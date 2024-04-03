@@ -4,6 +4,7 @@ import {ContactsService, ContactSummary, Pageable} from "@golf-api";
 import {BehaviorSubject} from "rxjs";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
+import {PagedResult, TableDataSource} from "../../_controls/table-pager/table-datasource";
 
 @Component({
   selector: 'app-contact-list',
@@ -14,42 +15,40 @@ import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/t
 })
 export class ContactListComponent implements OnInit {
 
-  $contacts = new BehaviorSubject<ContactSummary[]>([]);
-  totalItems = 0;
   pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
-  pageOptions: Pageable = { size: 10 };
+  dataSource: TableDataSource<ContactSummary>
 
   constructor(private contactsService: ContactsService,
               private route : ActivatedRoute,
               private router: Router) {
+    this.dataSource = new TableDataSource<ContactSummary>(this.getTableData.bind(this), 20)
   }
 
   ngOnInit(): void {
-    this.getContacts()
+    this.dataSource.loadData()
+      // .then((result) => { console.log('loaded data')})
+      // .catch(error => { console.log('Error loading', error)})
   }
 
   importContacts() {
     this.router.navigate(['import'], { relativeTo: this.route.parent })
   }
 
-  private getContacts() {
-    this.contactsService.getContacts(this.pageOptions).subscribe({
-      next: (result) => {
-        this.$contacts.next(result.items || [])
-        this.totalItems = result.totalItems || result.items?.length || 0
-      },
-      error: (err) => {
-        console.log('Error fetching contacts', err)
-      },
-      complete: () => {
+  getTableData = async (pageOptions: Pageable) : Promise<PagedResult<ContactSummary>> => {
+    return new Promise((resolve, reject) => {
+      this.contactsService.getContacts(pageOptions).subscribe({
+        next: (result) => {
+          resolve({ totalItems: result.totalItems, items: result.items })
+        },
+        error: (err) => {
+          console.log('Error fetching contacts', err)
+          reject(err)
+        },
+        complete: () => {
+        }
+      })
 
-      }
     })
   }
 
-  onPageSelect($event: TablePageEvent) {
-    this.pageOptions.page = $event.pageIndex
-    this.pageOptions.size = $event.pageSize
-    this.getContacts()
-  }
 }

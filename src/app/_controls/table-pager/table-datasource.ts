@@ -1,15 +1,13 @@
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import {TablePageEvent} from "./table-pager.component";
 import {Pageable} from "@golf-api";
 
 export interface PagedResult<T> {
   totalItems?: number,
-  page?: number,
-  size?: number,
   items: T[] | undefined
 }
 
-export class TableDataSource<T> implements Pageable {
+export class TableDataSource<T> {
 
   dataSubject = new BehaviorSubject<T[]>([])
   data$ = this.dataSubject.asObservable()
@@ -17,19 +15,33 @@ export class TableDataSource<T> implements Pageable {
   public page : number = 0
   public size = 20
   public sort: Array<string>
+  public totalItems = 0
 
-  constructor(private dataSource: (pageIndex: number, pageSize: number) => Promise<PagedResult<T>>, pageSize?: number) {
+  constructor(private dataProvider: (pageOptions: Pageable) => Promise<PagedResult<T>>, pageSize?: number) {
     this.size = pageSize || 100
-
-    this.loadData(this.page, this.size)
   }
 
-  private async loadData(pageIndex: number, pageSize: number) {
+  public getPageOptions() : Pageable {
+    return {
+      page: this.page,
+      size: this.size,
+      sort: this.sort
+    }
+  }
+
+  public loadData() {
     try {
-      const pagedResult = await this.dataSource(pageIndex, pageSize);
-      this.page = pageIndex
-      this.size = pageSize
-      this.dataSubject.next(pagedResult.items || [])
+      const pageOptions = {
+        page: this.page,
+        size: this.size,
+        sort: this.sort
+      }
+
+      this.dataProvider(pageOptions)
+        .then((result) => {
+          this.dataSubject.next(result.items || [])
+          this.totalItems = result.totalItems || 0
+        });
     } catch (e) {
       this.page = 0
       this.dataSubject.next([])
@@ -39,15 +51,11 @@ export class TableDataSource<T> implements Pageable {
   public onPageSelect($event: TablePageEvent) {
     this.page = $event.pageIndex
     this.size = $event.pageSize
-    this.loadData($event.pageIndex, $event.pageSize)
+    this.loadData()
   }
 
   get data() : T[] {
     return this.dataSubject.value
-  }
-
-  get totalItems() : number {
-    return this.dataSubject.value.length
   }
 
   get pageCount() : number {

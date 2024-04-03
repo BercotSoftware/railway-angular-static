@@ -9,7 +9,7 @@
   </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let contact of $contacts | async">
+  <ng-container *ngFor="let contact of dataSource.data$ | async">
     <tr>
       <td>{{ contact.firstName }}</td>
       <td>{{ contact.lastName }}</td>
@@ -22,11 +22,11 @@
 </table>
 <div>
   <app-table-pager
-    [length]="totalItems"
-    [pageIndex]="pageOptions.page || 0"
-    [pageSize]="pageOptions.size || 10"
+    [length]="dataSource.totalItems"
+    [pageIndex]="dataSource.page || 0"
+    [pageSize]="dataSource.size || 10"
     [pageSizeOptions]="pageSizeOptions"
-    (onPageSelect)="onPageSelect($event)"
+    (onPageSelect)="dataSource.onPageSelect($event)"
   ></app-table-pager>
   <button (click)="importContacts()">Import Contacts</button>
 </div>
