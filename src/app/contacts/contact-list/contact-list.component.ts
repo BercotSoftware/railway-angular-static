@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ContactsService, ContactSummary, Pageable} from "@golf-api";
-import {BehaviorSubject} from "rxjs";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
-import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
+import {TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
 import {PagedResult, PagedTableDataSource} from "../../_controls/table-pager/paged-table-data-source";
 
 @Component({

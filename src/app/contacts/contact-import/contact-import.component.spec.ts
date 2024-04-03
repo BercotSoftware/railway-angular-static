@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ContactImportComponent } from './contact-import.component';
+import {ContactImportComponent} from './contact-import.component';
 
 describe('ContactImportComponent', () => {
   let component: ContactImportComponent;
@@ -11,7 +11,7 @@ describe('ContactImportComponent', () => {
       imports: [ContactImportComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(ContactImportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
