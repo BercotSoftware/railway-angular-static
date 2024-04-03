@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BehaviorSubject, count, filter, from, map, of, Subject} from "rxjs";
-import {Contact, ContactsService, EmailAddressEntry, PhoneNumberEntry} from "@golf-api";
+import {Contact, ContactsService, EmailAddressEntry, Pageable, PhoneNumberEntry} from "@golf-api";
 import {PeopleApiService} from "@google";
 import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
+import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
 
 // see: https://getbootstrap.com/docs/4.0/content/tables/
 
@@ -24,7 +25,7 @@ const DUMMY_DATA: ExtendedContact[] = [
 @Component({
   selector: 'app-contact-import',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TablePagerComponent],
   templateUrl: './contact-import.component.html',
   styleUrl: './contact-import.component.css'
 })
@@ -34,6 +35,10 @@ export class ContactImportComponent {
   contacts$ = this.contactsSubject.asObservable()
 
   static phoneNumberUtil = PhoneNumberUtil.getInstance()
+
+  totalItems = 0;
+  pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
+  pageOptions: Pageable = { size: 10 };
 
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
@@ -186,6 +191,10 @@ export class ContactImportComponent {
 
     // TODO commit to REST controller
 
+
+  }
+
+  onPageSelect($event: TablePageEvent) {
 
   }
 }

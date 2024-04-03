@@ -2,6 +2,14 @@
   <button (click)="importContacts()">Import Contacts</button>
   <button [disabled]="noSelectedContacts() | async" (click)="addContacts()">Commit Contacts</button>
   <button (click)="revokePermissions()">Revoke</button>
+  <app-table-pager
+    [length]="totalItems"
+    [pageIndex]="pageOptions.page || 0"
+    [pageSize]="pageOptions.size || 10"
+    [pageSizeOptions]="pageSizeOptions"
+    (onPageSelect)="onPageSelect($event)"
+  ></app-table-pager>
+
 </div>
 <table class="table table-hover table-sm">
   <thead class="thead-dark">
