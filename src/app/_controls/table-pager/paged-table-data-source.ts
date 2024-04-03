@@ -1,4 +1,4 @@
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {TablePageEvent} from "./table-pager.component";
 import {Pageable} from "@golf-api";
 
@@ -13,7 +13,7 @@ export interface PagedResult<T> {
 export class PagedTableDataSource<T> {
 
   dataSubject = new BehaviorSubject<T[]>([])
-  data$ = this.dataSubject.asObservable()
+  data$ : Observable<T[]> = this.dataSubject.asObservable()
 
   public page : number = 0
   public size = 20

@@ -5,6 +5,7 @@ import {Contact, ContactsService, EmailAddressEntry, Pageable, PhoneNumberEntry}
 import {PeopleApiService} from "@google";
 import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
 import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
+import {TableDataSource} from "../../_controls/table-pager/table-data-source";
 
 // see: https://getbootstrap.com/docs/4.0/content/tables/
 
@@ -31,14 +32,12 @@ const DUMMY_DATA: ExtendedContact[] = [
 })
 export class ContactImportComponent implements OnInit {
 
-  contactsSubject = new BehaviorSubject<ExtendedContact[]>(DUMMY_DATA);
-  contacts$ = this.contactsSubject.asObservable()
 
   static phoneNumberUtil = PhoneNumberUtil.getInstance()
 
   totalItems = 0;
   pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
-  pageOptions: Pageable = { size: 10 };
+  dataSource = new TableDataSource<any>()
 
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
@@ -52,7 +51,7 @@ export class ContactImportComponent implements OnInit {
    * Used to allow commit of selected items
    */
   noSelectedContacts() {
-    return this.contactsSubject.pipe(
+    return this.dataSource.data$.pipe(
       map(items => !items.some(item => item.selected))
     )
   }
@@ -63,7 +62,7 @@ export class ContactImportComponent implements OnInit {
         console.log('Google contacts', result)
         const contacts = result.map(this.coerceConnection)
         console.log(`Imported ${contacts.length} contacts`)
-        this.contactsSubject.next(contacts)
+        this.dataSource.loadData(contacts)
       })
       .catch((error) => {
         console.log('Error importing contacts', error)
@@ -154,24 +153,24 @@ export class ContactImportComponent implements OnInit {
   }
 
   removeContact(index: number) {
-    this.contactsSubject.value.splice(index, 1)
+    this.dataSource.dataSubject.value.splice(index, 1)
   }
 
   selectContact(i: number) {
-    this.contactsSubject.value[i].selected = true
+    this.dataSource.dataSubject.value[i].selected = true
   }
 
   unselectContact(i: number) {
-    this.contactsSubject.value[i].selected = false
+    this.dataSource.dataSubject.value[i].selected = false
   }
 
   toggleSelected(i: number) {
-    this.contactsSubject.value[i].selected = !this.contactsSubject.value[i].selected
+    this.dataSource.dataSubject.value[i].selected = !this.dataSource.dataSubject.value[i].selected
   }
 
   addContacts() {
     console.log('Adding contacts!!')
-    this.contactsSubject.pipe(
+    this.dataSource.dataSubject.pipe(
       map(items => items.filter(item => item.selected))
     ).subscribe(selectedItems => {
 
@@ -181,7 +180,7 @@ export class ContactImportComponent implements OnInit {
           .subscribe({
             next: (result) => {
               console.log('Saved contacts!')
-              this.contactsSubject.next(this.contactsSubject.getValue().filter(item => !item.selected));
+              this.dataSource.dataSubject.next(this.dataSource.dataSubject.getValue().filter(item => !item.selected));
             },
             error: (err) => {
               console.log('Error adding contacts', err)
@@ -197,7 +196,4 @@ export class ContactImportComponent implements OnInit {
 
   }
 
-  onPageSelect($event: TablePageEvent) {
-
-  }
 }

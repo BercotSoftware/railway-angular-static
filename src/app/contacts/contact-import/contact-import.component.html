@@ -1,16 +1,3 @@
-<div class="button-group">
-  <button (click)="importContacts()">Import Contacts</button>
-  <button [disabled]="noSelectedContacts() | async" (click)="addContacts()">Commit Contacts</button>
-  <button (click)="revokePermissions()">Revoke</button>
-  <app-table-pager
-    [length]="totalItems"
-    [pageIndex]="pageOptions.page || 0"
-    [pageSize]="pageOptions.size || 10"
-    [pageSizeOptions]="pageSizeOptions"
-    (onPageSelect)="onPageSelect($event)"
-  ></app-table-pager>
-
-</div>
 <table class="table table-hover table-sm">
   <thead class="thead-dark">
   <tr>
@@ -22,7 +9,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let contact of contacts$ | async; let i = index" [class.table-success]="contact.selected"
+  <tr *ngFor="let contact of dataSource.displayData | async; let i = index" [class.table-success]="contact.selected"
       (click)="toggleSelected(i)">
     <td>{{ contact.firstName }}</td>
     <td>{{ contact.lastName }}</td>
@@ -37,3 +24,15 @@
   </tr>
   </tbody>
 </table>
+<div class="button-group">
+  <button (click)="importContacts()">Import Contacts</button>
+  <button [disabled]="noSelectedContacts() | async" (click)="addContacts()">Commit Contacts</button>
+  <button (click)="revokePermissions()">Revoke</button>
+  <app-table-pager
+    [length]="totalItems"
+    [pageIndex]="dataSource.pageIndex || 0"
+    [pageSize]="dataSource.pageSize || 10"
+    [pageSizeOptions]="pageSizeOptions"
+    (onPageSelect)="dataSource.onPageSelect($event)"
+  ></app-table-pager>
+</div>

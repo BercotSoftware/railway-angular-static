@@ -3,7 +3,7 @@ import {provideRouter} from '@angular/router';
 import {APP_ROUTES} from './app.routes';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BASE_PATH} from "@golf-api";
-import {environment} from "../environments/environment";
+import {environment} from "@env";
 import {AuthInterceptor, AuthModule} from 'angular-auth-oidc-client';
 import {openIdConfiguration} from "./auth/auth-config";
 
