@@ -1,6 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgClass, NgIf} from "@angular/common";
 
+export interface TablePageEvent {
+  pageIndex: number;
+  pageSize: number;
+}
+
 @Component({
   selector: 'app-table-pager',
   standalone: true,
@@ -33,7 +38,7 @@ export class TablePagerComponent {
   @Input() pageSize = 10
   @Input() pageSizeOptions = [ 10, 20, 50, 100 ]
 
-  @Output() onPageSelect = new EventEmitter<number>()
+  @Output() onPageSelect = new EventEmitter<TablePageEvent>()
 
   pageOffset = 1;
 
@@ -58,14 +63,14 @@ export class TablePagerComponent {
   selectNextPage() {
     if (this.pageIndex < (this.pageCount - 1)) {
       this.pageIndex += 1
-      this.onPageSelect.emit(this.pageIndex)
+      this.onPageSelect.emit({ pageIndex: this.pageIndex, pageSize: this.pageSize})
     }
   }
 
   selectPreviousPage() {
     if (this.pageIndex > 0) {
       this.pageIndex -= 1
-      this.onPageSelect.emit(this.pageIndex)
+      this.onPageSelect.emit({ pageIndex: this.pageIndex, pageSize: this.pageSize})
     }
   }
 }

@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {ContactsService, ContactSummary, Pageable} from "@golf-api";
 import {BehaviorSubject} from "rxjs";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
-import {TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
+import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
 
 @Component({
   selector: 'app-contact-list',
@@ -17,7 +17,6 @@ export class ContactListComponent implements OnInit {
 
   $contacts = new BehaviorSubject<ContactSummary[]>([]);
   totalItems = 0;
-  pageCount = 0;
   pageIndex = 0;
   pageSize = 10;
   pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
@@ -48,10 +47,11 @@ export class ContactListComponent implements OnInit {
 
       }
     })
-
   }
 
-  onPageSelect($event: number) {
-
+  onPageSelect($event: TablePageEvent) {
+    this.pageOptions.page = $event.pageIndex
+    this.pageOptions.size = $event.pageSize
+    this.getContacts()
   }
 }
