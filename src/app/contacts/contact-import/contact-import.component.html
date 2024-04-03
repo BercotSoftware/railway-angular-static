@@ -29,7 +29,7 @@
   <button [disabled]="noSelectedContacts() | async" (click)="addContacts()">Commit Contacts</button>
   <button (click)="revokePermissions()">Revoke</button>
   <app-table-pager
-    [length]="totalItems"
+    [length]="dataSource.totalItems"
     [pageIndex]="dataSource.pageIndex || 0"
     [pageSize]="dataSource.pageSize || 10"
     [pageSizeOptions]="pageSizeOptions"

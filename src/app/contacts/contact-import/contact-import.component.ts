@@ -13,15 +13,6 @@ interface ExtendedContact extends Contact {
   selected?: boolean
 }
 
-const DUMMY_DATA: ExtendedContact[] = [
-  // { firstName: 'dummy1', lastName: 'dummy1', nickname: 'dummy1', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  // { firstName: 'dummy2', lastName: 'dummy2', nickname: 'dummy2', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  // { firstName: 'dummy3', lastName: 'dummy3', nickname: 'dummy3', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  // { firstName: 'dummy4', lastName: 'dummy4', nickname: 'dummy4', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  // { firstName: 'dummy5', lastName: 'dummy5', nickname: 'dummy5', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  // { firstName: 'dummy6', lastName: 'dummy6', nickname: 'dummy6', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-  // { firstName: 'dummy7', lastName: 'dummy7', nickname: 'dummy7', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-]
 
 @Component({
   selector: 'app-contact-import',
@@ -32,20 +23,63 @@ const DUMMY_DATA: ExtendedContact[] = [
 })
 export class ContactImportComponent implements OnInit {
 
-
   static phoneNumberUtil = PhoneNumberUtil.getInstance()
 
-  totalItems = 0;
-  pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
+  pageSizeOptions = [10, 15, 20, 50, 75, 100]
   dataSource = new TableDataSource<any>()
 
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
 
+    // { firstName: 'dummy1', lastName: 'dummy1', nickname: 'dummy1', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
+
+    let DUMMY_DATA: Array<ExtendedContact> = []
+    for (let i = 0; i < 123; i++) {
+      DUMMY_DATA.push({
+        firstName: `firstName${i}`,
+        lastName: `lastName${i}`,
+        nickname: `nickname${i}`,
+        emailAddresses: [
+          {primary: true, address: `my-email${i}@mailhost.com`, type: 'home', verified: true}
+        ],
+        phoneNumbers: [
+          {primary: true, number: '(999)-555-1212', type: 'mobile', verified: true}
+        ]
+      })
+    }
+    this.dataSource.loadData(DUMMY_DATA)
+  }
+
+  private static convertEmail(value: any): EmailAddressEntry {
+    return {
+      primary: value.metadata?.primary || false,
+      address: value.value,
+      verified: false,
+      type: value.type || 'home'
+    }
+  }
+
+  private static convertPhone(value: any): PhoneNumberEntry {
+    return {
+      primary: value.metadata?.primary || false,
+      number: ContactImportComponent.coercePhoneNumber(value.value),
+      verified: false,
+      type: value.type || 'home'
+    }
+  }
+
+  private static coercePhoneNumber(phoneNumber?: string) {
+    if (phoneNumber) {
+      const phoneNumberUtil = PhoneNumberUtil.getInstance()
+      const phone = phoneNumberUtil.parse(phoneNumber, "US")
+      return (phone) ? phoneNumberUtil.format(phone, PhoneNumberFormat.NATIONAL) : undefined
+    } else {
+      return undefined
+    }
   }
 
   ngOnInit(): void {
-    }
+  }
 
   /**
    * Used to allow commit of selected items
@@ -87,69 +121,6 @@ export class ContactImportComponent implements OnInit {
       return email ? email.address : undefined
     }
     return undefined
-  }
-
-  /**
-   * Convert the google API results into a simpler object
-   * @param connection
-   * @private
-   */
-  private coerceConnection(connection: any) : Contact {
-    let result: Contact = {}
-
-    if (Array.isArray(connection['names'])) {
-      const nameObject = connection['names'][0]
-      if (nameObject) {
-        result.firstName = nameObject.givenName
-        result.lastName = nameObject.familyName
-        result.nickname = nameObject.nickname
-        result.googleContactId = nameObject.metadata?.source?.id
-      }
-    }
-    if (Array.isArray(connection['emailAddresses'])) {
-      result.emailAddresses = connection['emailAddresses']
-        .map(ContactImportComponent.convertEmail)
-        .filter(value => value !== undefined)
-    } else {
-      result.emailAddresses = []
-    }
-    if (Array.isArray(connection['phoneNumbers'])) {
-      result.phoneNumbers = connection['phoneNumbers']
-        .map(ContactImportComponent.convertPhone)
-        .filter(value => value !== undefined)
-    } else {
-      result.phoneNumbers = []
-    }
-
-    return result
-  }
-
-  private static convertEmail(value: any) : EmailAddressEntry {
-    return {
-      primary: value.metadata?.primary || false,
-      address: value.value,
-      verified: false,
-      type: value.type || 'home'
-    }
-  }
-
-  private static convertPhone(value: any) : PhoneNumberEntry {
-    return {
-      primary: value.metadata?.primary || false,
-      number: ContactImportComponent.coercePhoneNumber(value.value),
-      verified: false,
-      type: value.type || 'home'
-    }
-  }
-
-  private static coercePhoneNumber(phoneNumber?: string) {
-    if (phoneNumber) {
-      const phoneNumberUtil = PhoneNumberUtil.getInstance()
-      const phone = phoneNumberUtil.parse(phoneNumber, "US")
-      return (phone) ? phoneNumberUtil.format(phone, PhoneNumberFormat.NATIONAL) : undefined
-    } else {
-      return undefined
-    }
   }
 
   removeContact(index: number) {
@@ -194,6 +165,41 @@ export class ContactImportComponent implements OnInit {
     // TODO commit to REST controller
 
 
+  }
+
+  /**
+   * Convert the google API results into a simpler object
+   * @param connection
+   * @private
+   */
+  private coerceConnection(connection: any): Contact {
+    let result: Contact = {}
+
+    if (Array.isArray(connection['names'])) {
+      const nameObject = connection['names'][0]
+      if (nameObject) {
+        result.firstName = nameObject.givenName
+        result.lastName = nameObject.familyName
+        result.nickname = nameObject.nickname
+        result.googleContactId = nameObject.metadata?.source?.id
+      }
+    }
+    if (Array.isArray(connection['emailAddresses'])) {
+      result.emailAddresses = connection['emailAddresses']
+        .map(ContactImportComponent.convertEmail)
+        .filter(value => value !== undefined)
+    } else {
+      result.emailAddresses = []
+    }
+    if (Array.isArray(connection['phoneNumbers'])) {
+      result.phoneNumbers = connection['phoneNumbers']
+        .map(ContactImportComponent.convertPhone)
+        .filter(value => value !== undefined)
+    } else {
+      result.phoneNumbers = []
+    }
+
+    return result
   }
 
 }
