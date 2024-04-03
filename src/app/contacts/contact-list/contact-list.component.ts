@@ -4,7 +4,7 @@ import {ContactsService, ContactSummary, Pageable} from "@golf-api";
 import {BehaviorSubject} from "rxjs";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
-import {PagedResult, TableDataSource} from "../../_controls/table-pager/table-datasource";
+import {PagedResult, PagedTableDataSource} from "../../_controls/table-pager/paged-table-data-source";
 
 @Component({
   selector: 'app-contact-list',
@@ -16,12 +16,12 @@ import {PagedResult, TableDataSource} from "../../_controls/table-pager/table-da
 export class ContactListComponent implements OnInit {
 
   pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
-  dataSource: TableDataSource<ContactSummary>
+  dataSource: PagedTableDataSource<ContactSummary>
 
   constructor(private contactsService: ContactsService,
               private route : ActivatedRoute,
               private router: Router) {
-    this.dataSource = new TableDataSource<ContactSummary>(this.getTableData.bind(this), 20)
+    this.dataSource = new PagedTableDataSource<ContactSummary>(this.getTableData.bind(this), 20)
   }
 
   ngOnInit(): void {

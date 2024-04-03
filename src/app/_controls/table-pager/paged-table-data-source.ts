@@ -7,7 +7,10 @@ export interface PagedResult<T> {
   items: T[] | undefined
 }
 
-export class TableDataSource<T> {
+/**
+ * Data source to attach to server-side paging things like http
+ */
+export class PagedTableDataSource<T> {
 
   dataSubject = new BehaviorSubject<T[]>([])
   data$ = this.dataSubject.asObservable()
