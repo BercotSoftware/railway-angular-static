@@ -13,19 +13,21 @@ export interface PagedResult<T> {
  */
 export class TableDataSource<T> {
 
-  dataSubject = new BehaviorSubject<T[]>([])
-  data$ = this.dataSubject.asObservable()
+  dataSubject: BehaviorSubject<T[]>
+  data$: Observable<T[]>
 
   public pageIndex : number = 0
   public pageSize = 20
-  public sort: Array<string>
   private sortActive: string;
   private sortDirection: string;
 
   private pageEvent = new EventEmitter<void>()
   private sortEvent = new EventEmitter<void>()
 
-  constructor() {
+  constructor(options?: { pageSize?: number, data?: Array<T> | undefined }) {
+    this.pageSize = options?.pageSize || 20
+    this.dataSubject = new BehaviorSubject<T[]>(options?.data || [])
+    this.data$ = this.dataSubject.asObservable()
   }
 
   public get totalItems() : number {
@@ -54,7 +56,7 @@ export class TableDataSource<T> {
    * @returns A stream of the items to be rendered.
    */
   get displayData(): Observable<T[]> {
-    // See https://www.learnrxjs.io/learn-rxjs/operators/combination/merge
+      // See https://www.learnrxjs.io/learn-rxjs/operators/combination/merge
       return merge(this.data$, this.pageEvent, this.sortEvent)
         .pipe(map((result) => {
           return this.getPagedData(this.getSortedData([...this.dataSubject.value]));
@@ -82,7 +84,8 @@ export class TableDataSource<T> {
    * this would be replaced by requesting the appropriate data from the server.
    */
   protected getSortedData(input: T[]): T[] {
-    if (!this.sort || !this.sortActive || this.sortDirection === '') {
+
+    if (!this.sortActive || this.sortDirection === '') {
       return input;
     }
 
@@ -93,9 +96,4 @@ export class TableDataSource<T> {
       return a[sortField] < b[sortField] ? -1 : a[sortField] > b[sortField] ? 1 : 0;
     });
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number | undefined, b: string | number | undefined, isAsc: boolean): number {
-  return ((a ?? 0) < (b ?? 0) ? -1 : 1) * (isAsc ? 1 : -1);
 }

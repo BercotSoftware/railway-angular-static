@@ -31,23 +31,21 @@ export class ContactImportComponent implements OnInit {
   constructor(private contactsService: ContactsService,
               private peopleApiService: PeopleApiService) {
 
-    // { firstName: 'dummy1', lastName: 'dummy1', nickname: 'dummy1', emailAddresses: [{ primary: true, address: 'my-email@mailhost.com', type: 'home', verified: true }], phoneNumbers: [{ primary: true, number: 'my-email@mailhost.com', type: 'mobile', verified: true }] },
-
-    let DUMMY_DATA: Array<ExtendedContact> = []
-    for (let i = 0; i < 123; i++) {
-      DUMMY_DATA.push({
-        firstName: `firstName${i}`,
-        lastName: `lastName${i}`,
-        nickname: `nickname${i}`,
-        emailAddresses: [
-          {primary: true, address: `my-email${i}@mailhost.com`, type: 'home', verified: true}
-        ],
-        phoneNumbers: [
-          {primary: true, number: '(999)-555-1212', type: 'mobile', verified: true}
-        ]
-      })
-    }
-    this.dataSource.loadData(DUMMY_DATA)
+    // let DUMMY_DATA: Array<ExtendedContact> = []
+    // for (let i = 0; i < 123; i++) {
+    //   DUMMY_DATA.push({
+    //     firstName: `firstName${i}`,
+    //     lastName: `lastName${i}`,
+    //     nickname: `nickname${i}`,
+    //     emailAddresses: [
+    //       {primary: true, address: `my-email${i}@mailhost.com`, type: 'home', verified: true}
+    //     ],
+    //     phoneNumbers: [
+    //       {primary: true, number: '(999)-555-1212', type: 'mobile', verified: true}
+    //     ]
+    //   })
+    // }
+    // this.dataSource.loadData(DUMMY_DATA)
   }
 
   private static convertEmail(value: any): EmailAddressEntry {
@@ -123,20 +121,23 @@ export class ContactImportComponent implements OnInit {
     return undefined
   }
 
-  removeContact(index: number) {
-    this.dataSource.dataSubject.value.splice(index, 1)
+  removeContact(contact: ExtendedContact) {
+    let index = this.dataSource.dataSubject.value.findIndex(obj => obj === contact);
+    if (index >= 0) {
+      this.dataSource.dataSubject.value.splice(index, 1)
+    }
   }
 
-  selectContact(i: number) {
-    this.dataSource.dataSubject.value[i].selected = true
+  selectContact(contact: ExtendedContact) {
+    contact.selected = true
   }
 
-  unselectContact(i: number) {
-    this.dataSource.dataSubject.value[i].selected = false
+  unselectContact(contact: ExtendedContact) {
+    contact.selected = false
   }
 
-  toggleSelected(i: number) {
-    this.dataSource.dataSubject.value[i].selected = !this.dataSource.dataSubject.value[i].selected
+  toggleSelected(contact: ExtendedContact) {
+    contact.selected = !contact.selected
   }
 
   addContacts() {

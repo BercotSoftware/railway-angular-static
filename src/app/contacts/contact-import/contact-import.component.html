@@ -9,16 +9,16 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let contact of dataSource.displayData | async; let i = index" [class.table-success]="contact.selected"
-      (click)="toggleSelected(i)">
+  <tr *ngFor="let contact of dataSource.displayData | async" [class.table-success]="contact.selected"
+      (click)="toggleSelected(contact)">
     <td>{{ contact.firstName }}</td>
     <td>{{ contact.lastName }}</td>
     <td>{{ primaryEmail(contact) }}</td>
     <td>{{ primaryPhoneNumber(contact) }}</td>
     <td>
       <div class="icon-container">
-        <i class="fa-solid fa-trash" (click)="removeContact(i)"></i>
-        <i *ngIf="contact.selected" class="fa-solid fa-check" (click)="selectContact(i)"></i>
+        <i class="fa-solid fa-trash" (click)="removeContact(contact)"></i>
+        <i *ngIf="contact.selected" class="fa-solid fa-check" (click)="selectContact(contact)"></i>
       </div>
     </td>
   </tr>
