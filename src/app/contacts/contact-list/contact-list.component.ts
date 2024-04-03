@@ -13,13 +13,11 @@ import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/t
   styleUrl: './contact-list.component.css'
 })
 export class ContactListComponent implements OnInit {
-  private pageOptions: Pageable = { size: 20 };
 
   $contacts = new BehaviorSubject<ContactSummary[]>([]);
   totalItems = 0;
-  pageIndex = 0;
-  pageSize = 10;
   pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
+  pageOptions: Pageable = { size: 10 };
 
   constructor(private contactsService: ContactsService,
               private route : ActivatedRoute,

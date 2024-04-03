@@ -23,8 +23,8 @@
 <div>
   <app-table-pager
     [length]="totalItems"
-    [pageIndex]="pageIndex"
-    [pageSize]="pageSize"
+    [pageIndex]="pageOptions.page || 0"
+    [pageSize]="pageOptions.size || 10"
     [pageSizeOptions]="pageSizeOptions"
     (onPageSelect)="onPageSelect($event)"
   ></app-table-pager>
