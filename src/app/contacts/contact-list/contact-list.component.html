@@ -10,7 +10,7 @@
   </thead>
   <tbody>
   <ng-container *ngFor="let contact of dataSource.data$ | async">
-    <tr>
+    <tr (click)="selectContact(contact)">
       <td>{{ contact.firstName }}</td>
       <td>{{ contact.lastName }}</td>
       <td>{{ contact.nickname }}</td>

@@ -31,6 +31,7 @@ export class ContactListComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.contactsService.getContacts(pageOptions).subscribe({
         next: (result) => {
+          // console.log('Contacts', result.items)
           resolve({ totalItems: result.totalItems, items: result.items })
         },
         error: (err) => {
@@ -40,8 +41,11 @@ export class ContactListComponent implements OnInit {
         complete: () => {
         }
       })
-
     })
+  }
+
+  selectContact(contact: ContactSummary) {
+    this.router.navigate([contact.id], { relativeTo: this.route.parent })
   }
 
 }
