@@ -43,14 +43,14 @@ export class TablePagerComponent {
 
   @Output() onPageSelect = new EventEmitter<TablePageEvent>()
 
-  pageOffset = 0;
+  protected pageOffset = 0;
 
   get hasPrevious(): boolean {
     return this.pageIndex > 0
   }
 
   get hasNext(): boolean {
-    return this.pageIndex < this.pageCount
+    return this.pageIndex < (this.pageCount - 1)
   }
 
   get pageCount() : number {
