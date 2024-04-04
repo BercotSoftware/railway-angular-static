@@ -57,11 +57,14 @@ export class TablePagerComponent {
     return ((this.length > 0) && (this.pageSize > 0)) ? Math.floor((this.length + this.pageSize - 1) / this.pageSize) : 0
   }
 
-  selectPage(page: number) {
-    if ((page > 0) && (page < this.pageCount)) {
-      this.pageIndex = page
-      this.pageOffset = Math.min(this.pageCount-3, Math.max(0, page - 1))
-      this.onPageSelect.emit({ pageIndex: this.pageIndex, pageSize: this.pageSize})
+  selectPage(pageNumber: number) {
+    if ((pageNumber >= 0) && (pageNumber < this.pageCount)) {
+      this.pageIndex = pageNumber
+      this.pageOffset = Math.min(this.pageCount-3, Math.max(0, pageNumber - 1))
+      this.onPageSelect.emit({
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize
+      })
     }
   }
 

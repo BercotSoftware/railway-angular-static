@@ -27,10 +27,6 @@ export class ContactListComponent implements OnInit {
     this.dataSource.loadData() // Prime the pump
   }
 
-  importContacts() {
-    this.router.navigate(['import'], { relativeTo: this.route.parent })
-  }
-
   getTableData = async (pageOptions: Pageable) : Promise<PagedResult<ContactSummary>> => {
     return new Promise((resolve, reject) => {
       this.contactsService.getContacts(pageOptions).subscribe({
