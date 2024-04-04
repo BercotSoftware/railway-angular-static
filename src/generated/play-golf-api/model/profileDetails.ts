@@ -13,16 +13,10 @@ import { Address } from './address';
 
 
 export interface ProfileDetails { 
-    firstName?: string;
-    lastName?: string;
+    givenName?: string;
+    familyName?: string;
     nickname?: string;
-    /**
-     * A valid email address.
-     */
     email?: string;
-    /**
-     * A valid phone number.
-     */
     phone?: string;
     id?: string;
     emailVerified?: boolean;

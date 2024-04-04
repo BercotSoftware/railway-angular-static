@@ -11,8 +11,8 @@
   <tbody>
   <ng-container *ngFor="let contact of dataSource.data$ | async">
     <tr (click)="selectContact(contact)">
-      <td>{{ contact.firstName }}</td>
-      <td>{{ contact.lastName }}</td>
+      <td>{{ contact.givenName }}</td>
+      <td>{{ contact.familyName }}</td>
       <td>{{ contact.nickname }}</td>
       <td>{{ contact.phone }}</td>
       <td>{{ contact.email }}</td>

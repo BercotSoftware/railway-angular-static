@@ -18,7 +18,6 @@ model/contact.ts
 model/contactRequest.ts
 model/contactSummary.ts
 model/contactsResponse.ts
-model/courseDetails.ts
 model/courseSummary.ts
 model/emailAddressEntry.ts
 model/eventDetails.ts
@@ -30,6 +29,7 @@ model/getCoursesResponse.ts
 model/getEventsResponse.ts
 model/getGroupParticipantsResponse.ts
 model/getGroupsResponse.ts
+model/golfCourse.ts
 model/golfGroupDetails.ts
 model/golfGroupSummary.ts
 model/golfParticipant.ts
@@ -42,8 +42,6 @@ model/pagedResponse.ts
 model/phoneNumberEntry.ts
 model/profileDetails.ts
 model/review.ts
-model/scorecard.ts
-model/scorecardEntry.ts
 model/teeStation.ts
 model/verificationToken.ts
 param.ts

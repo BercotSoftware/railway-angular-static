@@ -13,17 +13,8 @@ import { FavoriteCourse } from './favoriteCourse';
 
 
 export interface FindFavoriteCoursesResponse { 
-    /**
-     * The total number of items that match the query (not the result set)
-     */
     totalItems?: number;
-    /**
-     * The page offset requested
-     */
     page?: number;
-    /**
-     * The number of items returned
-     */
     size?: number;
     items?: Array<FavoriteCourse>;
 }

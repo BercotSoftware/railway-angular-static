@@ -442,7 +442,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CourseDetails'
+              $ref: '#/components/schemas/GolfCourse'
         required: true
       responses:
         "200":
@@ -450,19 +450,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
       security:
       - bearerAuth: []
     post:
@@ -474,7 +474,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CourseDetails'
+              $ref: '#/components/schemas/GolfCourse'
         required: true
       responses:
         "200":
@@ -482,19 +482,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
       security:
       - bearerAuth: []
   /contacts/{id}:
@@ -1112,19 +1112,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
       security:
       - bearerAuth: []
     delete:
@@ -1255,21 +1255,17 @@ components:
     ProfileDetails:
       type: object
       properties:
-        firstName:
+        givenName:
           type: string
-        lastName:
+        familyName:
           type: string
         nickname:
           type: string
         email:
           type: string
-          description: A valid email address.
         phone:
           type: string
-          description: A valid phone number.
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         emailVerified:
           type: boolean
@@ -1288,25 +1284,19 @@ components:
     Facilitator:
       type: object
       properties:
-        firstName:
+        givenName:
           type: string
-        lastName:
+        familyName:
           type: string
         nickname:
           type: string
         email:
           type: string
-          description: A valid email address.
         phone:
           type: string
-          description: A valid phone number.
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         profileId:
-          maxLength: 24
-          minLength: 0
           type: string
         status:
           type: string
@@ -1328,8 +1318,6 @@ components:
             - Administrator
             - Creator
         contactId:
-          maxLength: 24
-          minLength: 0
           type: string
         title:
           type: string
@@ -1372,9 +1360,9 @@ components:
           type: string
         profileId:
           type: string
-        firstName:
+        givenName:
           type: string
-        lastName:
+        familyName:
           type: string
         email:
           type: string
@@ -1450,8 +1438,6 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
@@ -1490,95 +1476,42 @@ components:
           type: string
         name:
           type: string
-    CourseDetails:
+    GolfCourse:
       type: object
       properties:
-        tees:
-          type: array
-          description: Information describing tee stations for a given course
-          items:
-            $ref: '#/components/schemas/TeeStation'
-        scorecard:
-          $ref: '#/components/schemas/Scorecard'
         id:
-          maxLength: 24
-          minLength: 0
-          type: string
-        _class:
           type: string
         name:
           type: string
+        managed:
+          type: boolean
         address:
           $ref: '#/components/schemas/Address'
+        twitterHandle:
+          type: string
+        facebookHandle:
+          type: string
+        instagramHandle:
+          type: string
+        website:
+          type: string
         phone:
           type: string
-          description: A valid phone number.
         email:
-          type: string
-          description: A valid email address.
-        facebookHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        instagramHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        twitterHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        website:
           type: string
         staff:
           type: array
           items:
             $ref: '#/components/schemas/Facilitator'
-        managed:
-          type: boolean
         location:
-          maxItems: 2
-          minItems: 2
           type: array
-          description: "Geolocation points, stored as longitude, latitude"
-          example:
-          - 34.052235
-          - -118.243683
           items:
-            maximum: 2
-            minimum: 2
             type: number
-            description: "Geolocation points, stored as longitude, latitude"
             format: double
-      description: A Location that is a golf course
-    Scorecard:
-      type: object
-      properties:
-        scorecard:
+        tees:
           type: array
           items:
-            $ref: '#/components/schemas/ScorecardEntry'
-      description: The information needed to display or print a scorecard
-    ScorecardEntry:
-      type: object
-      properties:
-        name:
-          type: string
-        yardage:
-          type: integer
-          format: int32
-        par:
-          type: integer
-          format: int32
-        handicap:
-          type: integer
-          format: int32
+            $ref: '#/components/schemas/TeeStation'
     TeeStation:
       type: object
       properties:
@@ -1632,9 +1565,9 @@ components:
       properties:
         id:
           type: string
-        firstName:
+        givenName:
           type: string
-        lastName:
+        familyName:
           type: string
         nickname:
           type: string
@@ -1673,14 +1606,14 @@ components:
           type: boolean
         primaryEmail:
           $ref: '#/components/schemas/EmailAddressEntry'
-        primaryAddress:
-          $ref: '#/components/schemas/AddressEntry'
-        primaryPhone:
-          $ref: '#/components/schemas/PhoneNumberEntry'
         primaryEmailAddress:
           type: string
         primaryPhoneNumber:
           type: string
+        primaryPhone:
+          $ref: '#/components/schemas/PhoneNumberEntry'
+        primaryAddress:
+          $ref: '#/components/schemas/AddressEntry'
     EmailAddressEntry:
       type: object
       properties:
@@ -1728,8 +1661,6 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         replyUrl:
           type: string
@@ -1740,16 +1671,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1759,8 +1686,6 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
@@ -1789,16 +1714,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1810,16 +1731,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1829,8 +1746,6 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
@@ -1860,16 +1775,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1880,16 +1791,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1899,59 +1806,37 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
         managed:
           type: boolean
-          description: Set to true for publicly visible courses
         address:
           $ref: '#/components/schemas/Address'
         facebookHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
           type: string
-          description: A valid social media handle.
         instagramHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
           type: string
-          description: A valid social media handle.
         twitterHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
           type: string
-          description: A valid social media handle.
         website:
           type: string
-          description: A valid Universal Resource Locator.
           format: uri
         phone:
           type: string
-          description: A valid phone number.
         email:
           type: string
-          description: A valid email address.
     GetCoursesResponse:
       type: object
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1975,16 +1860,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -2003,9 +1884,9 @@ components:
     ContactSummary:
       type: object
       properties:
-        firstName:
+        givenName:
           type: string
-        lastName:
+        familyName:
           type: string
         nickname:
           type: string
@@ -2038,16 +1919,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array

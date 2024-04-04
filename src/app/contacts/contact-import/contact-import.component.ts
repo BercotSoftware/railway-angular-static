@@ -34,8 +34,8 @@ export class ContactImportComponent implements OnInit {
     // let DUMMY_DATA: Array<ExtendedContact> = []
     // for (let i = 0; i < 123; i++) {
     //   DUMMY_DATA.push({
-    //     firstName: `firstName${i}`,
-    //     lastName: `lastName${i}`,
+    //     givenName: `firstName${i}`,
+    //     familyName: `lastName${i}`,
     //     nickname: `nickname${i}`,
     //     emailAddresses: [
     //       {primary: true, address: `my-email${i}@mailhost.com`, type: 'home', verified: true}
@@ -179,8 +179,8 @@ export class ContactImportComponent implements OnInit {
     if (Array.isArray(connection['names'])) {
       const nameObject = connection['names'][0]
       if (nameObject) {
-        result.firstName = nameObject.givenName
-        result.lastName = nameObject.familyName
+        result.givenName = nameObject.givenName
+        result.familyName = nameObject.familyName
         result.nickname = nameObject.nickname
         result.googleContactId = nameObject.metadata?.source?.id
       }

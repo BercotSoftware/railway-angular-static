@@ -12,8 +12,8 @@
 
 
 export interface ContactSummary { 
-    firstName?: string;
-    lastName?: string;
+    givenName?: string;
+    familyName?: string;
     nickname?: string;
     email?: string;
     phone?: string;

@@ -14,8 +14,8 @@
 export interface GolfParticipant { 
     id?: string;
     profileId?: string;
-    firstName?: string;
-    lastName?: string;
+    givenName?: string;
+    familyName?: string;
     email?: string;
     phone?: string;
     nickname?: string;

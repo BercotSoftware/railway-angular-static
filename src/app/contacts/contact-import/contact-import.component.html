@@ -11,8 +11,8 @@
   <tbody>
   <tr *ngFor="let contact of dataSource.displayData | async" [class.table-success]="contact.selected"
       (click)="toggleSelected(contact)">
-    <td>{{ contact.firstName }}</td>
-    <td>{{ contact.lastName }}</td>
+    <td>{{ contact.givenName }}</td>
+    <td>{{ contact.familyName }}</td>
     <td>{{ primaryEmail(contact) }}</td>
     <td>{{ primaryPhoneNumber(contact) }}</td>
     <td>
