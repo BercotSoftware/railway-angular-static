@@ -10,8 +10,10 @@ import {openIdConfiguration} from "./auth/auth-config";
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(APP_ROUTES),
-    importProvidersFrom(HttpClientModule),
-    importProvidersFrom(AuthModule.forRoot({config: [openIdConfiguration]})),
+    importProvidersFrom([
+      HttpClientModule,
+      AuthModule.forRoot({config: [openIdConfiguration]})
+    ]),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: BASE_PATH, useValue: environment.PLAY_GOLF_API_URL },   // Play-golf API base URL
   ]

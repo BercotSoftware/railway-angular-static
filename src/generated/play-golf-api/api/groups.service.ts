@@ -325,13 +325,10 @@ export class GroupsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllPaged(page: Pageable, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetGroupsResponse>;
-    public findAllPaged(page: Pageable, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetGroupsResponse>>;
-    public findAllPaged(page: Pageable, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetGroupsResponse>>;
-    public findAllPaged(page: Pageable, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findAllPaged.');
-        }
+    public findAllPaged(page?: Pageable, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetGroupsResponse>;
+    public findAllPaged(page?: Pageable, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetGroupsResponse>>;
+    public findAllPaged(page?: Pageable, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetGroupsResponse>>;
+    public findAllPaged(page?: Pageable, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -461,21 +458,18 @@ export class GroupsService {
     /**
      * GET events
      * @param id Item id
-     * @param page 
      * @param startDate 
      * @param endDate 
+     * @param page 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupEventsResponse>;
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupEventsResponse>>;
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupEventsResponse>>;
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupEventsResponse>;
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupEventsResponse>>;
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupEventsResponse>>;
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling findGroupEvents.');
-        }
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findGroupEvents.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -550,15 +544,12 @@ export class GroupsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getGroupParticipants(id: string, page: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetGroupParticipantsResponse>;
-    public getGroupParticipants(id: string, page: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetGroupParticipantsResponse>>;
-    public getGroupParticipants(id: string, page: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetGroupParticipantsResponse>>;
-    public getGroupParticipants(id: string, page: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getGroupParticipants(id: string, page?: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetGroupParticipantsResponse>;
+    public getGroupParticipants(id: string, page?: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetGroupParticipantsResponse>>;
+    public getGroupParticipants(id: string, page?: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetGroupParticipantsResponse>>;
+    public getGroupParticipants(id: string, page?: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getGroupParticipants.');
-        }
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling getGroupParticipants.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});

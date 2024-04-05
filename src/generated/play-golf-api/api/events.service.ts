@@ -19,9 +19,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { EventDetails } from '../model/eventDetails';
-// @ts-ignore
 import { GetEventsResponse } from '../model/getEventsResponse';
+// @ts-ignore
+import { GolfEventDetails } from '../model/golfEventDetails';
 // @ts-ignore
 import { GroupEventsResponse } from '../model/groupEventsResponse';
 // @ts-ignore
@@ -101,16 +101,16 @@ export class EventsService {
 
     /**
      * POST events/create
-     * @param eventDetails 
+     * @param golfEventDetails 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createEvent(eventDetails: EventDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<EventDetails>;
-    public createEvent(eventDetails: EventDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EventDetails>>;
-    public createEvent(eventDetails: EventDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EventDetails>>;
-    public createEvent(eventDetails: EventDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (eventDetails === null || eventDetails === undefined) {
-            throw new Error('Required parameter eventDetails was null or undefined when calling createEvent.');
+    public createEvent(golfEventDetails: GolfEventDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GolfEventDetails>;
+    public createEvent(golfEventDetails: GolfEventDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GolfEventDetails>>;
+    public createEvent(golfEventDetails: GolfEventDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GolfEventDetails>>;
+    public createEvent(golfEventDetails: GolfEventDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (golfEventDetails === null || golfEventDetails === undefined) {
+            throw new Error('Required parameter golfEventDetails was null or undefined when calling createEvent.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -159,10 +159,10 @@ export class EventsService {
         }
 
         let localVarPath = `/events`;
-        return this.httpClient.request<EventDetails>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GolfEventDetails>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: eventDetails,
+                body: golfEventDetails,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -242,9 +242,9 @@ export class EventsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public editEvent(eventId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<EventDetails>;
-    public editEvent(eventId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EventDetails>>;
-    public editEvent(eventId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EventDetails>>;
+    public editEvent(eventId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GolfEventDetails>;
+    public editEvent(eventId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GolfEventDetails>>;
+    public editEvent(eventId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GolfEventDetails>>;
     public editEvent(eventId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (eventId === null || eventId === undefined) {
             throw new Error('Required parameter eventId was null or undefined when calling editEvent.');
@@ -287,7 +287,7 @@ export class EventsService {
         }
 
         let localVarPath = `/events/edit/${this.configuration.encodeParam({name: "eventId", value: eventId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<EventDetails>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GolfEventDetails>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -307,13 +307,10 @@ export class EventsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllEvents(page: Pageable, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetEventsResponse>;
-    public findAllEvents(page: Pageable, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetEventsResponse>>;
-    public findAllEvents(page: Pageable, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetEventsResponse>>;
-    public findAllEvents(page: Pageable, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findAllEvents.');
-        }
+    public findAllEvents(page?: Pageable, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetEventsResponse>;
+    public findAllEvents(page?: Pageable, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetEventsResponse>>;
+    public findAllEvents(page?: Pageable, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetEventsResponse>>;
+    public findAllEvents(page?: Pageable, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -378,19 +375,16 @@ export class EventsService {
 
     /**
      * GET events/byDate
-     * @param page 
      * @param startDate 
      * @param endDate 
+     * @param page 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findByDate(page: Pageable, startDate?: string, endDate?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetEventsResponse>;
-    public findByDate(page: Pageable, startDate?: string, endDate?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetEventsResponse>>;
-    public findByDate(page: Pageable, startDate?: string, endDate?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetEventsResponse>>;
-    public findByDate(page: Pageable, startDate?: string, endDate?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findByDate.');
-        }
+    public findByDate(startDate?: string, endDate?: string, page?: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetEventsResponse>;
+    public findByDate(startDate?: string, endDate?: string, page?: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetEventsResponse>>;
+    public findByDate(startDate?: string, endDate?: string, page?: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetEventsResponse>>;
+    public findByDate(startDate?: string, endDate?: string, page?: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (startDate !== undefined && startDate !== null) {
@@ -463,9 +457,9 @@ export class EventsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findEventById(eventId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<EventDetails>;
-    public findEventById(eventId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<EventDetails>>;
-    public findEventById(eventId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<EventDetails>>;
+    public findEventById(eventId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GolfEventDetails>;
+    public findEventById(eventId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GolfEventDetails>>;
+    public findEventById(eventId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GolfEventDetails>>;
     public findEventById(eventId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (eventId === null || eventId === undefined) {
             throw new Error('Required parameter eventId was null or undefined when calling findEventById.');
@@ -508,7 +502,7 @@ export class EventsService {
         }
 
         let localVarPath = `/events/${this.configuration.encodeParam({name: "eventId", value: eventId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<EventDetails>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GolfEventDetails>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -524,21 +518,18 @@ export class EventsService {
     /**
      * GET events
      * @param id Item id
-     * @param page 
      * @param startDate 
      * @param endDate 
+     * @param page 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupEventsResponse>;
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupEventsResponse>>;
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupEventsResponse>>;
-    public findGroupEvents(id: string, page: Pageable, startDate?: string, endDate?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupEventsResponse>;
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupEventsResponse>>;
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupEventsResponse>>;
+    public findGroupEvents(id: string, startDate?: string, endDate?: string, page?: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling findGroupEvents.');
-        }
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findGroupEvents.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -608,16 +599,16 @@ export class EventsService {
 
     /**
      * Save an event given all details
-     * @param eventDetails 
+     * @param golfEventDetails 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public saveEvent(eventDetails: EventDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public saveEvent(eventDetails: EventDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public saveEvent(eventDetails: EventDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public saveEvent(eventDetails: EventDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (eventDetails === null || eventDetails === undefined) {
-            throw new Error('Required parameter eventDetails was null or undefined when calling saveEvent.');
+    public saveEvent(golfEventDetails: GolfEventDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/hal+json', context?: HttpContext, transferCache?: boolean}): Observable<GolfEventDetails>;
+    public saveEvent(golfEventDetails: GolfEventDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/hal+json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GolfEventDetails>>;
+    public saveEvent(golfEventDetails: GolfEventDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/hal+json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GolfEventDetails>>;
+    public saveEvent(golfEventDetails: GolfEventDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/hal+json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (golfEventDetails === null || golfEventDetails === undefined) {
+            throw new Error('Required parameter golfEventDetails was null or undefined when calling saveEvent.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -626,6 +617,7 @@ export class EventsService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/hal+json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -665,10 +657,10 @@ export class EventsService {
         }
 
         let localVarPath = `/events`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GolfEventDetails>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: eventDetails,
+                body: golfEventDetails,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
