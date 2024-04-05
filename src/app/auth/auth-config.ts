@@ -7,7 +7,7 @@ export const openIdConfiguration: OpenIdConfiguration = {
   clientId: environment.JWT_ISSUER_CLIENT_ID,
   redirectUrl: `${window.location.origin}/home`,
   postLogoutRedirectUri: `${window.location.origin}/home`,
-  scope: 'openid profile roles phone email address roles',
+  scope: 'openid profile roles phone email address roles offline_access',
   responseType: 'code',
   silentRenew: true,
   useRefreshToken: true,
