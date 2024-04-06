@@ -20,7 +20,6 @@ model/contactSummary.ts
 model/contactsResponse.ts
 model/courseSummary.ts
 model/emailAddressEntry.ts
-model/eventSummary.ts
 model/facilitator.ts
 model/getCoursesResponse.ts
 model/getEventsResponse.ts
@@ -28,6 +27,7 @@ model/getGroupParticipantsResponse.ts
 model/getGroupsResponse.ts
 model/golfCourse.ts
 model/golfEvent.ts
+model/golfEventSummary.ts
 model/golfGroupDetails.ts
 model/golfGroupSummary.ts
 model/golfParticipant.ts

@@ -1796,7 +1796,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GolfParticipant'
-    EventSummary:
+    GolfEventSummary:
       type: object
       properties:
         id:
@@ -1839,7 +1839,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/EventSummary'
+            $ref: '#/components/schemas/GolfEventSummary'
     NamedEntity:
       type: object
       properties:
@@ -1862,7 +1862,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/EventSummary'
+            $ref: '#/components/schemas/GolfEventSummary'
     CourseSummary:
       type: object
       properties:

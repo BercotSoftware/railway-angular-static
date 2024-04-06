@@ -13,7 +13,7 @@ import { NamedEntity } from './namedEntity';
 import { Location } from './location';
 
 
-export interface EventSummary { 
+export interface GolfEventSummary { 
     id?: string;
     name?: string;
     event?: NamedEntity;
@@ -21,9 +21,9 @@ export interface EventSummary {
     numParticipants?: number;
     startDate?: string;
     endDate?: string;
-    status?: EventSummary.StatusEnum;
+    status?: GolfEventSummary.StatusEnum;
 }
-export namespace EventSummary {
+export namespace GolfEventSummary {
     export type StatusEnum = 'Preparation' | 'OpenForRegistration' | 'Pending' | 'Completed' | 'Canceled';
     export const StatusEnum = {
         Preparation: 'Preparation' as StatusEnum,
