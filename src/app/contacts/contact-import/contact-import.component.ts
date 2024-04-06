@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {BehaviorSubject, map} from "rxjs";
-import {Contact, ContactsService, EmailAddressEntry, Pageable, PhoneNumberEntry} from "@golf-api";
+import {map} from "rxjs";
+import {Contact, ContactsService, EmailAddressEntry, PhoneNumberEntry} from "@golf-api";
 import {PeopleApiService} from "@google";
 import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
-import {TablePageEvent, TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
+import {TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
 import {TableDataSource} from "../../_controls/table-pager/table-data-source";
 
 // see: https://getbootstrap.com/docs/4.0/content/tables/

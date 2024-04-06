@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ContactsService, ContactSummary, Pageable} from "@golf-api";
+import {ContactsService, ContactSummary} from "@golf-api";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
 import {PagedResult, PagedTableDataSource} from "../../_controls/table-pager/paged-table-data-source";
+import {Pageable} from "@utilities";
 
 @Component({
   selector: 'app-contact-list',
@@ -29,7 +30,7 @@ export class ContactListComponent implements OnInit {
 
   getTableData = async (pageOptions: Pageable) : Promise<PagedResult<ContactSummary>> => {
     return new Promise((resolve, reject) => {
-      this.contactsService.getContacts(pageOptions).subscribe({
+      this.contactsService.getContacts(pageOptions.page, pageOptions.size, pageOptions.sort).subscribe({
         next: (result) => {
           // console.log('Contacts', result.items)
           resolve({ totalItems: result.totalItems, items: result.items })

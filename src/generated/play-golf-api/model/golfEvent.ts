@@ -9,25 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { NamedEntity } from './namedEntity';
-import { LocationSummary } from './locationSummary';
 import { GolfParticipant } from './golfParticipant';
 
 
-export interface GolfEventDetails { 
+export interface GolfEvent { 
     id?: string;
     name?: string;
-    event?: NamedEntity;
-    location?: LocationSummary;
+    locationId?: string;
+    invitation?: string;
+    groupId?: string;
     startDate?: string;
     endDate?: string;
-    status?: GolfEventDetails.StatusEnum;
     participants?: Array<GolfParticipant>;
-    rules?: string;
-    description?: string;
-    invitation?: string;
+    status?: GolfEvent.StatusEnum;
+    teeTime?: string;
 }
-export namespace GolfEventDetails {
+export namespace GolfEvent {
     export type StatusEnum = 'Preparation' | 'OpenForRegistration' | 'Pending' | 'Completed' | 'Canceled';
     export const StatusEnum = {
         Preparation: 'Preparation' as StatusEnum,

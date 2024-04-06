@@ -1,6 +1,6 @@
 import {BehaviorSubject, Observable} from "rxjs";
 import {TablePageEvent} from "./table-pager.component";
-import {Pageable} from "@golf-api";
+import {Pageable} from "@utilities";
 
 export interface PagedResult<T> {
   totalItems?: number,
@@ -17,19 +17,11 @@ export class PagedTableDataSource<T> {
 
   public page : number = 0
   public size = 20
-  public sort: Array<string>
+  public sort: string
   public totalItems = 0
 
   constructor(private dataProvider: (pageOptions: Pageable) => Promise<PagedResult<T>>, pageSize?: number) {
     this.size = pageSize || 100
-  }
-
-  public getPageOptions() : Pageable {
-    return {
-      page: this.page,
-      size: this.size,
-      sort: this.sort
-    }
   }
 
   public loadData() {

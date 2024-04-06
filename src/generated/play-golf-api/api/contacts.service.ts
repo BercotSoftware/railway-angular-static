@@ -25,8 +25,6 @@ import { ContactRequest } from '../model/contactRequest';
 // @ts-ignore
 import { ContactsResponse } from '../model/contactsResponse';
 // @ts-ignore
-import { Pageable } from '../model/pageable';
-// @ts-ignore
 import { PagedResponse } from '../model/pagedResponse';
 
 // @ts-ignore
@@ -166,22 +164,15 @@ export class ContactsService {
     /**
      * Create multiple new contacts
      * @param contact 
-     * @param mergeOptions merging options
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public batchCreateContacts(contact: Array<Contact>, mergeOptions?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<Contact>>;
-    public batchCreateContacts(contact: Array<Contact>, mergeOptions?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<Contact>>>;
-    public batchCreateContacts(contact: Array<Contact>, mergeOptions?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<Contact>>>;
-    public batchCreateContacts(contact: Array<Contact>, mergeOptions?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public batchCreateContacts(contact: Array<Contact>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<Contact>>;
+    public batchCreateContacts(contact: Array<Contact>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<Contact>>>;
+    public batchCreateContacts(contact: Array<Contact>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<Contact>>>;
+    public batchCreateContacts(contact: Array<Contact>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (contact === null || contact === undefined) {
             throw new Error('Required parameter contact was null or undefined when calling batchCreateContacts.');
-        }
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (mergeOptions !== undefined && mergeOptions !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>mergeOptions, 'mergeOptions');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -234,7 +225,6 @@ export class ContactsService {
             {
                 context: localVarHttpContext,
                 body: contact,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -575,20 +565,30 @@ export class ContactsService {
 
     /**
      * Get contacts for the currently logged-in user
-     * @param page Paging and sort options
+     * @param page 
+     * @param size 
+     * @param sort 
      * @param pattern Search pattern
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getContacts(page?: Pageable, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContactsResponse>;
-    public getContacts(page?: Pageable, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContactsResponse>>;
-    public getContacts(page?: Pageable, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContactsResponse>>;
-    public getContacts(page?: Pageable, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getContacts(page?: number, size?: number, sort?: string, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContactsResponse>;
+    public getContacts(page?: number, size?: number, sort?: string, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContactsResponse>>;
+    public getContacts(page?: number, size?: number, sort?: string, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContactsResponse>>;
+    public getContacts(page?: number, size?: number, sort?: string, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>page, 'page');
+        }
+        if (size !== undefined && size !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>size, 'size');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'sort');
         }
         if (pattern !== undefined && pattern !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

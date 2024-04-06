@@ -1,6 +1,5 @@
 import {BehaviorSubject, map, merge, Observable} from "rxjs";
 import {TablePageEvent} from "./table-pager.component";
-import {Pageable} from "@golf-api";
 import {EventEmitter} from "@angular/core";
 
 export interface PagedResult<T> {

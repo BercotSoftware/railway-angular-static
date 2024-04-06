@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GolfEventSummary } from './golfEventSummary';
+import { EventSummary } from './eventSummary';
 
 
 export interface GetEventsResponse { 
     totalItems?: number;
     page?: number;
     size?: number;
-    items?: Array<GolfEventSummary>;
+    items?: Array<EventSummary>;
 }
 

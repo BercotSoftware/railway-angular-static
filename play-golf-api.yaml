@@ -195,7 +195,22 @@ paths:
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: date
       responses:
         "200":
           description: OK
@@ -314,7 +329,22 @@ paths:
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ""
       - name: pattern
         in: query
         required: false
@@ -350,27 +380,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GolfEventDetails'
+              $ref: '#/components/schemas/GolfEvent'
         required: true
       responses:
         "200":
           description: Resource successfully saved
-          content:
-            application/hal+json:
-              schema:
-                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
-          content:
-            application/hal+json:
-              schema:
-                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
-          content:
-            application/hal+json:
-              schema:
-                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
     post:
@@ -382,7 +400,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GolfEventDetails'
+              $ref: '#/components/schemas/GolfEvent'
         required: true
       responses:
         "200":
@@ -390,19 +408,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
       security:
       - bearerAuth: []
   /courses:
@@ -414,10 +432,24 @@ paths:
       parameters:
       - name: page
         in: query
-        description: Paging parameters
         required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ""
       - name: pattern
         in: query
         description: Search pattern
@@ -655,10 +687,24 @@ paths:
       parameters:
       - name: page
         in: query
-        description: Paging and sort options
         required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: date
       - name: pattern
         in: query
         description: Search pattern
@@ -727,10 +773,24 @@ paths:
       parameters:
       - name: page
         in: query
-        description: Paging and sort options
         required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: givenName
       - name: pattern
         in: query
         description: Search pattern
@@ -834,13 +894,6 @@ paths:
       - contacts
       summary: Create multiple new contacts
       operationId: batchCreateContacts
-      parameters:
-      - name: mergeOptions
-        in: query
-        description: merging options
-        required: false
-        schema:
-          type: boolean
       requestBody:
         content:
           application/json:
@@ -958,7 +1011,22 @@ paths:
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: date
       responses:
         "200":
           description: OK
@@ -998,19 +1066,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
       security:
       - bearerAuth: []
     delete:
@@ -1051,19 +1119,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEventDetails'
+                $ref: '#/components/schemas/GolfEvent'
       security:
       - bearerAuth: []
   /events/byDate:
@@ -1089,7 +1157,22 @@ paths:
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ""
       responses:
         "200":
           description: OK
@@ -1168,39 +1251,6 @@ paths:
           description: Bad request
         "401":
           description: Access token is missing or invalid
-      security:
-      - bearerAuth: []
-  /courses/favorites:
-    get:
-      tags:
-      - courses
-      summary: GET courses/favorites
-      operationId: findFavoriteCourses
-      parameters:
-      - name: page
-        in: query
-        required: false
-        schema:
-          $ref: '#/components/schemas/Pageable'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
-        "401":
-          description: Access token is missing or invalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
       security:
       - bearerAuth: []
   /contacts/profile/{id}:
@@ -1460,23 +1510,29 @@ components:
           items:
             type: number
             format: double
-    GolfEventDetails:
+    GolfEvent:
       type: object
       properties:
         id:
           type: string
         name:
           type: string
-        event:
-          $ref: '#/components/schemas/NamedEntity'
-        location:
-          $ref: '#/components/schemas/LocationSummary'
+        locationId:
+          type: string
+        invitation:
+          type: string
+        groupId:
+          type: string
         startDate:
           type: string
           format: date-time
         endDate:
           type: string
           format: date-time
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/GolfParticipant'
         status:
           type: string
           enum:
@@ -1485,37 +1541,10 @@ components:
           - Pending
           - Completed
           - Canceled
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/GolfParticipant'
-        rules:
+        teeTime:
           type: string
-        description:
-          type: string
-        invitation:
-          type: string
-    LocationSummary:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-        location:
-          type: array
-          items:
-            type: number
-            format: double
-    NamedEntity:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
+          format: date-time
+          writeOnly: true
     GolfCourse:
       type: object
       properties:
@@ -1734,21 +1763,6 @@ components:
         numParticipants:
           type: integer
           format: int32
-    Pageable:
-      type: object
-      properties:
-        page:
-          minimum: 0
-          type: integer
-          format: int32
-        size:
-          minimum: 1
-          type: integer
-          format: int32
-        sort:
-          type: array
-          items:
-            type: string
     PagedResponse:
       type: object
       properties:
@@ -1782,7 +1796,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GolfParticipant'
-    GolfEventSummary:
+    EventSummary:
       type: object
       properties:
         id:
@@ -1825,7 +1839,14 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/GolfEventSummary'
+            $ref: '#/components/schemas/EventSummary'
+    NamedEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
     GetEventsResponse:
       type: object
       properties:
@@ -1841,7 +1862,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/GolfEventSummary'
+            $ref: '#/components/schemas/EventSummary'
     CourseSummary:
       type: object
       properties:
@@ -1882,45 +1903,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CourseSummary'
-    FavoriteCourse:
-      type: object
-      properties:
-        id:
-          type: string
-        locationId:
-          type: string
-        name:
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-        review:
-          $ref: '#/components/schemas/Review'
-    FindFavoriteCoursesResponse:
-      type: object
-      properties:
-        totalItems:
-          type: integer
-          format: int32
-        page:
-          type: integer
-          format: int32
-        size:
-          type: integer
-          format: int32
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/FavoriteCourse'
-    Review:
-      type: object
-      properties:
-        review:
-          type: string
-        publiclyVisible:
-          type: boolean
-        rating:
-          type: integer
-          format: int32
     ContactSummary:
       type: object
       properties:
