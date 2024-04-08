@@ -4,6 +4,7 @@ import {LoadingService} from "../../_services/loading.service";
 import {Contact, ContactsService} from "@golf-api";
 import {NotificationService} from "../../_services/notification.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {informalName} from "@utilities";
 
 @Component({
   selector: 'app-contact-view',
@@ -51,4 +52,6 @@ export class ContactViewComponent implements OnInit {
       }
     })
   }
+
+  protected readonly informalName = informalName;
 }
