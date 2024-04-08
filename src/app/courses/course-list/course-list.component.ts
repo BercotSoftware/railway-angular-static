@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CoursesService, CourseSummary, GetCoursesResponse} from '@golf-api'
 import {BehaviorSubject} from "rxjs";
-import {Pageable} from "@utilities";
+import {formatCityState, formatPhoneNumber, Pageable} from "@utilities";
 
 @Component({
   selector: 'app-course-list',
@@ -38,4 +38,6 @@ export class CourseListComponent implements OnInit {
       });
   }
 
+  protected readonly formatCityState = formatCityState;
+  protected readonly formatPhoneNumber = formatPhoneNumber;
 }

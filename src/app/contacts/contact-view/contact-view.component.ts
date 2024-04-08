@@ -15,7 +15,7 @@ import {informalName} from "@utilities";
 })
 export class ContactViewComponent implements OnInit {
 
-  contact: Contact
+  contact: Contact = {}
 
   constructor(
     private loadingService: LoadingService,

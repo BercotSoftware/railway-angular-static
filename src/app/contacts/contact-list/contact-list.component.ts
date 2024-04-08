@@ -4,7 +4,7 @@ import {ContactsService, ContactSummary} from "@golf-api";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
 import {PagedResult, PagedTableDataSource} from "../../_controls/table-pager/paged-table-data-source";
-import {Pageable} from "@utilities";
+import {formatPhoneNumber, informalName, Pageable} from "@utilities";
 
 @Component({
   selector: 'app-contact-list',
@@ -49,4 +49,6 @@ export class ContactListComponent implements OnInit {
     this.router.navigate([contact.id], { relativeTo: this.route.parent })
   }
 
+  protected readonly formatPhoneNumber = formatPhoneNumber;
+  protected readonly informalName = informalName;
 }

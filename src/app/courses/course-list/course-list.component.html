@@ -2,8 +2,7 @@
   <thead>
   <tr>
     <th scope="col">Name</th>
-    <th scope="col">City</th>
-    <th scope="col">State</th>
+    <th scope="col">City/State</th>
     <th scope="col">Phone</th>
     <th scope="col">e-mail</th>
   </tr>
@@ -12,9 +11,8 @@
   <ng-container *ngFor="let course of $golfCourses | async">
     <tr>
       <td>{{ course.name }}</td>
-      <td>{{ course.address?.city }}</td>
-      <td>{{ course.address?.state }}</td>
-      <td>{{ course.phone }}</td>
+      <td>{{ formatCityState(course.address)}}</td>
+      <td>{{ formatPhoneNumber(course.phone)}}</td>
       <td>{{ course.email }}</td>
     </tr>
   </ng-container>
