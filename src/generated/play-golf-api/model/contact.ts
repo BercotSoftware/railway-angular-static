@@ -31,10 +31,10 @@ export interface Contact {
     token?: VerificationToken;
     registered?: boolean;
     primaryEmail?: EmailAddressEntry;
-    primaryEmailAddress?: string;
     primaryPhoneNumber?: string;
-    primaryPhone?: PhoneNumberEntry;
+    primaryEmailAddress?: string;
     primaryAddress?: AddressEntry;
+    primaryPhone?: PhoneNumberEntry;
 }
 export namespace Contact {
     export type StatusEnum = 'New' | 'Pending' | 'Accepted' | 'Declined' | 'Expired';

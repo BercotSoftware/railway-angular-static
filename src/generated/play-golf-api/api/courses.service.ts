@@ -241,10 +241,10 @@ export class CoursesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllCourses(page?: number, size?: number, sort?: string, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetCoursesResponse>;
-    public findAllCourses(page?: number, size?: number, sort?: string, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetCoursesResponse>>;
-    public findAllCourses(page?: number, size?: number, sort?: string, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetCoursesResponse>>;
-    public findAllCourses(page?: number, size?: number, sort?: string, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetCoursesResponse>;
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetCoursesResponse>>;
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetCoursesResponse>>;
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -255,9 +255,11 @@ export class CoursesService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>size, 'size');
         }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'sort');
+        if (sort) {
+            sort.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'sort');
+            })
         }
         if (pattern !== undefined && pattern !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

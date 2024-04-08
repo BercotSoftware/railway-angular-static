@@ -17,7 +17,7 @@ export class PagedTableDataSource<T> {
 
   public page : number = 0
   public size = 20
-  public sort: string
+  public sort: Array<string>
   public totalItems = 0
 
   constructor(private dataProvider: (pageOptions: Pageable) => Promise<PagedResult<T>>, pageSize?: number) {

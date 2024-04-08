@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CoursesService, CourseSummary} from '@golf-api'
+import {CoursesService, CourseSummary, GetCoursesResponse} from '@golf-api'
 import {BehaviorSubject} from "rxjs";
 import {Pageable} from "@utilities";
 
@@ -14,7 +14,7 @@ import {Pageable} from "@utilities";
 export class CourseListComponent implements OnInit {
 
   $golfCourses = new BehaviorSubject<CourseSummary[]>([])
-  paging : Pageable = { page: 0, size: 20, sort: "name" }
+  paging : Pageable = { page: 0, size: 20, sort: ["name"] }
 
   constructor(private golfCourseService: CoursesService) {
   }
@@ -26,11 +26,11 @@ export class CourseListComponent implements OnInit {
   loadGolfCourses(): void {
     this.golfCourseService.findAllCourses(this.paging.page, this.paging.size, this.paging.sort)
       .subscribe( {
-        next : (result) => {
+        next : (result: GetCoursesResponse) => {
           // console.log('Received courses:', JSON.stringify(courses))
           this.$golfCourses.next(result.items || []);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.log('Error loading courses', err)
         },
         complete: () => {

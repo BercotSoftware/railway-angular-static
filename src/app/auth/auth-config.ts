@@ -19,6 +19,7 @@ export const openIdConfiguration: OpenIdConfiguration = {
   logLevel: LogLevel.Debug,
 };
 
+// See: https://damienbod.com/2017/06/16/angular-oidc-oauth2-client-with-google-identity-platform/
 export const googleOauthConfiguration : OpenIdConfiguration = {
   authority: 'https://accounts.google.com',
   redirectUrl: window.location.origin,

@@ -209,8 +209,11 @@ paths:
         in: query
         required: false
         schema:
-          type: string
-          default: date
+          type: array
+          items:
+            type: string
+          default:
+          - date
       responses:
         "200":
           description: OK
@@ -343,8 +346,10 @@ paths:
         in: query
         required: false
         schema:
-          type: string
-          default: ""
+          type: array
+          items:
+            type: string
+          default: []
       - name: pattern
         in: query
         required: false
@@ -380,15 +385,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GolfEvent'
+              $ref: '#/components/schemas/GolfEventDetails'
         required: true
       responses:
         "200":
           description: Resource successfully saved
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
     post:
@@ -400,7 +417,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GolfEvent'
+              $ref: '#/components/schemas/GolfEventDetails'
         required: true
       responses:
         "200":
@@ -408,19 +425,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
   /courses:
@@ -448,8 +465,11 @@ paths:
         in: query
         required: false
         schema:
-          type: string
-          default: ""
+          type: array
+          items:
+            type: string
+          default:
+          - name
       - name: pattern
         in: query
         description: Search pattern
@@ -703,8 +723,11 @@ paths:
         in: query
         required: false
         schema:
-          type: string
-          default: date
+          type: array
+          items:
+            type: string
+          default:
+          - date
       - name: pattern
         in: query
         description: Search pattern
@@ -789,8 +812,12 @@ paths:
         in: query
         required: false
         schema:
-          type: string
-          default: givenName
+          type: array
+          items:
+            type: string
+          default:
+          - givenName
+          - familyName
       - name: pattern
         in: query
         description: Search pattern
@@ -1025,8 +1052,11 @@ paths:
         in: query
         required: false
         schema:
-          type: string
-          default: date
+          type: array
+          items:
+            type: string
+          default:
+          - date
       responses:
         "200":
           description: OK
@@ -1066,19 +1096,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
     delete:
@@ -1119,19 +1149,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GolfEvent'
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
   /events/byDate:
@@ -1171,8 +1201,11 @@ paths:
         in: query
         required: false
         schema:
-          type: string
-          default: ""
+          type: array
+          items:
+            type: string
+          default:
+          - name
       responses:
         "200":
           description: OK
@@ -1510,29 +1543,23 @@ components:
           items:
             type: number
             format: double
-    GolfEvent:
+    GolfEventDetails:
       type: object
       properties:
         id:
           type: string
         name:
           type: string
-        locationId:
-          type: string
-        invitation:
-          type: string
-        groupId:
-          type: string
+        event:
+          $ref: '#/components/schemas/NamedEntity'
+        location:
+          $ref: '#/components/schemas/LocationSummary'
         startDate:
           type: string
           format: date-time
         endDate:
           type: string
           format: date-time
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/GolfParticipant'
         status:
           type: string
           enum:
@@ -1541,10 +1568,37 @@ components:
           - Pending
           - Completed
           - Canceled
-        teeTime:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/GolfParticipant'
+        rules:
           type: string
-          format: date-time
-          writeOnly: true
+        description:
+          type: string
+        invitation:
+          type: string
+    LocationSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        location:
+          type: array
+          items:
+            type: number
+            format: double
+    NamedEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
     GolfCourse:
       type: object
       properties:
@@ -1675,14 +1729,14 @@ components:
           type: boolean
         primaryEmail:
           $ref: '#/components/schemas/EmailAddressEntry'
-        primaryEmailAddress:
-          type: string
         primaryPhoneNumber:
           type: string
-        primaryPhone:
-          $ref: '#/components/schemas/PhoneNumberEntry'
+        primaryEmailAddress:
+          type: string
         primaryAddress:
           $ref: '#/components/schemas/AddressEntry'
+        primaryPhone:
+          $ref: '#/components/schemas/PhoneNumberEntry'
     EmailAddressEntry:
       type: object
       properties:
@@ -1840,13 +1894,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GolfEventSummary'
-    NamedEntity:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
     GetEventsResponse:
       type: object
       properties:

@@ -26,13 +26,14 @@ model/getEventsResponse.ts
 model/getGroupParticipantsResponse.ts
 model/getGroupsResponse.ts
 model/golfCourse.ts
-model/golfEvent.ts
+model/golfEventDetails.ts
 model/golfEventSummary.ts
 model/golfGroupDetails.ts
 model/golfGroupSummary.ts
 model/golfParticipant.ts
 model/groupEventsResponse.ts
 model/location.ts
+model/locationSummary.ts
 model/models.ts
 model/namedEntity.ts
 model/pagedResponse.ts
