@@ -78,15 +78,15 @@
           "configurations": {
             "production": {
               "buildTarget": "my-app:build:production",
-              "port": 4200
+              "port": 4300
             },
             "development": {
               "buildTarget": "my-app:build:development",
-              "port": 4200
+              "port": 4300
             },
             "railway": {
               "buildTarget": "my-app:build:railway",
-              "port": 4200
+              "port": 4300
             }
           },
           "defaultConfiguration": "development"

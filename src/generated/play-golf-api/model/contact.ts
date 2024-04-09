@@ -30,11 +30,11 @@ export interface Contact {
     since?: string;
     token?: VerificationToken;
     registered?: boolean;
-    primaryEmail?: EmailAddressEntry;
-    primaryPhoneNumber?: string;
     primaryEmailAddress?: string;
+    primaryPhoneNumber?: string;
     primaryAddress?: AddressEntry;
     primaryPhone?: PhoneNumberEntry;
+    primaryEmail?: EmailAddressEntry;
 }
 export namespace Contact {
     export type StatusEnum = 'New' | 'Pending' | 'Accepted' | 'Declined' | 'Expired';

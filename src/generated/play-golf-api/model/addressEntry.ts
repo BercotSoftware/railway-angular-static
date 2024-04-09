@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Address } from './address';
 
 
 export interface AddressEntry { 
@@ -17,7 +16,30 @@ export interface AddressEntry {
      * Set to true if primary address
      */
     primary?: boolean;
-    address?: Address;
+    /**
+     * Primary address (street)
+     */
+    address?: string;
+    /**
+     * Secondary address (unit, etc)
+     */
+    address2?: string;
+    /**
+     * City name
+     */
+    city?: string;
+    /**
+     * State or province code.
+     */
+    state?: string;
+    /**
+     * Two-letter country code.
+     */
+    country?: string;
+    /**
+     * A valid ZIP code (U.S. format).
+     */
+    postalCode?: string;
     /**
      * type of address (e.g. home, mobile, work)
      */

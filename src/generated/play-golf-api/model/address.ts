@@ -11,9 +11,6 @@
  */
 
 
-/**
- * address
- */
 export interface Address { 
     /**
      * Primary address (street)

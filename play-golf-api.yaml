@@ -213,7 +213,7 @@ paths:
           items:
             type: string
           default:
-          - date
+          - firstName
       responses:
         "200":
           description: OK
@@ -349,7 +349,8 @@ paths:
           type: array
           items:
             type: string
-          default: []
+          default:
+          - startDate
       - name: pattern
         in: query
         required: false
@@ -727,7 +728,7 @@ paths:
           items:
             type: string
           default:
-          - date
+          - name
       - name: pattern
         in: query
         description: Search pattern
@@ -817,7 +818,6 @@ paths:
             type: string
           default:
           - givenName
-          - familyName
       - name: pattern
         in: query
         description: Search pattern
@@ -1205,7 +1205,7 @@ paths:
           items:
             type: string
           default:
-          - name
+          - startDate
       responses:
         "200":
           description: OK
@@ -1354,7 +1354,6 @@ components:
           pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
           type: string
           description: A valid ZIP code (U.S. format).
-      description: address
     Profile:
       type: object
       properties:
@@ -1679,7 +1678,26 @@ components:
           type: boolean
           description: Set to true if primary address
         address:
-          $ref: '#/components/schemas/Address'
+          type: string
+          description: Primary address (street)
+        address2:
+          type: string
+          description: "Secondary address (unit, etc)"
+        city:
+          type: string
+          description: City name
+        state:
+          pattern: "^[A-Za-z]{2,}$"
+          type: string
+          description: State or province code.
+        country:
+          pattern: "^[A-Za-z]{2}$"
+          type: string
+          description: Two-letter country code.
+        postalCode:
+          pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
+          type: string
+          description: A valid ZIP code (U.S. format).
         type:
           type: string
           description: "type of address (e.g. home, mobile, work)"
@@ -1727,16 +1745,16 @@ components:
           $ref: '#/components/schemas/VerificationToken'
         registered:
           type: boolean
-        primaryEmail:
-          $ref: '#/components/schemas/EmailAddressEntry'
-        primaryPhoneNumber:
-          type: string
         primaryEmailAddress:
+          type: string
+        primaryPhoneNumber:
           type: string
         primaryAddress:
           $ref: '#/components/schemas/AddressEntry'
         primaryPhone:
           $ref: '#/components/schemas/PhoneNumberEntry'
+        primaryEmail:
+          $ref: '#/components/schemas/EmailAddressEntry'
     EmailAddressEntry:
       type: object
       properties:
