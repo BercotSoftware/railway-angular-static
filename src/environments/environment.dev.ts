@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   PLAY_GOLF_API_URL: 'http://localhost:4000',
-  JWT_ISSUER_URL: 'https://keycloak.nunjobiznezz.com/realms/play-golf',    // The authentication server
+  JWT_ISSUER_URL: 'http://localhost:8100/realms/play-golf',    // The authentication server
   JWT_ISSUER_CLIENT_ID: "play-golf",
 
   // https://console.cloud.google.com/apis/credentials/oauthclient/160870185609-s83f456jg9ke4a9la7p68c6uheslmi8r.apps.googleusercontent.com?project=play-golf-372116
