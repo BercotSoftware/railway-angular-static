@@ -5,7 +5,7 @@ import {Contact, ContactsService, EmailAddressEntry, PhoneNumberEntry} from "@go
 import {PeopleApiService} from "@google";
 import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';
 import {TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
-import {TableDataSource} from "../../_controls/table-pager/table-data-source";
+import {TableDataSource} from "../../_utilities/table-data-source";
 
 // see: https://getbootstrap.com/docs/4.0/content/tables/
 

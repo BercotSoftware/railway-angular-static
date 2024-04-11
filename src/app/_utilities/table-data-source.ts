@@ -1,5 +1,5 @@
 import {BehaviorSubject, map, merge, Observable} from "rxjs";
-import {TablePageEvent} from "./table-pager.component";
+import {TablePageEvent} from "../_controls/table-pager/table-pager.component";
 import {EventEmitter} from "@angular/core";
 
 export interface PagedResult<T> {
