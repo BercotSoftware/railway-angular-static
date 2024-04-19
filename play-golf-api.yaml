@@ -29,19 +29,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfileDetails'
+                $ref: '#/components/schemas/Profile'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfileDetails'
+                $ref: '#/components/schemas/Profile'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfileDetails'
+                $ref: '#/components/schemas/Profile'
       security:
       - bearerAuth: []
     put:
@@ -53,7 +53,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProfileDetails'
+              $ref: '#/components/schemas/Profile'
         required: true
       responses:
         "200":
@@ -61,19 +61,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfileDetails'
+                $ref: '#/components/schemas/Profile'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfileDetails'
+                $ref: '#/components/schemas/Profile'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProfileDetails'
+                $ref: '#/components/schemas/Profile'
       security:
       - bearerAuth: []
   /groups/{id}:
@@ -193,9 +193,27 @@ paths:
           type: string
       - name: page
         in: query
-        required: true
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - firstName
       responses:
         "200":
           description: OK
@@ -312,9 +330,27 @@ paths:
       parameters:
       - name: page
         in: query
-        required: true
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - startDate
       - name: pattern
         in: query
         required: false
@@ -350,15 +386,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventDetails'
+              $ref: '#/components/schemas/GolfEventDetails'
         required: true
       responses:
         "200":
           description: Resource successfully saved
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
     post:
@@ -370,7 +418,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventDetails'
+              $ref: '#/components/schemas/GolfEventDetails'
         required: true
       responses:
         "200":
@@ -378,19 +426,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
   /courses:
@@ -402,10 +450,27 @@ paths:
       parameters:
       - name: page
         in: query
-        description: Paging parameters
-        required: true
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - name
       - name: pattern
         in: query
         description: Search pattern
@@ -442,7 +507,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CourseDetails'
+              $ref: '#/components/schemas/GolfCourse'
         required: true
       responses:
         "200":
@@ -450,19 +515,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
       security:
       - bearerAuth: []
     post:
@@ -474,7 +539,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CourseDetails'
+              $ref: '#/components/schemas/GolfCourse'
         required: true
       responses:
         "200":
@@ -482,19 +547,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
       security:
       - bearerAuth: []
   /contacts/{id}:
@@ -518,19 +583,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
     put:
@@ -551,7 +622,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContactDetails'
+              $ref: '#/components/schemas/Contact'
         required: true
       responses:
         "200":
@@ -560,6 +631,8 @@ paths:
           description: Bad request
         "401":
           description: Access token is missing or invalid
+        "403":
+          description: Access denied
       security:
       - bearerAuth: []
     delete:
@@ -583,6 +656,8 @@ paths:
           description: Bad request
         "401":
           description: Access token is missing or invalid
+        "403":
+          description: Access denied
       security:
       - bearerAuth: []
   /contacts/invite:
@@ -603,19 +678,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
   /groups:
@@ -627,11 +708,30 @@ paths:
       parameters:
       - name: page
         in: query
-        required: true
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - name
       - name: pattern
         in: query
+        description: Search pattern
         required: false
         schema:
           type: string
@@ -697,11 +797,30 @@ paths:
       parameters:
       - name: page
         in: query
-        required: true
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - givenName
       - name: pattern
         in: query
+        description: Search pattern
         required: false
         schema:
           type: string
@@ -724,6 +843,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PagedResponse'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse'
       security:
       - bearerAuth: []
     post:
@@ -735,27 +860,33 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContactDetails'
+              $ref: '#/components/schemas/Contact'
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: CREATED
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
   /contacts/decline/{id}:
@@ -780,6 +911,58 @@ paths:
           description: Bad request
         "401":
           description: Access token is missing or invalid
+        "403":
+          description: Access denied
+      security:
+      - bearerAuth: []
+  /contacts/batch:
+    post:
+      tags:
+      - contacts
+      summary: Create multiple new contacts
+      operationId: batchCreateContacts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              description: list of contacts existing or new
+              items:
+                $ref: '#/components/schemas/Contact'
+        required: true
+      responses:
+        "201":
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        "401":
+          description: Access token is missing or invalid
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
   /contacts/accept/{id}:
@@ -802,19 +985,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
   /groups/{id}/events:
@@ -847,9 +1036,27 @@ paths:
           format: date-time
       - name: page
         in: query
-        required: true
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - date
       responses:
         "200":
           description: OK
@@ -889,19 +1096,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
     delete:
@@ -942,19 +1149,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventDetails'
+                $ref: '#/components/schemas/GolfEventDetails'
       security:
       - bearerAuth: []
   /events/byDate:
@@ -978,9 +1185,27 @@ paths:
           format: date-time
       - name: page
         in: query
-        required: true
+        required: false
         schema:
-          $ref: '#/components/schemas/Pageable'
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - startDate
       responses:
         "200":
           description: OK
@@ -1023,19 +1248,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CourseDetails'
+                $ref: '#/components/schemas/GolfCourse'
       security:
       - bearerAuth: []
     delete:
@@ -1061,39 +1286,6 @@ paths:
           description: Access token is missing or invalid
       security:
       - bearerAuth: []
-  /courses/favorites:
-    get:
-      tags:
-      - courses
-      summary: GET courses/favorites
-      operationId: findFavoriteCourses
-      parameters:
-      - name: page
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Pageable'
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
-        "401":
-          description: Access token is missing or invalid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FindFavoriteCoursesResponse'
-      security:
-      - bearerAuth: []
   /contacts/profile/{id}:
     get:
       tags:
@@ -1115,19 +1307,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
         "401":
           description: Access token is missing or invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContactDetails'
+                $ref: '#/components/schemas/Contact'
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
       security:
       - bearerAuth: []
 components:
@@ -1156,31 +1354,29 @@ components:
           pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
           type: string
           description: A valid ZIP code (U.S. format).
-    ProfileDetails:
+    Profile:
       type: object
       properties:
-        firstName:
+        givenName:
           type: string
-        lastName:
-          type: string
-        nickname:
+        familyName:
           type: string
         email:
           type: string
-          description: A valid email address.
-        phone:
-          type: string
-          description: A valid phone number.
-        id:
-          maxLength: 24
-          minLength: 0
-          type: string
         emailVerified:
           type: boolean
-        phoneVerified:
-          type: boolean
+        phone:
+          type: string
+        nickname:
+          type: string
+        picture:
+          type: string
+        profileName:
+          type: string
         address:
           $ref: '#/components/schemas/Address'
+        phoneVerified:
+          type: boolean
         birthDate:
           type: string
           format: date
@@ -1189,28 +1385,26 @@ components:
           format: double
         ghin:
           type: string
+        name:
+          type: string
+        _id:
+          type: string
     Facilitator:
       type: object
       properties:
-        firstName:
+        givenName:
           type: string
-        lastName:
+        familyName:
           type: string
         nickname:
           type: string
         email:
           type: string
-          description: A valid email address.
         phone:
           type: string
-          description: A valid phone number.
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         profileId:
-          maxLength: 24
-          minLength: 0
           type: string
         status:
           type: string
@@ -1232,8 +1426,6 @@ components:
             - Administrator
             - Creator
         contactId:
-          maxLength: 24
-          minLength: 0
           type: string
         title:
           type: string
@@ -1272,26 +1464,26 @@ components:
     GolfParticipant:
       type: object
       properties:
-        firstName:
+        id:
           type: string
-        lastName:
+        profileId:
           type: string
-        nickname:
+        givenName:
+          type: string
+        familyName:
           type: string
         email:
           type: string
-          description: A valid email address.
         phone:
           type: string
-          description: A valid phone number.
-        id:
-          maxLength: 24
-          minLength: 0
+        nickname:
           type: string
-        profileId:
-          maxLength: 24
-          minLength: 0
+        gender:
           type: string
+          enum:
+          - Unspecified
+          - Male
+          - Female
         status:
           type: string
           enum:
@@ -1311,87 +1503,56 @@ components:
             - Delegate
             - Administrator
             - Creator
-        contactId:
-          maxLength: 24
-          minLength: 0
-          type: string
         handicap:
           type: number
           format: double
         ghin:
           type: string
+        name:
+          type: string
     Location:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
-          type: string
-        _class:
           type: string
         name:
           type: string
+        managed:
+          type: boolean
         address:
           $ref: '#/components/schemas/Address'
+        twitterHandle:
+          type: string
+        facebookHandle:
+          type: string
+        instagramHandle:
+          type: string
+        website:
+          type: string
         phone:
           type: string
-          description: A valid phone number.
         email:
-          type: string
-          description: A valid email address.
-        facebookHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        instagramHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        twitterHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        website:
           type: string
         staff:
           type: array
           items:
             $ref: '#/components/schemas/Facilitator'
-        managed:
-          type: boolean
         location:
-          maxItems: 2
-          minItems: 2
           type: array
-          description: "Geolocation points, stored as longitude, latitude"
-          example:
-          - 34.052235
-          - -118.243683
           items:
-            maximum: 2
-            minimum: 2
             type: number
-            description: "Geolocation points, stored as longitude, latitude"
             format: double
-    EventDetails:
+    GolfEventDetails:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
         event:
           $ref: '#/components/schemas/NamedEntity'
         location:
-          $ref: '#/components/schemas/Location'
+          $ref: '#/components/schemas/LocationSummary'
         startDate:
           type: string
           format: date-time
@@ -1416,100 +1577,63 @@ components:
           type: string
         invitation:
           type: string
-    NamedEntity:
+    LocationSummary:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
-          type: string
-        name:
-          type: string
-    CourseDetails:
-      type: object
-      properties:
-        tees:
-          type: array
-          description: Information describing tee stations for a given course
-          items:
-            $ref: '#/components/schemas/TeeStation'
-        scorecard:
-          type: array
-          description: The information needed to display or print a scorecard
-          items:
-            $ref: '#/components/schemas/ScorecardInner'
-        id:
-          maxLength: 24
-          minLength: 0
-          type: string
-        _class:
           type: string
         name:
           type: string
         address:
           $ref: '#/components/schemas/Address'
+        location:
+          type: array
+          items:
+            type: number
+            format: double
+    NamedEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    GolfCourse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        managed:
+          type: boolean
+        address:
+          $ref: '#/components/schemas/Address'
+        twitterHandle:
+          type: string
+        facebookHandle:
+          type: string
+        instagramHandle:
+          type: string
+        website:
+          type: string
         phone:
           type: string
-          description: A valid phone number.
         email:
-          type: string
-          description: A valid email address.
-        facebookHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        instagramHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        twitterHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
-          type: string
-          description: A valid social media handle.
-        website:
           type: string
         staff:
           type: array
           items:
             $ref: '#/components/schemas/Facilitator'
-        managed:
-          type: boolean
         location:
-          maxItems: 2
-          minItems: 2
           type: array
-          description: "Geolocation points, stored as longitude, latitude"
-          example:
-          - 34.052235
-          - -118.243683
           items:
-            maximum: 2
-            minimum: 2
             type: number
-            description: "Geolocation points, stored as longitude, latitude"
             format: double
-      description: A Location that is a golf course
-    ScorecardInner:
-      type: object
-      properties:
-        name:
-          type: string
-        yardage:
-          type: integer
-          format: int32
-        par:
-          type: integer
-          format: int32
-        handicap:
-          type: integer
-          format: int32
-      description: The information needed to display or print a scorecard
+        tees:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeeStation'
     TeeStation:
       type: object
       properties:
@@ -1521,7 +1645,6 @@ components:
           type: string
         color:
           type: string
-          description: Color definition as per HTML
         gender:
           type: string
           enum:
@@ -1530,60 +1653,83 @@ components:
           - Female
         numberOfHoles:
           type: integer
-          description: "Number of holes, typically 9 or 18 but there may be some oddballs"
           format: int32
         par:
           type: integer
-          description: Par for the number of holes on the course (typically 71 or
-            72)
           format: int32
         yardage:
           type: integer
-          description: Total yardage for all holes on this tee
           format: int32
         courseRating:
           type: number
-          description: See the USGA web site
           format: double
         bogeyRating:
           type: number
-          description: See the USGA web site
           format: double
         slopeRating:
           type: integer
-          description: See the USGA web site
           format: int32
       description: Supports storing the ratings per tee station as per the USGA Course
         Ratings site
-    ContactDetails:
+    AddressEntry:
       type: object
       properties:
-        firstName:
+        primary:
+          type: boolean
+          description: Set to true if primary address
+        address:
           type: string
-        lastName:
+          description: Primary address (street)
+        address2:
+          type: string
+          description: "Secondary address (unit, etc)"
+        city:
+          type: string
+          description: City name
+        state:
+          pattern: "^[A-Za-z]{2,}$"
+          type: string
+          description: State or province code.
+        country:
+          pattern: "^[A-Za-z]{2}$"
+          type: string
+          description: Two-letter country code.
+        postalCode:
+          pattern: "^[0-9]{5}(?:-[0-9]{4})?$"
+          type: string
+          description: A valid ZIP code (U.S. format).
+        type:
+          type: string
+          description: "type of address (e.g. home, mobile, work)"
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+        givenName:
+          type: string
+        familyName:
           type: string
         nickname:
           type: string
-        email:
-          type: string
-          description: A valid email address.
-        phone:
-          type: string
-          description: A valid phone number.
-        id:
-          maxLength: 24
-          minLength: 0
+        profileId:
           type: string
         ownerId:
-          maxLength: 24
-          minLength: 0
           type: string
-        profileId:
-          maxLength: 24
-          minLength: 0
+        googleContactId:
           type: string
-        address:
-          $ref: '#/components/schemas/Address'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberEntry'
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressEntry'
+        emailAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddressEntry'
         status:
           type: string
           enum:
@@ -1597,6 +1743,48 @@ components:
           format: date-time
         token:
           $ref: '#/components/schemas/VerificationToken'
+        registered:
+          type: boolean
+        primaryEmailAddress:
+          type: string
+        primaryPhoneNumber:
+          type: string
+        primaryAddress:
+          $ref: '#/components/schemas/AddressEntry'
+        primaryPhone:
+          $ref: '#/components/schemas/PhoneNumberEntry'
+        primaryEmail:
+          $ref: '#/components/schemas/EmailAddressEntry'
+    EmailAddressEntry:
+      type: object
+      properties:
+        primary:
+          type: boolean
+          description: Set to true if primary e-mail address
+        address:
+          type: string
+          description: e-mail address
+        verified:
+          type: boolean
+          description: Set to true if the email address has been verified
+        type:
+          type: string
+          description: "type of e-mail address (e.g. home, mobile, work)"
+    PhoneNumberEntry:
+      type: object
+      properties:
+        primary:
+          type: boolean
+          description: Set to true if primary phone number
+        number:
+          type: string
+          description: phone number
+        verified:
+          type: boolean
+          description: Set to true if the phone number has been verified
+        type:
+          type: string
+          description: "type of phone number (e.g. home, mobile, work)"
     VerificationToken:
       type: object
       properties:
@@ -1614,8 +1802,6 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         replyUrl:
           type: string
@@ -1626,16 +1812,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1645,8 +1827,6 @@ components:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
@@ -1655,36 +1835,17 @@ components:
         numParticipants:
           type: integer
           format: int32
-    Pageable:
-      type: object
-      properties:
-        page:
-          minimum: 0
-          type: integer
-          format: int32
-        size:
-          minimum: 1
-          type: integer
-          format: int32
-        sort:
-          type: array
-          items:
-            type: string
     PagedResponse:
       type: object
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
@@ -1696,27 +1857,21 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
           items:
             $ref: '#/components/schemas/GolfParticipant'
-    EventSummary:
+    GolfEventSummary:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
@@ -1746,171 +1901,87 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
           items:
-            $ref: '#/components/schemas/EventSummary'
+            $ref: '#/components/schemas/GolfEventSummary'
     GetEventsResponse:
       type: object
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
           items:
-            $ref: '#/components/schemas/EventSummary'
+            $ref: '#/components/schemas/GolfEventSummary'
     CourseSummary:
       type: object
       properties:
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         name:
           type: string
         managed:
           type: boolean
-          description: Set to true for publicly visible courses
         address:
           $ref: '#/components/schemas/Address'
         facebookHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
           type: string
-          description: A valid social media handle.
         instagramHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
           type: string
-          description: A valid social media handle.
         twitterHandle:
-          maxLength: 30
-          minLength: 3
-          pattern: "^[a-zA-Z0-9_.-]+$"
           type: string
-          description: A valid social media handle.
         website:
           type: string
-          description: A valid Universal Resource Locator.
           format: uri
         phone:
           type: string
-          description: A valid phone number.
         email:
           type: string
-          description: A valid email address.
     GetCoursesResponse:
       type: object
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array
           items:
             $ref: '#/components/schemas/CourseSummary'
-    FavoriteCourse:
-      type: object
-      properties:
-        id:
-          maxLength: 24
-          minLength: 0
-          type: string
-        locationId:
-          maxLength: 24
-          minLength: 0
-          type: string
-        name:
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-        review:
-          $ref: '#/components/schemas/Review'
-    FindFavoriteCoursesResponse:
-      type: object
-      properties:
-        totalItems:
-          type: integer
-          description: The total number of items that match the query (not the result
-            set)
-          format: int32
-        page:
-          type: integer
-          description: The page offset requested
-          format: int32
-        size:
-          type: integer
-          description: The number of items returned
-          format: int32
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/FavoriteCourse'
-    Review:
-      type: object
-      properties:
-        review:
-          type: string
-        publiclyVisible:
-          type: boolean
-        rating:
-          maximum: 5
-          minimum: 0
-          type: integer
-          description: Rating value on a scale of 0 to 5.
-          format: int32
     ContactSummary:
       type: object
       properties:
-        firstName:
+        givenName:
           type: string
-        lastName:
+        familyName:
           type: string
         nickname:
           type: string
         email:
           type: string
-          description: A valid email address.
         phone:
           type: string
-          description: A valid phone number.
         id:
-          maxLength: 24
-          minLength: 0
           type: string
         status:
           type: string
@@ -1924,8 +1995,6 @@ components:
           type: string
           format: date
         profileId:
-          maxLength: 24
-          minLength: 0
           type: string
         handicap:
           type: number
@@ -1937,16 +2006,12 @@ components:
       properties:
         totalItems:
           type: integer
-          description: The total number of items that match the query (not the result
-            set)
           format: int32
         page:
           type: integer
-          description: The page offset requested
           format: int32
         size:
           type: integer
-          description: The number of items returned
           format: int32
         items:
           type: array

@@ -1,0 +1,38 @@
+<table class="table table-hover table-sm">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">First name</th>
+    <th scope="col">Last name</th>
+    <th scope="col">email</th>
+    <th scope="col">Phone</th>
+    <th scope="col">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let contact of dataSource.displayData | async" [class.table-success]="contact.selected"
+      (click)="toggleSelected(contact)">
+    <td>{{ contact.givenName }}</td>
+    <td>{{ contact.familyName }}</td>
+    <td>{{ primaryEmail(contact) }}</td>
+    <td>{{ primaryPhoneNumber(contact) }}</td>
+    <td>
+      <div class="icon-container">
+        <i class="fa-solid fa-trash" (click)="removeContact(contact)"></i>
+        <i *ngIf="contact.selected" class="fa-solid fa-check" (click)="selectContact(contact)"></i>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div class="button-group">
+  <button (click)="importContacts()">Import Contacts</button>
+  <button [disabled]="noSelectedContacts() | async" (click)="addContacts()">Commit Contacts</button>
+  <button (click)="revokePermissions()">Revoke</button>
+  <app-table-pager
+    [length]="dataSource.totalItems"
+    [pageIndex]="dataSource.pageIndex || 0"
+    [pageSize]="dataSource.pageSize || 10"
+    [pageSizeOptions]="pageSizeOptions"
+    (onPageSelect)="dataSource.onPageSelect($event)"
+  ></app-table-pager>
+</div>

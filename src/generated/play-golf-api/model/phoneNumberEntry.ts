@@ -11,12 +11,22 @@
  */
 
 
-export interface Review { 
-    review?: string;
-    publiclyVisible?: boolean;
+export interface PhoneNumberEntry { 
     /**
-     * Rating value on a scale of 0 to 5.
+     * Set to true if primary phone number
      */
-    rating?: number;
+    primary?: boolean;
+    /**
+     * phone number
+     */
+    number?: string;
+    /**
+     * Set to true if the phone number has been verified
+     */
+    verified?: boolean;
+    /**
+     * type of phone number (e.g. home, mobile, work)
+     */
+    type?: string;
 }
 

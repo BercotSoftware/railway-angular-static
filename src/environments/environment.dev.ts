@@ -5,8 +5,12 @@
 export const environment = {
   production: false,
   PLAY_GOLF_API_URL: 'http://localhost:4000',
-  JWT_ISSUER_URL: 'http://localhost:8100/auth/realms/play_golf',
+  JWT_ISSUER_URL: 'http://localhost:8100/realms/play-golf',    // The authentication server
   JWT_ISSUER_CLIENT_ID: "play-golf",
+
+  // https://console.cloud.google.com/apis/credentials/oauthclient/160870185609-s83f456jg9ke4a9la7p68c6uheslmi8r.apps.googleusercontent.com?project=play-golf-372116
+  GOOGLE_API_KEY: "AIzaSyAz5sW3mZtHpoO_MvZ5ap6k2KzF92M9RqA", //API Key 1 ??
+  PLAY_GOLF_UI_CLIENT_ID: "160870185609-s83f456jg9ke4a9la7p68c6uheslmi8r.apps.googleusercontent.com",
 };
 
 /*

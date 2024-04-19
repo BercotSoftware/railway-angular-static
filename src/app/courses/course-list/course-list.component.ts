@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CoursesService, CourseSummary, Pageable} from '@golf-api'
+import {CoursesService, CourseSummary, GetCoursesResponse} from '@golf-api'
 import {BehaviorSubject} from "rxjs";
+import {formatCityState, formatPhoneNumber, Pageable} from "@utilities";
 
 @Component({
   selector: 'app-course-list',
@@ -23,13 +24,13 @@ export class CourseListComponent implements OnInit {
   }
 
   loadGolfCourses(): void {
-    this.golfCourseService.findAllCourses(this.paging)
+    this.golfCourseService.findAllCourses(this.paging.page, this.paging.size, this.paging.sort)
       .subscribe( {
-        next : (result) => {
+        next : (result: GetCoursesResponse) => {
           // console.log('Received courses:', JSON.stringify(courses))
           this.$golfCourses.next(result.items || []);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.log('Error loading courses', err)
         },
         complete: () => {
@@ -37,4 +38,6 @@ export class CourseListComponent implements OnInit {
       });
   }
 
+  protected readonly formatCityState = formatCityState;
+  protected readonly formatPhoneNumber = formatPhoneNumber;
 }

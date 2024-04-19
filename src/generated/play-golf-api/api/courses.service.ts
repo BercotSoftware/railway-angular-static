@@ -19,13 +19,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CourseDetails } from '../model/courseDetails';
-// @ts-ignore
-import { FindFavoriteCoursesResponse } from '../model/findFavoriteCoursesResponse';
-// @ts-ignore
 import { GetCoursesResponse } from '../model/getCoursesResponse';
 // @ts-ignore
-import { Pageable } from '../model/pageable';
+import { GolfCourse } from '../model/golfCourse';
 // @ts-ignore
 import { PagedResponse } from '../model/pagedResponse';
 
@@ -101,16 +97,16 @@ export class CoursesService {
 
     /**
      * POST courses
-     * @param courseDetails 
+     * @param golfCourse 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createGolfCourse(courseDetails: CourseDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CourseDetails>;
-    public createGolfCourse(courseDetails: CourseDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CourseDetails>>;
-    public createGolfCourse(courseDetails: CourseDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CourseDetails>>;
-    public createGolfCourse(courseDetails: CourseDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (courseDetails === null || courseDetails === undefined) {
-            throw new Error('Required parameter courseDetails was null or undefined when calling createGolfCourse.');
+    public createGolfCourse(golfCourse: GolfCourse, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GolfCourse>;
+    public createGolfCourse(golfCourse: GolfCourse, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GolfCourse>>;
+    public createGolfCourse(golfCourse: GolfCourse, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GolfCourse>>;
+    public createGolfCourse(golfCourse: GolfCourse, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (golfCourse === null || golfCourse === undefined) {
+            throw new Error('Required parameter golfCourse was null or undefined when calling createGolfCourse.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -159,10 +155,10 @@ export class CoursesService {
         }
 
         let localVarPath = `/courses`;
-        return this.httpClient.request<CourseDetails>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GolfCourse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: courseDetails,
+                body: golfCourse,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -238,23 +234,32 @@ export class CoursesService {
 
     /**
      * GET courses
-     * @param page Paging parameters
+     * @param page 
+     * @param size 
+     * @param sort 
      * @param pattern Search pattern
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllCourses(page: Pageable, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetCoursesResponse>;
-    public findAllCourses(page: Pageable, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetCoursesResponse>>;
-    public findAllCourses(page: Pageable, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetCoursesResponse>>;
-    public findAllCourses(page: Pageable, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findAllCourses.');
-        }
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GetCoursesResponse>;
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GetCoursesResponse>>;
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GetCoursesResponse>>;
+    public findAllCourses(page?: number, size?: number, sort?: Array<string>, pattern?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>page, 'page');
+        }
+        if (size !== undefined && size !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>size, 'size');
+        }
+        if (sort) {
+            sort.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'sort');
+            })
         }
         if (pattern !== undefined && pattern !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -318,9 +323,9 @@ export class CoursesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findCourseById(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CourseDetails>;
-    public findCourseById(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CourseDetails>>;
-    public findCourseById(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CourseDetails>>;
+    public findCourseById(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GolfCourse>;
+    public findCourseById(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GolfCourse>>;
+    public findCourseById(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GolfCourse>>;
     public findCourseById(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling findCourseById.');
@@ -363,80 +368,9 @@ export class CoursesService {
         }
 
         let localVarPath = `/courses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<CourseDetails>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GolfCourse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * GET courses/favorites
-     * @param page 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public findFavoriteCourses(page: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FindFavoriteCoursesResponse>;
-    public findFavoriteCourses(page: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FindFavoriteCoursesResponse>>;
-    public findFavoriteCourses(page: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FindFavoriteCoursesResponse>>;
-    public findFavoriteCourses(page: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (page === null || page === undefined) {
-            throw new Error('Required parameter page was null or undefined when calling findFavoriteCourses.');
-        }
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (page !== undefined && page !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>page, 'page');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        let localVarTransferCache: boolean | undefined = options && options.transferCache;
-        if (localVarTransferCache === undefined) {
-            localVarTransferCache = true;
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/courses/favorites`;
-        return this.httpClient.request<FindFavoriteCoursesResponse>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -449,16 +383,16 @@ export class CoursesService {
 
     /**
      * PUT courses
-     * @param courseDetails 
+     * @param golfCourse 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public saveGolfCourse(courseDetails: CourseDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CourseDetails>;
-    public saveGolfCourse(courseDetails: CourseDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CourseDetails>>;
-    public saveGolfCourse(courseDetails: CourseDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CourseDetails>>;
-    public saveGolfCourse(courseDetails: CourseDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (courseDetails === null || courseDetails === undefined) {
-            throw new Error('Required parameter courseDetails was null or undefined when calling saveGolfCourse.');
+    public saveGolfCourse(golfCourse: GolfCourse, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GolfCourse>;
+    public saveGolfCourse(golfCourse: GolfCourse, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GolfCourse>>;
+    public saveGolfCourse(golfCourse: GolfCourse, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GolfCourse>>;
+    public saveGolfCourse(golfCourse: GolfCourse, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (golfCourse === null || golfCourse === undefined) {
+            throw new Error('Required parameter golfCourse was null or undefined when calling saveGolfCourse.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -507,10 +441,10 @@ export class CoursesService {
         }
 
         let localVarPath = `/courses`;
-        return this.httpClient.request<CourseDetails>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GolfCourse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: courseDetails,
+                body: golfCourse,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "../auth/authentication.service";
 
 @Component({
   selector: 'app-login-success',
@@ -12,7 +11,7 @@ import {AuthenticationService} from "../auth/authentication.service";
 })
 export class LoginSuccessComponent {
 
-  constructor(private activeRoute: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) {
+  constructor(private activeRoute: ActivatedRoute, private router: Router) {
     this.activeRoute.queryParamMap.subscribe({next: (params) => {
         console.log(`Login success: ${JSON.stringify(params)}`)
         // authenticationService.setToken({

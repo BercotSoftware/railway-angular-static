@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from "@angular/router";
-import {AuthenticationService} from "../auth/authentication.service";
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 @Component({
   selector: 'app-header',
@@ -22,8 +22,13 @@ import {AuthenticationService} from "../auth/authentication.service";
             <li class="nav-item">
               <a class="nav-link" routerLink="/home">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/contacts">Contacts</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" routerLink="/contacts" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Contacts
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" routerLink="/contacts/import">Google Import</a>
+              </div>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/courses">Courses</a>
@@ -37,9 +42,16 @@ import {AuthenticationService} from "../auth/authentication.service";
             <li class="nav-item">
               <a class="nav-link" routerLink="/calendar">Calendar</a>
             </li>
-
-            <li class="nav-item">
-              <a class="nav-link" (click)="logOut()">Log Out</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Profile
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" (click)="logOut()">Log Out</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
             </li>
           </ng-template>
           <ng-template #unauthenticated>
@@ -67,30 +79,26 @@ export class HeaderComponent implements OnInit {
 
   isAuthenticated = false
 
-  constructor(private authService: AuthenticationService) {
-    this.authService.$isAuthorized.subscribe({
-      next: (value) => {
-        this.isAuthenticated = value
-      }
+  constructor(private authService: OidcSecurityService) {
+    authService.isAuthenticated$.subscribe((result) => {
+      console.log(`isAuthenticated -> ${result.isAuthenticated}`)
+      this.isAuthenticated = result.isAuthenticated
     })
   }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
   }
 
   logOut() {
-    this.authService.logout().then(() => {
-      console.log('Logged out')
+    this.authService.logoff().subscribe({
+      next : (result) =>{},
+      error : (err) => {},
+      complete: () => {}
     })
   }
 
   logIn() {
-    this.authService.authorize().then((result) => {
-      console.log('Logged in!')
-    })
-    .catch((error) => {
-      console.log('Login error', error)
-    })
+    this.authService.authorize()
   }
 
 }

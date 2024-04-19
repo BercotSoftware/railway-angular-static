@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Address } from './address';
 
 
-export interface Pageable { 
-    page?: number;
-    size?: number;
-    sort?: Array<string>;
+export interface LocationSummary { 
+    id?: string;
+    name?: string;
+    address?: Address;
+    location?: Array<number>;
 }
 

@@ -10,14 +10,23 @@
  * Do not edit the class manually.
  */
 import { Address } from './address';
-import { Review } from './review';
 
 
-export interface FavoriteCourse { 
-    id?: string;
-    locationId?: string;
-    name?: string;
+export interface Profile { 
+    givenName?: string;
+    familyName?: string;
+    email?: string;
+    emailVerified?: boolean;
+    phone?: string;
+    nickname?: string;
+    picture?: string;
+    profileName?: string;
     address?: Address;
-    review?: Review;
+    phoneVerified?: boolean;
+    birthDate?: string;
+    handicap?: number;
+    ghin?: string;
+    name?: string;
+    _id?: string;
 }
 

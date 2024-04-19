@@ -17,34 +17,13 @@
 export interface TeeStation { 
     id?: string;
     name?: string;
-    /**
-     * Color definition as per HTML
-     */
     color?: string;
     gender?: TeeStation.GenderEnum;
-    /**
-     * Number of holes, typically 9 or 18 but there may be some oddballs
-     */
     numberOfHoles?: number;
-    /**
-     * Par for the number of holes on the course (typically 71 or 72)
-     */
     par?: number;
-    /**
-     * Total yardage for all holes on this tee
-     */
     yardage?: number;
-    /**
-     * See the USGA web site
-     */
     courseRating?: number;
-    /**
-     * See the USGA web site
-     */
     bogeyRating?: number;
-    /**
-     * See the USGA web site
-     */
     slopeRating?: number;
 }
 export namespace TeeStation {

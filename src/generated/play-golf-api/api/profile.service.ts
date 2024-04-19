@@ -19,7 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ProfileDetails } from '../model/profileDetails';
+import { Profile } from '../model/profile';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -96,9 +96,9 @@ export class ProfileService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getProfile(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ProfileDetails>;
-    public getProfile(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ProfileDetails>>;
-    public getProfile(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ProfileDetails>>;
+    public getProfile(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Profile>;
+    public getProfile(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Profile>>;
+    public getProfile(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Profile>>;
     public getProfile(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -138,7 +138,7 @@ export class ProfileService {
         }
 
         let localVarPath = `/profile`;
-        return this.httpClient.request<ProfileDetails>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Profile>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -153,16 +153,16 @@ export class ProfileService {
 
     /**
      * PUT profile
-     * @param profileDetails 
+     * @param profile 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateProfile(profileDetails: ProfileDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ProfileDetails>;
-    public updateProfile(profileDetails: ProfileDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ProfileDetails>>;
-    public updateProfile(profileDetails: ProfileDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ProfileDetails>>;
-    public updateProfile(profileDetails: ProfileDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (profileDetails === null || profileDetails === undefined) {
-            throw new Error('Required parameter profileDetails was null or undefined when calling updateProfile.');
+    public updateProfile(profile: Profile, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Profile>;
+    public updateProfile(profile: Profile, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Profile>>;
+    public updateProfile(profile: Profile, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Profile>>;
+    public updateProfile(profile: Profile, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (profile === null || profile === undefined) {
+            throw new Error('Required parameter profile was null or undefined when calling updateProfile.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -211,10 +211,10 @@ export class ProfileService {
         }
 
         let localVarPath = `/profile`;
-        return this.httpClient.request<ProfileDetails>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Profile>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: profileDetails,
+                body: profile,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -9,22 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EventSummary } from './eventSummary';
+import { GolfEventSummary } from './golfEventSummary';
 
 
 export interface GetEventsResponse { 
-    /**
-     * The total number of items that match the query (not the result set)
-     */
     totalItems?: number;
-    /**
-     * The page offset requested
-     */
     page?: number;
-    /**
-     * The number of items returned
-     */
     size?: number;
-    items?: Array<EventSummary>;
+    items?: Array<GolfEventSummary>;
 }
 

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginSuccessComponent } from './login-success.component';
+import {LoginSuccessComponent} from './login-success.component';
 
 describe('LoginSuccessComponent', () => {
   let component: LoginSuccessComponent;
@@ -11,7 +11,7 @@ describe('LoginSuccessComponent', () => {
       imports: [LoginSuccessComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(LoginSuccessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

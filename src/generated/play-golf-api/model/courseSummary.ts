@@ -15,34 +15,13 @@ import { Address } from './address';
 export interface CourseSummary { 
     id?: string;
     name?: string;
-    /**
-     * Set to true for publicly visible courses
-     */
     managed?: boolean;
     address?: Address;
-    /**
-     * A valid social media handle.
-     */
     facebookHandle?: string;
-    /**
-     * A valid social media handle.
-     */
     instagramHandle?: string;
-    /**
-     * A valid social media handle.
-     */
     twitterHandle?: string;
-    /**
-     * A valid Universal Resource Locator.
-     */
     website?: string;
-    /**
-     * A valid phone number.
-     */
     phone?: string;
-    /**
-     * A valid email address.
-     */
     email?: string;
 }
 

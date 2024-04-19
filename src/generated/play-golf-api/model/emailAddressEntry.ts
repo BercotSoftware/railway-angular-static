@@ -9,22 +9,24 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FavoriteCourse } from './favoriteCourse';
 
 
-export interface FindFavoriteCoursesResponse { 
+export interface EmailAddressEntry { 
     /**
-     * The total number of items that match the query (not the result set)
+     * Set to true if primary e-mail address
      */
-    totalItems?: number;
+    primary?: boolean;
     /**
-     * The page offset requested
+     * e-mail address
      */
-    page?: number;
+    address?: string;
     /**
-     * The number of items returned
+     * Set to true if the email address has been verified
      */
-    size?: number;
-    items?: Array<FavoriteCourse>;
+    verified?: boolean;
+    /**
+     * type of e-mail address (e.g. home, mobile, work)
+     */
+    type?: string;
 }
 

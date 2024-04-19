@@ -10,24 +10,24 @@
  * Do not edit the class manually.
  */
 import { NamedEntity } from './namedEntity';
+import { LocationSummary } from './locationSummary';
 import { GolfParticipant } from './golfParticipant';
-import { Location } from './location';
 
 
-export interface EventDetails { 
+export interface GolfEventDetails { 
     id?: string;
     name?: string;
     event?: NamedEntity;
-    location?: Location;
+    location?: LocationSummary;
     startDate?: string;
     endDate?: string;
-    status?: EventDetails.StatusEnum;
+    status?: GolfEventDetails.StatusEnum;
     participants?: Array<GolfParticipant>;
     rules?: string;
     description?: string;
     invitation?: string;
 }
-export namespace EventDetails {
+export namespace GolfEventDetails {
     export type StatusEnum = 'Preparation' | 'OpenForRegistration' | 'Pending' | 'Completed' | 'Canceled';
     export const StatusEnum = {
         Preparation: 'Preparation' as StatusEnum,

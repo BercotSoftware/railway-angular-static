@@ -1,8 +1,29 @@
-<div>contact-list works! 1</div>
-<div>contact-list works! 2</div>
-<div>contact-list works! 3</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
-<div>contact-list works!</div>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Nickname</th>
+    <th scope="col">Phone</th>
+    <th scope="col">e-mail</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let contact of dataSource.data$ | async">
+    <tr (click)="selectContact(contact)">
+      <td>{{ informalName(contact) }}</td>
+      <td>{{ contact.nickname }}</td>
+      <td>{{ formatPhoneNumber(contact.phone) }}</td>
+      <td>{{ contact.email }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
+<div>
+  <app-table-pager
+    [length]="dataSource.totalItems"
+    [pageIndex]="dataSource.page || 0"
+    [pageSize]="dataSource.size || 10"
+    [pageSizeOptions]="pageSizeOptions"
+    (onPageSelect)="dataSource.onPageSelect($event)"
+  ></app-table-pager>
+</div>

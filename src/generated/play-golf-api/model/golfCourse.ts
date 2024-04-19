@@ -9,27 +9,24 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Facilitator } from './facilitator';
 import { Address } from './address';
+import { TeeStation } from './teeStation';
 
 
-export interface ProfileDetails { 
-    firstName?: string;
-    lastName?: string;
-    nickname?: string;
-    /**
-     * A valid email address.
-     */
-    email?: string;
-    /**
-     * A valid phone number.
-     */
-    phone?: string;
+export interface GolfCourse { 
     id?: string;
-    emailVerified?: boolean;
-    phoneVerified?: boolean;
+    name?: string;
+    managed?: boolean;
     address?: Address;
-    birthDate?: string;
-    handicap?: number;
-    ghin?: string;
+    twitterHandle?: string;
+    facebookHandle?: string;
+    instagramHandle?: string;
+    website?: string;
+    phone?: string;
+    email?: string;
+    staff?: Array<Facilitator>;
+    location?: Array<number>;
+    tees?: Array<TeeStation>;
 }
 

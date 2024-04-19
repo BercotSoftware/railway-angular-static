@@ -10,4 +10,10 @@ import {CommonModule} from '@angular/common';
 })
 export class HomeComponent {
 
+  contactResult: any
+
+  constructor() {
+
+  }
+
 }

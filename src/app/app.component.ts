@@ -4,6 +4,7 @@ import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router'
 import {environment} from "../environments/environment";
 import {HeaderComponent} from "./layout/header.component";
 import {FooterComponent} from "./layout/footer.component";
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 
 @Component({
@@ -20,8 +21,20 @@ export class AppComponent {
 
 
   constructor(
+    private oidcSecurityService: OidcSecurityService,
     private router: Router,
-    private route : ActivatedRoute) {
+    private activatedRoute : ActivatedRoute) {
+
+    oidcSecurityService.checkAuth().subscribe({
+      next: (result) => {
+        console.log(`checkAuth result ${JSON.stringify(result)}`)
+      },
+      error: (err) => {
+        console.log(`checkAuth error ${err}`)
+      },
+      complete: () => {}
+    })
   }
+
 
 }
