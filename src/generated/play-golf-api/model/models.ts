@@ -2,7 +2,6 @@ export * from './address';
 export * from './addressEntry';
 export * from './contact';
 export * from './contactRequest';
-export * from './contactSummary';
 export * from './contactsResponse';
 export * from './courseSummary';
 export * from './emailAddressEntry';

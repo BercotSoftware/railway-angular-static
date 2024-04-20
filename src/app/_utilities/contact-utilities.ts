@@ -3,19 +3,52 @@
  * method
  */
 import {Contact, ContactRequest, EmailAddressEntry, Profile} from "@golf-api";
-import {validEmailEntry} from "./email-utilities";
-import {informalName} from "./name-utilities";
+import {informalName, validEmailEntry} from "@utilities";
 
-export function primaryEmail(contact: Contact) : EmailAddressEntry | undefined {
+/**
+ * Find the primary e-mail address for a contact
+ * @param contact Contact object
+ */
+export function primaryEmail(contact?: Contact) : EmailAddressEntry | undefined {
   if (contact?.emailAddresses?.length) {
-    const primary = contact.emailAddresses.filter(e => e.primary)
-    if (primary.length > 0) {
-      return primary[0]
-    }
+    return contact.emailAddresses
+        .find(e => e.primary)
   }
   return undefined
 }
 
+/**
+ * Find the primary e-mail address for a contact
+ * @param contact Contact object
+ */
+export function primaryEmailAddress(contact?: Contact) {
+  return primaryEmail(contact)?.address
+}
+
+/**
+ * Find the primary phone number for a contact
+ * @param contact Contact object
+ */
+export function primaryPhone(contact?: Contact) {
+  if (contact?.phoneNumbers?.length) {
+    return contact.phoneNumbers
+        .find(p => p.primary === true)
+  }
+  return undefined
+}
+
+/**
+ * Find the primary phone number for a contact
+ * @param contact Contact object
+ */
+export function primaryPhoneNumber(contact?: Contact) {
+  return primaryPhone(contact)?.number
+}
+
+/**
+ * Returns true if a contact could be sent an invitation
+ * @param contact Contact object
+ */
 export function couldInviteContact(contact: Contact | undefined) : boolean {
   if (contact) {
     // const hasProfileId = idIsAssigned(contact.profileId)

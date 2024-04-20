@@ -16,7 +16,6 @@ model/address.ts
 model/addressEntry.ts
 model/contact.ts
 model/contactRequest.ts
-model/contactSummary.ts
 model/contactsResponse.ts
 model/courseSummary.ts
 model/emailAddressEntry.ts

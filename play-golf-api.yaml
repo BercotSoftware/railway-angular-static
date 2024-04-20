@@ -1714,8 +1714,6 @@ components:
           type: string
         profileId:
           type: string
-        ownerId:
-          type: string
         googleContactId:
           type: string
         phoneNumbers:
@@ -1745,16 +1743,16 @@ components:
           $ref: '#/components/schemas/VerificationToken'
         registered:
           type: boolean
+        primaryEmail:
+          $ref: '#/components/schemas/EmailAddressEntry'
         primaryEmailAddress:
           type: string
         primaryPhoneNumber:
           type: string
-        primaryAddress:
-          $ref: '#/components/schemas/AddressEntry'
         primaryPhone:
           $ref: '#/components/schemas/PhoneNumberEntry'
-        primaryEmail:
-          $ref: '#/components/schemas/EmailAddressEntry'
+        primaryAddress:
+          $ref: '#/components/schemas/AddressEntry'
     EmailAddressEntry:
       type: object
       properties:
@@ -1968,39 +1966,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CourseSummary'
-    ContactSummary:
-      type: object
-      properties:
-        givenName:
-          type: string
-        familyName:
-          type: string
-        nickname:
-          type: string
-        email:
-          type: string
-        phone:
-          type: string
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - New
-          - Pending
-          - Accepted
-          - Declined
-          - Expired
-        since:
-          type: string
-          format: date
-        profileId:
-          type: string
-        handicap:
-          type: number
-          format: double
-        ghin:
-          type: string
     ContactsResponse:
       type: object
       properties:
@@ -2016,4 +1981,4 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ContactSummary'
+            $ref: '#/components/schemas/Contact'

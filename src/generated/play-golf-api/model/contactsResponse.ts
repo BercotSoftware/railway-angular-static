@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ContactSummary } from './contactSummary';
+import { Contact } from './contact';
 
 
 export interface ContactsResponse { 
     totalItems?: number;
     page?: number;
     size?: number;
-    items?: Array<ContactSummary>;
+    items?: Array<Contact>;
 }
 

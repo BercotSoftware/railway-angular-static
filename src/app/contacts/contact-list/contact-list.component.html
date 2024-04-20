@@ -12,8 +12,8 @@
     <tr (click)="selectContact(contact)">
       <td>{{ informalName(contact) }}</td>
       <td>{{ contact.nickname }}</td>
-      <td>{{ formatPhoneNumber(contact.phone) }}</td>
-      <td>{{ contact.email }}</td>
+      <td>{{ primaryPhoneNumber(contact) }}</td>
+      <td>{{ primaryEmailAddress(contact) }}</td>
     </tr>
   </ng-container>
   </tbody>

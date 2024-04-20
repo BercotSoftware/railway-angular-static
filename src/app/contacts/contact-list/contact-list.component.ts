@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ContactsService, ContactSummary} from "@golf-api";
+import {ContactsService, Contact} from "@golf-api";
 import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import {TablePagerComponent} from "../../_controls/table-pager/table-pager.component";
 import {PagedResult, PagedTableDataSource} from "../../_controls/table-pager/paged-table-data-source";
-import {formatPhoneNumber, informalName, Pageable} from "@utilities";
+import {formatPhoneNumber, informalName, Pageable, primaryEmailAddress, primaryPhoneNumber} from "@utilities";
 
 @Component({
   selector: 'app-contact-list',
@@ -16,19 +16,19 @@ import {formatPhoneNumber, informalName, Pageable} from "@utilities";
 export class ContactListComponent implements OnInit {
 
   pageSizeOptions = [ 10, 15, 20, 50, 75, 100 ]
-  dataSource: PagedTableDataSource<ContactSummary>
+  dataSource: PagedTableDataSource<Contact>
 
   constructor(private contactsService: ContactsService,
               private route : ActivatedRoute,
               private router: Router) {
-    this.dataSource = new PagedTableDataSource<ContactSummary>(this.getTableData.bind(this), 20)
+    this.dataSource = new PagedTableDataSource<Contact>(this.getTableData.bind(this), 20)
   }
 
   ngOnInit(): void {
     this.dataSource.loadData() // Prime the pump
   }
 
-  getTableData = async (pageOptions: Pageable) : Promise<PagedResult<ContactSummary>> => {
+  getTableData = async (pageOptions: Pageable) : Promise<PagedResult<Contact>> => {
     return new Promise((resolve, reject) => {
       this.contactsService.getContacts(pageOptions.page, pageOptions.size, pageOptions.sort).subscribe({
         next: (result) => {
@@ -45,10 +45,12 @@ export class ContactListComponent implements OnInit {
     })
   }
 
-  selectContact(contact: ContactSummary) {
+  selectContact(contact: Contact) {
     this.router.navigate([contact.id], { relativeTo: this.route.parent })
   }
 
   protected readonly formatPhoneNumber = formatPhoneNumber;
   protected readonly informalName = informalName;
+  protected readonly primaryPhoneNumber = primaryPhoneNumber;
+  protected readonly primaryEmailAddress = primaryEmailAddress;
 }
